@@ -75,6 +75,12 @@ class Assets
 	public static function exists(id:String, type:AssetType = null):Bool
 	{
 		#if lime
+		/*if (id != null && StringTools.endsWith(id, 'png') && type == null || type == IMAGE)
+		{
+			if (LimeAssets.exists(id.substr(0, id.length - 3) + 'astc', BINARY)) return true;
+			if (LimeAssets.exists(id.substr(0, id.length - 3) + 'ktx', BINARY)) return true;
+			if (LimeAssets.exists(id.substr(0, id.length - 3) + 'dds', BINARY)) return true;
+		}*/
 		return LimeAssets.exists(id, cast type);
 		#else
 		return false;
@@ -97,6 +103,31 @@ class Assets
 
 			if (isValidBitmapData(bitmapData))
 			{
+				return bitmapData;
+			}
+		}
+
+		for (ext in ['astc', 'ktx', 'dds'])
+		{
+			final textureName:String = haxe.io.Path.withoutExtension(id) + '.$ext';
+
+			if (Assets.exists('$textureName'))
+			{
+				final texture = switch (ext)
+				{
+					case 'astc': openfl.Lib.current.stage.context3D.createASTCTexture(Assets.getBytes(textureName));
+					case 'ktx': openfl.Lib.current.stage.context3D.createETC2Texture(Assets.getBytes(textureName));
+					case 'dds': openfl.Lib.current.stage.context3D.createS3TCTexture(Assets.getBytes(textureName));
+					default: null;
+				}
+
+				final bitmapData:BitmapData = BitmapData.fromTexture(texture);
+
+				if (useCache && cache.enabled)
+				{
+					cache.setBitmapData(id, bitmapData);
+				}
+
 				return bitmapData;
 			}
 		}
@@ -382,17 +413,20 @@ class Assets
 		{
 			if (type == AssetType.IMAGE || type == null)
 			{
-				if (cache.hasBitmapData(id)) return true;
+				if (cache.hasBitmapData(id))
+					return true;
 			}
 
 			if (type == AssetType.FONT || type == null)
 			{
-				if (cache.hasFont(id)) return true;
+				if (cache.hasFont(id))
+					return true;
 			}
 
 			if (type == AssetType.SOUND || type == AssetType.MUSIC || type == null)
 			{
-				if (cache.hasSound(id)) return true;
+				if (cache.hasSound(id))
+					return true;
 			}
 		}
 
@@ -463,7 +497,8 @@ class Assets
 	**/
 	public static function loadBitmapData(id:String, useCache:Null<Bool> = true):Future<BitmapData>
 	{
-		if (useCache == null) useCache = true;
+		if (useCache == null)
+			useCache = true;
 
 		#if (lime && tools && !display)
 		var promise = new Promise<BitmapData>();
@@ -539,7 +574,8 @@ class Assets
 	**/
 	public static function loadFont(id:String, useCache:Null<Bool> = true):Future<Font>
 	{
-		if (useCache == null) useCache = true;
+		if (useCache == null)
+			useCache = true;
 
 		#if (lime && tools && !display && !macro)
 		var promise = new Promise<Font>();
@@ -622,7 +658,8 @@ class Assets
 	**/
 	public static function loadMusic(id:String, useCache:Null<Bool> = true):Future<Sound>
 	{
-		if (useCache == null) useCache = true;
+		if (useCache == null)
+			useCache = true;
 
 		#if lime
 		#if !html5
@@ -714,7 +751,8 @@ class Assets
 	**/
 	public static function loadSound(id:String, useCache:Null<Bool> = true):Future<Sound>
 	{
-		if (useCache == null) useCache = true;
+		if (useCache == null)
+			useCache = true;
 
 		#if lime
 		var promise = new Promise<Sound>();
