@@ -10,6 +10,8 @@ import openfl.display3D.Context3D;
 import openfl.display3D.Program3D;
 import openfl.utils.ByteArray;
 
+using StringTools;
+
 /**
 	// TODO: Document GLSL Shaders
 	A Shader instance represents a Pixel Bender shader kernel in ActionScript.
@@ -502,20 +504,27 @@ class Shader
 		{
 			var gl = __context.gl;
 
-			#if (js && html5)
-			var prefix = (precisionHint == FULL ? "precision mediump float;\n" : "precision lowp float;\n");
+			#if lime_opengles
+			var prefix = "#version 300 es\n";
 			#else
-			var prefix = "#ifdef GL_ES\n"
+			var prefix = "#version 400 core\n";
+			#end
+
+			prefix += "#ifdef GL_ES\n"
 				+ (precisionHint == FULL ? "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
 					+ "precision highp float;\n"
 					+ "#else\n"
 					+ "precision mediump float;\n"
 					+ "#endif\n" : "precision lowp float;\n")
 				+ "#endif\n\n";
-			#end
 
-			var vertex = prefix + glVertexSource;
-			var fragment = prefix + glFragmentSource;
+			prefix += 'out vec4 output_FragColor;\n';
+			var vertex = prefix
+				+ glVertexSource.replace("attribute", "in")
+					.replace("varying", "out")
+					.replace("texture2D", "texture")
+					.replace("gl_FragColor", "output_FragColor");
+			var fragment = prefix + glFragmentSource.replace("varying", "in").replace("texture2D", "texture").replace("gl_FragColor", "output_FragColor");
 
 			var id = vertex + fragment;
 
