@@ -46,6 +46,9 @@ package openfl.text;
 
 	The default formatting for each property is also described in each
 	property description.
+
+	@see [Formatting text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/formatting-text.html)
+	@see `openfl.text.TextField`
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -68,7 +71,7 @@ class TextFormat
 		an entire block of text; that is, to all lines of the text. In contrast,
 		normal indentation(`TextFormat.indent`) affects only the first
 		line of each paragraph. If this property is `null`, the
-		TextFormat object does not specify block indentation(block indentation is
+		TextFormat object does not specify block indentation (block indentation is
 		0).
 	**/
 	public var blockIndent:Null<Int>;
@@ -78,7 +81,7 @@ class TextFormat
 		`null`, which means no boldface is used. If the value is
 		`true`, then the text is boldface.
 	**/
-	public var bold:Null<Bool>;
+	public var bold(default, set):Null<Bool>;
 
 	/**
 		Indicates that the text is part of a bulleted list. In a bulleted list,
@@ -103,7 +106,7 @@ class TextFormat
 		default value is `null`, which means that Flash Player uses
 		Times New Roman font for the text.
 	**/
-	public var font:String;
+	public var font(default, set):String;
 
 	/**
 		Indicates the indentation from the left margin to the first character in
@@ -116,11 +119,11 @@ class TextFormat
 		Indicates whether text in this text format is italicized. The default
 		value is `null`, which means no italics are used.
 	**/
-	public var italic:Null<Bool>;
+	public var italic(default, set):Null<Bool>;
 
 	/**
 		A Boolean value that indicates whether kerning is enabled
-		(`true`) or disabled(`false`). Kerning adjusts the
+		(`true`) or disabled (`false`). Kerning adjusts the
 		pixels between certain character pairs to improve readability, and should
 		be used only when necessary, such as with headings in large fonts. Kerning
 		is supported for embedded fonts only.
@@ -134,7 +137,7 @@ class TextFormat
 	public var kerning:Null<Bool>;
 
 	/**
-		An integer representing the amount of vertical space(called
+		An integer representing the amount of vertical space (called
 		_leading_) between lines. The default value is `null`,
 		which indicates that the amount of leading used is 0.
 	**/
@@ -165,12 +168,12 @@ class TextFormat
 		The size in pixels of text in this text format. The default value is
 		`null`, which means that a size of 12 is used.
 	**/
-	public var size:Null<Int>;
+	public var size(default, set):Null<Int>;
 
 	/**
 		Specifies custom tab stops as an array of non-negative integers. Each tab
 		stop is specified in pixels. If custom tab stops are not specified
-		(`null`), the default tab stop is 4(average character width).
+		(`null`), the default tab stop is 4 (average character width).
 	**/
 	public var tabStops:Array<Int>;
 
@@ -190,7 +193,7 @@ class TextFormat
 
 	/**
 		Indicates whether the text that uses this text format is underlined
-		(`true`) or not(`false`). This underlining is
+		(`true`) or not (`false`). This underlining is
 		similar to that produced by the `<U>` tag, but the latter is
 		not true underlining, because it does not skip descenders correctly. The
 		default value is `null`, which indicates that underlining is
@@ -326,6 +329,46 @@ class TextFormat
 	@:noCompletion private function __toCacheKey():String
 	{
 		return __cacheKey = '$font$size$bold$italic';
+	}
+
+	@:noCompletion private function set_font(value:String):String
+	{
+		if (font != value)
+		{
+			font = value;
+			__toCacheKey();
+		}
+		return font;
+	}
+
+	@:noCompletion private function set_size(value:Null<Int>):Null<Int>
+	{
+		if (size != value)
+		{
+			size = value;
+			__toCacheKey();
+		}
+		return size;
+	}
+
+	@:noCompletion private function set_bold(value:Null<Bool>):Null<Bool>
+	{
+		if (bold != value)
+		{
+			bold = value;
+			__toCacheKey();
+		}
+		return bold;
+	}
+
+	@:noCompletion private function set_italic(value:Null<Bool>):Null<Bool>
+	{
+		if (italic != value)
+		{
+			italic = value;
+			__toCacheKey();
+		}
+		return italic;
 	}
 }
 #else

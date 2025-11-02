@@ -303,8 +303,7 @@ import lime.math.Vector2;
 		gl = __context.webgl;
 		#end
 
-		if (__contextState == null)
-			__contextState = new Context3DState();
+		if (__contextState == null) __contextState = new Context3DState();
 		__state = new Context3DState();
 
 		#if lime
@@ -331,10 +330,10 @@ import lime.math.Vector2;
 			var extension:Dynamic = gl.getExtension("EXT_texture_filter_anisotropic");
 
 			#if (js && html5)
-			if (extension == null || !Reflect.hasField(extension, "MAX_TEXTURE_MAX_ANISOTROPY_EXT"))
-				extension = gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
-			if (extension == null || !Reflect.hasField(extension, "MAX_TEXTURE_MAX_ANISOTROPY_EXT"))
-				extension = gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic");
+			if (extension == null
+				|| !Reflect.hasField(extension, "MAX_TEXTURE_MAX_ANISOTROPY_EXT")) extension = gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+			if (extension == null
+				|| !Reflect.hasField(extension, "MAX_TEXTURE_MAX_ANISOTROPY_EXT")) extension = gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic");
 			#end
 
 			if (extension != null)
@@ -476,8 +475,7 @@ import lime.math.Vector2;
 		{
 			if (__state.renderToTexture == null)
 			{
-				if (__stage.context3D == this && !__stage.__renderer.__cleared)
-					__stage.__renderer.__cleared = true;
+				if (__stage.context3D == this && !__stage.__renderer.__cleared) __stage.__renderer.__cleared = true;
 				__cleared = true;
 			}
 
@@ -525,8 +523,7 @@ import lime.math.Vector2;
 			__contextState.stencilWriteMask = 0xFF;
 		}
 
-		if (clearMask == 0)
-			return;
+		if (clearMask == 0) return;
 
 		__setGLScissorTest(false);
 		gl.clear(clearMask);
@@ -610,10 +607,8 @@ import lime.math.Vector2;
 		{
 			if (__backBufferTexture == null || backBufferWidth != width || backBufferHeight != height)
 			{
-				if (__backBufferTexture != null)
-					__backBufferTexture.dispose();
-				if (__frontBufferTexture != null)
-					__frontBufferTexture.dispose();
+				if (__backBufferTexture != null) __backBufferTexture.dispose();
+				if (__frontBufferTexture != null) __frontBufferTexture.dispose();
 
 				__backBufferTexture = createRectangleTexture(width, height, BGRA, true);
 				__frontBufferTexture = createRectangleTexture(width, height, BGRA, true);
@@ -1114,8 +1109,7 @@ import lime.math.Vector2;
 	public function drawToBitmapData(destination:BitmapData, srcRect:Rectangle = null, destPoint:Point = null):Void
 	{
 		#if lime
-		if (destination == null)
-			return;
+		if (destination == null) return;
 
 		var sourceRect = srcRect != null ? srcRect.__toLimeRectangle() : new LimeRectangle(0, 0, backBufferWidth, backBufferHeight);
 		var destVector = destPoint != null ? destPoint.__toLimeVector2() : new Vector2();
@@ -1473,8 +1467,7 @@ import lime.math.Vector2;
 			byteArrayOffset:UInt):Void
 	{
 		#if lime
-		if (numRegisters == 0 || __state.program == null)
-			return;
+		if (numRegisters == 0 || __state.program == null) return;
 
 		if (__state.program != null && __state.program.__format == GLSL)
 		{
@@ -1630,12 +1623,9 @@ import lime.math.Vector2;
 	**/
 	public function setProgramConstantsFromVector(programType:Context3DProgramType, firstRegister:Int, data:Vector<Float>, numRegisters:Int = -1):Void
 	{
-		if (numRegisters == 0)
-			return;
+		if (numRegisters == 0) return;
 
-		if (__state.program != null && __state.program.__format == GLSL)
-		{
-		}
+		if (__state.program != null && __state.program.__format == GLSL) {}
 		else
 		{
 			if (numRegisters == -1)
@@ -1941,8 +1931,7 @@ import lime.math.Vector2;
 	**/
 	public function setVertexBufferAt(index:Int, buffer:VertexBuffer3D, bufferOffset:Int = 0, format:Context3DVertexBufferFormat = FLOAT_4):Void
 	{
-		if (index < 0)
-			return;
+		if (index < 0) return;
 
 		if (buffer == null)
 		{
@@ -2380,7 +2369,8 @@ import lime.math.Vector2;
 	@:noCompletion private function __flushGLTextures():Void
 	{
 		var sampler = 0;
-		var texture, samplerState;
+		var texture:TextureBase;
+		var samplerState:SamplerState;
 
 		for (i in 0...__state.textures.length)
 		{

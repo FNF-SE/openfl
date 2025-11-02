@@ -80,7 +80,7 @@ import sys.FileSystem;
 	available to individual domains or to all domains. When users decrease the
 	amount of disk space available, some local shared objects may be deleted.
 	Flash Player users also have privacy controls that can prevent third-party
-	domains(domains other than the domain in the current browser address bar)
+	domains (domains other than the domain in the current browser address bar)
 	from reading or writing local shared objects.
 
 	**Note**: SWF files that are stored and run on a local computer, not
@@ -110,7 +110,7 @@ import sys.FileSystem;
 
 	If your SWF file attempts to create or modify local shared objects, make
 	sure that your SWF file is at least 215 pixels wide and at least 138 pixels
-	high(the minimum dimensions for displaying the dialog box that prompts
+	high (the minimum dimensions for displaying the dialog box that prompts
 	users to increase their local shared object storage limit). If your SWF
 	file is smaller than these dimensions and an increase in the storage limit
 	is required, `SharedObject.flush()` fails, returning
@@ -418,7 +418,7 @@ class SharedObject extends EventDispatcher
 		`minDiskSpace`. If Flash asks the user to allot disk space for
 		the shared object, it asks for 500 bytes. After the user allots the
 		requested amount of space, Flash won't have to ask for more space on
-		future attempts to flush the object(as long as its size doesn't exceed
+		future attempts to flush the object (as long as its size doesn't exceed
 		500 bytes).
 
 		After the user responds to the dialog box, this method is called again.
@@ -430,23 +430,23 @@ class SharedObject extends EventDispatcher
 							allotted for this object.
 		@return Either of the following values:
 
-				 * `SharedObjectFlushStatus.PENDING`: The user has
-				permitted local information storage for objects from this domain,
-				but the amount of space allotted is not sufficient to store the
-				object. Flash Player prompts the user to allow more space. To
-				allow space for the shared object to grow when it is saved, thus
-				avoiding a `SharedObjectFlushStatus.PENDING` return
-				value, pass a value for `minDiskSpace`.
-				 * `SharedObjectFlushStatus.FLUSHED`: The shared
-				object has been successfully written to a file on the local
-				disk.
+				 *  `SharedObjectFlushStatus.PENDING`: The user has permitted
+		local information storage for objects from this domain, but the
+		amount of space allotted is not sufficient to store the object.
+		Flash Player prompts the user to allow more space. To allow
+		space for the shared object to grow when it is saved, thus
+		avoiding a `SharedObjectFlushStatus.PENDING` return
+		value, pass a value for `minDiskSpace`.
+
+				 *  `SharedObjectFlushStatus.FLUSHED`: The shared object has been
+		successfully written to a file on the local disk.
 
 		@throws Error Flash Player cannot write the shared object to disk. This
 					  error might occur if the user has permanently disallowed
 					  local information storage for objects from this domain.
 
 					  **Note:** Local content can always write shared
-					  objects from third-party domains(domains other than the
+					  objects from third-party domains (domains other than the
 					  domain in the current browser address bar) to disk, even if
 					  writing of third-party shared objects to disk is
 					  disallowed.
@@ -511,7 +511,7 @@ class SharedObject extends EventDispatcher
 		this domain, the object is not saved locally, even if a value for
 		`localPath` is specified. The exception to this rule is local
 		content. Local content can always write shared objects from third-party
-		domains(domains other than the domain in the current browser address bar)
+		domains (domains other than the domain in the current browser address bar)
 		to disk, even if writing of third-party shared objects to disk is
 		disallowed.
 
@@ -570,9 +570,9 @@ class SharedObject extends EventDispatcher
 		 2. Access to the network only.
 		 3. Access to both the network and the local filesystem.
 
-		Local files with access to the local filesystem(level 1 or 3) store
+		Local files with access to the local filesystem (level 1 or 3) store
 		their shared objects in one location. Local files without access to the
-		local filesystem(level 2) store their shared objects in another
+		local filesystem (level 2) store their shared objects in another
 		location.
 
 		You can prevent a SWF file from using this method by setting the
@@ -626,13 +626,13 @@ class SharedObject extends EventDispatcher
 						 `secure` parameter:
 		@return A reference to a shared object that is persistent locally and is
 				available only to the current client. If Flash Player can't create
-				or find the shared object(for example, if `localPath`
+				or find the shared object (for example, if `localPath`
 				was specified but no such directory exists), this method throws an
 				exception.
 		@throws Error Flash Player cannot create the shared object for whatever
 					  reason. This error might occur is if persistent shared
 					  object creation and storage by third-party Flash content is
-					  prohibited(does not apply to local content). Users can
+					  prohibited (does not apply to local content). Users can
 					  prohibit third-party persistent shared objects on the Global
 					  Storage Settings panel of the Settings Manager, located at
 					  [http://www.adobe.com/support/documentation/en/flashplayer/help/settings_manager03.html](http://www.adobe.com/support/documentation/en/flashplayer/help/settings_manager03.html).
@@ -680,7 +680,7 @@ class SharedObject extends EventDispatcher
 
 		if (!__sharedObjects.exists(id))
 		{
-			var encodedData = null;
+			var encodedData:String = null;
 
 			try
 			{
@@ -848,9 +848,8 @@ class SharedObject extends EventDispatcher
 		the server that the value of the property has changed. The
 		`setProperty()` method explicitly marks properties as changed, or
 		dirty.
-		For more information about remote shared objects see the <a
-		href="http://www.adobe.com/go/learn_fms_docs_en"> Flash Media Server
-		documentation</a>.
+		For more information about remote shared objects see the
+		[Flash Media Server documentation](http://www.adobe.com/go/learn_fms_docs_en).
 
 		**Note:** The `SharedObject.setProperty()` method implements the
 		`setDirty()` method. In most cases, such as when the value of a

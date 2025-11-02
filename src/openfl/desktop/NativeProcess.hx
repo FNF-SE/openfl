@@ -1,9 +1,11 @@
 package openfl.desktop;
 
-#if (haxe4 && sys && !flash)
+#if (haxe4 && !flash && sys && (!flash_doc_gen || air_doc_gen))
 import haxe.Json;
 import haxe.Serializer;
 import haxe.io.Bytes;
+import haxe.io.BytesInput;
+import haxe.io.BytesOutput;
 import haxe.io.Eof;
 import haxe.io.Output;
 import openfl.errors.Error;
@@ -15,6 +17,12 @@ import openfl.events.IOErrorEvent;
 import openfl.events.NativeProcessExitEvent;
 import openfl.events.ProgressEvent;
 import openfl.net.ObjectEncoding;
+import openfl.utils._internal.format.amf.AMFReader;
+import openfl.utils._internal.format.amf.AMFTools;
+import openfl.utils._internal.format.amf.AMFWriter;
+import openfl.utils._internal.format.amf3.AMF3Reader;
+import openfl.utils._internal.format.amf3.AMF3Tools;
+import openfl.utils._internal.format.amf3.AMF3Writer;
 import openfl.utils.ByteArray;
 import openfl.utils.Endian;
 import openfl.utils.IDataInput;
@@ -22,16 +30,6 @@ import openfl.utils.IDataOutput;
 import sys.io.Process;
 import sys.thread.Mutex;
 import sys.thread.Thread;
-#if format
-import format.amf.Reader as AMFReader;
-import format.amf.Tools as AMFTools;
-import format.amf.Writer as AMFWriter;
-import format.amf3.Reader as AMF3Reader;
-import format.amf3.Tools as AMF3Tools;
-import format.amf3.Writer as AMF3Writer;
-import haxe.io.BytesInput;
-import haxe.io.BytesOutput;
-#end
 
 /**
 	The NativeProcess class provides command line integration and general
@@ -51,8 +49,7 @@ import haxe.io.BytesOutput;
 **/
 @:access(openfl.utils.ByteArrayData)
 #if !openfl_debug
-@:fileXml('tags="haxe,release"')
-@:noDebug
+@:fileXml('tags="haxe,release"') @:noDebug
 #end
 class NativeProcess extends EventDispatcher
 {
@@ -834,7 +831,6 @@ private class OutboundPipe implements IDataOutput
 		}
 		switch (objectEncoding)
 		{
-			#if format
 			case AMF0:
 				var value = AMFTools.encode(object);
 				var output:BytesOutput = new BytesOutput();
@@ -850,7 +846,6 @@ private class OutboundPipe implements IDataOutput
 				writer.write(value);
 				var bytes:Bytes = output.getBytes();
 				output.writeBytes(bytes, 0, bytes.length);
-			#end
 
 			case HXSF:
 				var value = Serializer.run(object);

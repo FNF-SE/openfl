@@ -90,7 +90,7 @@ import js.Browser;
 	@event fullScreen             Dispatched when the Stage object enters, or
 								  leaves, full-screen mode. A change in
 								  full-screen mode can be initiated through
-								  ActionScript, or the user invoking a
+								  Haxe code, or the user invoking a
 								  keyboard shortcut, or if the current focus
 								  leaves the full-screen window.
 	@event mouseLeave             Dispatched by the Stage object when the
@@ -529,8 +529,9 @@ class Stage3D extends EventDispatcher
 				1.0
 			]));
 
+			var pixelRatio = __stage.window.scale;
 			__renderTransform.identity();
-			__renderTransform.appendTranslation(__x, __y, 0);
+			__renderTransform.appendTranslation(__x * pixelRatio, __y * pixelRatio, 0);
 			__renderTransform.append(__projectionTransform);
 
 			__width = width;
@@ -553,8 +554,9 @@ class Stage3D extends EventDispatcher
 	{
 		if (__x == value) return value;
 		__x = value;
+		var pixelRatio = __stage.window.scale;
 		__renderTransform.identity();
-		__renderTransform.appendTranslation(__x, __y, 0);
+		__renderTransform.appendTranslation(__x * pixelRatio, __y * pixelRatio, 0);
 		__renderTransform.append(__projectionTransform);
 		return value;
 	}
@@ -568,8 +570,9 @@ class Stage3D extends EventDispatcher
 	{
 		if (__y == value) return value;
 		__y = value;
+		var pixelRatio = __stage.window.scale;
 		__renderTransform.identity();
-		__renderTransform.appendTranslation(__x, __y, 0);
+		__renderTransform.appendTranslation(__x * pixelRatio, __y * pixelRatio, 0);
 		__renderTransform.append(__projectionTransform);
 		return value;
 	}

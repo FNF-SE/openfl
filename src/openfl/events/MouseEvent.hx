@@ -18,6 +18,8 @@ import openfl.utils.ObjectPool;
 	of a mouse event, use `EventDispatcher.addEventListener()` on
 	the ancestor node with the `type` parameter set to the specific
 	mouse event you want to detect.
+
+	@see [Capturing mouse input](https://books.openfl.org/openfl-developers-guide/mouse-input/capturing-mouse-input.html)
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -454,15 +456,15 @@ class MouseEvent extends Event
 	public static inline var ROLL_OVER:EventType<MouseEvent> = "rollOver";
 
 	/**
-		Indicates whether the Alt key is active(`true`) or inactive
+		Indicates whether the Alt key is active (`true`) or inactive
 		(`false`). Supported for Windows only. On other operating
 		systems, this property is always set to `false`.
 	**/
 	public var altKey:Bool;
 
 	/**
-		Indicates whether the primary mouse button is pressed(`true`)
-		or not(`false`).
+		Indicates whether the primary mouse button is pressed (`true`)
+		or not (`false`).
 	**/
 	public var buttonDown:Bool;
 
@@ -498,7 +500,7 @@ class MouseEvent extends Event
 
 	/**
 		On Windows or Linux, indicates whether the Ctrl key is active
-		(`true`) or inactive(`false`). On Macintosh,
+		(`true`) or inactive (`false`). On Macintosh,
 		indicates whether either the Control key or the Command key is activated.
 	**/
 	public var ctrlKey:Bool;
@@ -556,7 +558,7 @@ class MouseEvent extends Event
 	public var relatedObject:InteractiveObject;
 
 	/**
-		Indicates whether the Shift key is active(`true`) or inactive
+		Indicates whether the Shift key is active (`true`) or inactive
 		(`false`).
 	**/
 	public var shiftKey:Bool;
@@ -624,7 +626,7 @@ class MouseEvent extends Event
 		@param ctrlKey       On Windows or Linux, indicates whether the Ctrl key
 							 is activated. On Mac, indicates whether either the
 							 Ctrl key or the Command key is activated.
-		@param altKey        Indicates whether the Alt key is activated(Windows
+		@param altKey        Indicates whether the Alt key is activated (Windows
 							 or Linux only).
 		@param shiftKey      Indicates whether the Shift key is activated.
 		@param buttonDown    Indicates whether the primary mouse button is
@@ -676,7 +678,17 @@ class MouseEvent extends Event
 	public override function toString():String
 	{
 		return __formatToString("MouseEvent", [
-			"type", "bubbles", "cancelable", "localX", "localY", "relatedObject", "ctrlKey", "altKey", "shiftKey", "buttonDown", "delta"
+			"type",
+			"bubbles",
+			"cancelable",
+			"localX",
+			"localY",
+			"relatedObject",
+			"ctrlKey",
+			"altKey",
+			"shiftKey",
+			"buttonDown",
+			"delta"
 		]);
 	}
 
@@ -693,11 +705,11 @@ class MouseEvent extends Event
 		__updateAfterEventFlag = true;
 	}
 
-	@:noCompletion private static function __create(type:String, button:Int, stageX:Float, stageY:Float, local:Point, target:InteractiveObject,
-			delta:Int = 0):MouseEvent
+	@:noCompletion private static function __create(type:String, button:Int, clickCount:Int, stageX:Float, stageY:Float, local:Point,
+			target:InteractiveObject, delta:Int = 0):MouseEvent
 	{
 		var event = new MouseEvent(type, true, false, local.x, local.y, null, __ctrlKey, __altKey, __shiftKey, __buttonDown, delta, __commandKey,
-			__controlKey);
+			__controlKey, clickCount);
 		event.stageX = stageX;
 		event.stageY = stageY;
 		event.target = target;
@@ -708,10 +720,10 @@ class MouseEvent extends Event
 	@:noCompletion private override function __init():Void
 	{
 		super.__init();
+		bubbles = true;
 		shiftKey = false;
 		altKey = false;
 		ctrlKey = false;
-		bubbles = false;
 		relatedObject = null;
 		delta = 0;
 		localX = 0;

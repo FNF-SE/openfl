@@ -1,13 +1,11 @@
 package openfl.text;
 
 #if !flash
-
 #if !openfljs
 /**
 	The FontStyle class provides values for the TextRenderer class.
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract FontStyle(Null<Int>)
-
 {
 	/**
 		Defines the bold style of a font for the `fontStyle` parameter
@@ -62,9 +60,7 @@ package openfl.text;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract FontStyle(String) from String to String
-
+@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract FontStyle(String) from String to String
 {
 	public var BOLD = "bold";
 	public var BOLD_ITALIC = "boldItalic";

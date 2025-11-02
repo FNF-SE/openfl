@@ -1,7 +1,6 @@
 package openfl.ui;
 
 #if !flash
-
 #if !openfljs
 /**
 	The MultitouchInputMode class provides values for the
@@ -10,12 +9,11 @@ package openfl.ui;
 	user interacts with a touch-enabled device.
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract MultitouchInputMode(Null<Int>)
-
 {
 	/**
 		Specifies that TransformGestureEvent, PressAndTapGestureEvent, and
 		GestureEvent events are dispatched for the related user interaction
-		supported by the current environment, and other touch events(such as a
+		supported by the current environment, and other touch events (such as a
 		simple tap) are interpreted as mouse events.
 	**/
 	public var GESTURE = 0;
@@ -55,9 +53,7 @@ package openfl.ui;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract MultitouchInputMode(String) from String to String
-
+@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract MultitouchInputMode(String) from String to String
 {
 	public var GESTURE = "gesture";
 	public var NONE = "none";

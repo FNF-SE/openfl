@@ -751,8 +751,7 @@ class RegisterMap
 					Log.info("Missing switch patten: RegisterUsage.UNUSED");
 
 				case RegisterUsage.SAMPLER_2D_ALPHA:
-
-				// trace ("Missing switch patten: RegisterUsage.SAMPLER_2D_ALPHA");
+					// trace ("Missing switch patten: RegisterUsage.SAMPLER_2D_ALPHA");
 
 				case RegisterUsage.SAMPLER_CUBE_ALPHA:
 			}
@@ -820,7 +819,6 @@ private class RegisterMapEntry
 }
 
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract RegisterType(Int)
-
 {
 	public var ATTRIBUTE = 0;
 	public var CONSTANT = 1;

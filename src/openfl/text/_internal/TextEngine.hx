@@ -294,7 +294,9 @@ class TextEngine
 		var textHeight = textHeight * 1.185; // measurement isn't always accurate, add padding
 		#end
 
-		textBounds.setTo(Math.max(x - 2, 0), Math.max(y - 2, 0), Math.min(textWidth + 4, bounds.width + 4), Math.min(textHeight + 4, bounds.height + 4));
+		// don't add 4 to bounds.width and bounds.height here because the + 4
+		// is already included from a previous calculation
+		textBounds.setTo(Math.max(x - 2, 0), Math.max(y - 2, 0), Math.min(textWidth + 4, bounds.width), Math.min(textHeight + 4, bounds.height));
 	}
 
 	private static function getDefaultFont(name:String, bold:Bool, italic:Bool):Font
@@ -308,7 +310,7 @@ class TextEngine
 
 			function processFontList(list:Array<String>):Font
 			{
-				var font = null;
+				var font:Font = null;
 				for (path in list)
 				{
 					font = findFont(path);
@@ -332,39 +334,94 @@ class TextEngine
 			#elseif (mac || ios || tvos)
 			var sans = processFontList([
 				systemFontDirectory + "/Arial.ttf",
-				systemFontDirectory + "/Helvetica.ttf",
 				systemFontDirectory + "/Cache/Arial.ttf",
-				systemFontDirectory + "/Cache/Helvetica.ttf",
 				systemFontDirectory + "/Core/Arial.ttf",
-				systemFontDirectory + "/Core/Helvetica.ttf",
 				systemFontDirectory + "/CoreAddition/Arial.ttf",
+				systemFontDirectory + "/WebFonts/Arial.ttf",
+				"/System/Library/Fonts/Supplemental/Arial.ttf",
+				// tries to fall back to helvetica, if arial is missing
+				systemFontDirectory + "/Helvetica.ttf",
+				systemFontDirectory + "/Cache/Helvetica.ttf",
+				systemFontDirectory + "/Core/Helvetica.ttf",
 				systemFontDirectory + "/CoreAddition/Helvetica.ttf",
-				"/System/Library/Fonts/Supplemental/Arial.ttf"
 			]);
-			var sansBold = findFont("/System/Library/Fonts/Supplemental/Arial Bold.ttf");
-			var sansItalic = findFont("/System/Library/Fonts/Supplemental/Arial Italic.ttf");
-			var sansBoldItalic = findFont("/System/Library/Fonts/Supplemental/Arial Bold Italic.ttf");
+
+			var sansBold = processFontList([
+				systemFontDirectory + "/CoreAddition/ArialBold.ttf",
+				systemFontDirectory + "/WebFonts/ArialBold.ttf",
+				"/System/Library/Fonts/Supplemental/Arial Bold.ttf"
+			]);
+			var sansItalic = processFontList([
+				systemFontDirectory + "/CoreAddition/ArialItalic.ttf",
+				systemFontDirectory + "/WebFonts/ArialItalic.ttf",
+				"/System/Library/Fonts/Supplemental/Arial Italic.ttf"
+			]);
+			var sansBoldItalic = processFontList([
+				systemFontDirectory + "/CoreAddition/ArialBoldItalic.ttf",
+				systemFontDirectory + "/WebFonts/ArialBoldItalic.ttf",
+				"/System/Library/Fonts/Supplemental/Arial Bold Italic.ttf"
+			]);
 
 			__defaultFonts.set("_sans", new DefaultFontSet(sans, sansBold, sansItalic, sansBoldItalic));
 
-			var serif = processFontList([
+			var georgia = processFontList([
 				systemFontDirectory + "/Georgia.ttf",
-				systemFontDirectory + "/Times.ttf",
-				systemFontDirectory + "/Times New Roman.ttf",
 				systemFontDirectory + "/Cache/Georgia.ttf",
-				systemFontDirectory + "/Cache/Times.ttf",
-				systemFontDirectory + "/Cache/Times New Roman.ttf",
 				systemFontDirectory + "/Core/Georgia.ttf",
-				systemFontDirectory + "/Core/Times.ttf",
-				systemFontDirectory + "/Core/Times New Roman.ttf",
 				systemFontDirectory + "/CoreAddition/Georgia.ttf",
-				systemFontDirectory + "/CoreAddition/Times.ttf",
-				systemFontDirectory + "/CoreAddition/Times New Roman.ttf",
-				"/System/Library/Fonts/Supplemental/Times New Roman.ttf"
+				"/System/Library/Fonts/Supplemental/Georgia.ttf",
 			]);
-			var serifBold = findFont("/System/Library/Fonts/Supplemental/Times New Roman Bold.ttf");
-			var serifItalic = findFont("/System/Library/Fonts/Supplemental/Times New Roman Italic.ttf");
-			var serifBoldItalic = findFont("/System/Library/Fonts/Supplemental/Times New Roman Bold Italic.ttf");
+			var georgiaBold = processFontList([
+				systemFontDirectory + "/Core/GeorgiaBold.ttf",
+				"/System/Library/Fonts/Supplemental/Georgia Bold.ttf",
+			]);
+			var georgiaItalic = processFontList([
+				systemFontDirectory + "/Core/GeorgiaItalic.ttf",
+				"/System/Library/Fonts/Supplemental/Georgia Italic.ttf",
+			]);
+			var georgiaBoldItalic = processFontList([
+				systemFontDirectory + "/Core/GeorgiaBoldItalic.ttf",
+				"/System/Library/Fonts/Supplemental/Georgia Bold Italic.ttf",
+			]);
+
+			var times = processFontList([
+				systemFontDirectory + "/Times New Roman.ttf",
+				systemFontDirectory + "/Cache/Times New Roman.ttf",
+				systemFontDirectory + "/Core/Times New Roman.ttf",
+				systemFontDirectory + "/Core/TimesNewRoman.ttf",
+				systemFontDirectory + "/CoreAddition/Times New Roman.ttf",
+				"/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+				// tries to fall back to times, if times new roman is missing
+				systemFontDirectory + "/Times.ttf",
+				systemFontDirectory + "/Cache/Times.ttf",
+				systemFontDirectory + "/Core/Times.ttf",
+				systemFontDirectory + "/CoreAddition/Times.ttf",
+			]);
+			var timesBold = processFontList([
+				systemFontDirectory + "/Core/TimesNewRomanBold.ttf",
+				"/System/Library/Fonts/Supplemental/Times New Roman Bold.ttf"
+			]);
+			var timesItalic = processFontList([
+				systemFontDirectory + "/Core/TimesNewRomanItalic.ttf",
+				"/System/Library/Fonts/Supplemental/Times New Roman Italic.ttf"
+			]);
+			var timesBoldItalic = processFontList([
+				systemFontDirectory + "/Core/TimesNewRomanBoldItalic.ttf",
+				"/System/Library/Fonts/Supplemental/Times New Roman Bold Italic.ttf"
+			]);
+
+			var serif = georgia;
+			var serifBold = georgiaBold;
+			var serifItalic = georgiaItalic;
+			var serifBoldItalic = georgiaBoldItalic;
+			// prefer georgia over times, but only if there is a full set of styles
+			if (times != null && (serif == null || serifBold == null || serifItalic == null || serifBoldItalic == null))
+			{
+				serif = times;
+				serifBold = timesBold;
+				serifItalic = timesItalic;
+				serifBoldItalic = timesBoldItalic;
+			}
 
 			__defaultFonts.set("_serif", new DefaultFontSet(serif, serifBold, serifItalic, serifBoldItalic));
 
@@ -374,14 +431,24 @@ class TextEngine
 				systemFontDirectory + "/Cache/Courier New.ttf",
 				systemFontDirectory + "/Cache/Courier.ttf",
 				systemFontDirectory + "/Core/Courier New.ttf",
+				systemFontDirectory + "/Core/CourierNew.ttf",
 				systemFontDirectory + "/Core/Courier.ttf",
 				systemFontDirectory + "/CoreAddition/Courier New.ttf",
 				systemFontDirectory + "/CoreAddition/Courier.ttf",
 				"/System/Library/Fonts/Supplemental/Courier New.ttf"
 			]);
-			var typewriterBold = findFont("/System/Library/Fonts/Supplemental/Courier New Bold.ttf");
-			var typewriterItalic = findFont("/System/Library/Fonts/Supplemental/Courier New Italic.ttf");
-			var typewriterBoldItalic = findFont("/System/Library/Fonts/Supplemental/Courier New Bold Italic.ttf");
+			var typewriterBold = processFontList([
+				systemFontDirectory + "/Core/CourierNewBold.ttf",
+				"/System/Library/Fonts/Supplemental/Courier New Bold.ttf"
+			]);
+			var typewriterItalic = processFontList([
+				systemFontDirectory + "/Core/CourierNewItalic.ttf",
+				"/System/Library/Fonts/Supplemental/Courier New Italic.ttf"
+			]);
+			var typewriterBoldItalic = processFontList([
+				systemFontDirectory + "/Core/CourierNewBoldItalic.ttf",
+				"/System/Library/Fonts/Supplemental/Courier New Bold Italic.ttf"
+			]);
 
 			__defaultFonts.set("_typewriter", new DefaultFontSet(typewriter, typewriterBold, typewriterItalic, typewriterBoldItalic));
 			#elseif linux
@@ -529,8 +596,7 @@ class TextEngine
 		#if (js && html5)
 		return findFontVariant(format);
 		#elseif lime_cffi
-		var instance = null;
-		var fontList = null;
+		var instance:Font = null;
 
 		if (format != null && format.font != null)
 		{
@@ -679,7 +745,10 @@ class TextEngine
 		if (textHeight == 0 && textField != null && type == INPUT)
 		{
 			var currentFormat = textField.__textFormat;
-			var ascent, descent, leading, heightValue;
+			var ascent:Float;
+			var descent:Float;
+			var leading:Int;
+			var heightValue:Int;
 
 			var font = getFontInstance(currentFormat);
 
@@ -767,7 +836,7 @@ class TextEngine
 
 		var rangeIndex = -1;
 		var formatRange:TextFormatRange = null;
-		var font = null;
+		var font:Font = null;
 
 		var currentFormat = TextField.__defaultTextFormat.clone();
 
@@ -785,7 +854,7 @@ class TextEngine
 		var rightMargin = 0;
 		var firstLineOfParagraph = true;
 
-		var tabStops = null; // TODO: maybe there's a better init value (not sure what this actually is)
+		// var tabStops = null; // TODO: maybe there's a better init value (not sure what this actually is)
 
 		var layoutGroup:TextLayoutGroup = null, positions = null;
 		var widthValue = 0.0, heightValue = 0, maxHeightValue = 0;
@@ -817,7 +886,7 @@ class TextEngine
 			#if (js && html5)
 			function html5Positions():Array<Float>
 			{
-				var positions = [];
+				var positions:Array<Float> = [];
 
 				if (__useIntAdvances == null)
 				{
@@ -829,7 +898,7 @@ class TextEngine
 					// slower, but more accurate if browser returns Int measurements
 
 					var previousWidth = 0.0;
-					var width;
+					var width:Float;
 
 					for (i in startIndex...endIndex)
 					{
@@ -845,7 +914,7 @@ class TextEngine
 				{
 					for (i in startIndex...endIndex)
 					{
-						var advance;
+						var advance:Float;
 
 						if (i < text.length - 1)
 						{
@@ -1250,11 +1319,13 @@ class TextEngine
 			// breaks up words that are too long to fit in a single line
 
 			var remainingPositions = positions;
-			var i, bufferCount, placeIndex, positionWidth;
-			var currentPosition;
+			var bufferCount:Int;
+			var placeIndex:Int;
+			var positionWidth:Float;
+			var currentPosition:#if (js && html5) Float #else GlyphPosition #end;
 
 			var tempWidth = getPositionsWidth(remainingPositions);
-			i = remainingPositions.length - 1;
+			var i = remainingPositions.length - 1;
 			while (i >= 0)
 			{
 				// strip away the combined width of whitespace at the end of the
@@ -1358,7 +1429,7 @@ class TextEngine
 		setParagraphMetrics();
 		setLineMetrics();
 
-		var wrap;
+		var wrap:Bool;
 		var maxLoops = text.length +
 			1; // Do an extra iteration to ensure a LayoutGroup is created in case the last line is empty (multiline or trailing line break).
 		// TODO: check if the +1 is still needed, since the extra layout group is handled separately
@@ -1718,7 +1789,8 @@ class TextEngine
 		var lineIndex = -1;
 		var offsetX = 0.0;
 		var totalWidth = this.width - 4; // TODO: do margins and stuff affect this?
-		var group, lineLength;
+		var group:TextLayoutGroup;
+		var lineLength:Int;
 		var lineMeasurementsDirty = false;
 
 		for (i in 0...layoutGroups.length)

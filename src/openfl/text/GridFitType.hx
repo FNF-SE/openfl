@@ -1,14 +1,12 @@
 package openfl.text;
 
 #if !flash
-
 #if !openfljs
 /**
 	The GridFitType class defines values for grid fitting in the TextField
 	class.
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract GridFitType(Null<Int>)
-
 {
 	/**
 		Doesn't set grid fitting. Horizontal and vertical lines in the glyphs
@@ -63,9 +61,7 @@ package openfl.text;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract GridFitType(String) from String to String
-
+@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract GridFitType(String) from String to String
 {
 	public var NONE = "none";
 	public var PIXEL = "pixel";
