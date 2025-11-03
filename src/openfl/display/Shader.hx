@@ -506,11 +506,7 @@ class Shader
 		{
 			var gl = __context.gl;
 
-			#if lime_opengles
-			var prefix = "#version 300 es\n";
-			#else
-			var prefix = "#version 130\n";
-			#end
+			var prefix = '';
 
 			prefix += "#ifdef GL_ES\n"
 				+ (precisionHint == FULL ? "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
