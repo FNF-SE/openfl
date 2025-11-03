@@ -516,13 +516,11 @@ class Shader
 					+ "#endif\n" : "precision lowp float;\n")
 				+ "#endif\n\n";
 
+			#if !web
 			prefix += 'out vec4 output_FragColor;\n';
-			var vertex = prefix
-				+ glVertexSource.replace("attribute", "in")
-					.replace("varying", "out")
-					.replace("texture2D", "texture")
-					.replace("gl_FragColor", "output_FragColor");
-			var fragment = prefix + glFragmentSource.replace("varying", "in").replace("texture2D", "texture").replace("gl_FragColor", "output_FragColor");
+			#end
+			var vertex = prefix + #if web glVertexSource #else glVertexSource.replace("attribute", "in").replace("varying", "out").replace("texture2D", "texture").replace("gl_FragColor", "output_FragColor") #end;
+			var fragment = prefix + #if web glFragmentSource #else glFragmentSource.replace("varying", "in").replace("texture2D", "texture").replace("gl_FragColor", "output_FragColor") #end;
 
 			var id = vertex + fragment;
 
