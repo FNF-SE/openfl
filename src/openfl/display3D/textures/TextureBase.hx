@@ -50,6 +50,7 @@ class TextureBase extends EventDispatcher
 	// private var __memoryUsage:Int;
 	@:noCompletion private var __optimizeForRenderToTexture:Bool;
 	// private var __outputTextureMemoryUsage:Bool = false;
+	@:noCompletion private var __premultiplyAlpha:Bool;
 	@:noCompletion private var __samplerState:SamplerState;
 	@:noCompletion private var __streamingLevels:Int;
 	@SuppressWarnings("checkstyle:Dynamic") @:noCompletion private var __textureContext:#if lime RenderContext #else Dynamic #end;
@@ -313,8 +314,14 @@ class TextureBase extends EventDispatcher
 
 			if (__textureTarget == __context.gl.TEXTURE_CUBE_MAP) __context.__bindGLTextureCubeMap(__textureID);
 			else
+			{
 				__context.__bindGLTexture2D(__textureID);
-
+				if (state.mipfilter != MIPNONE)
+				{
+					gl.generateMipmap(__textureTarget);
+					state.mipmapGenerated = true;
+				}
+			}
 			var wrapModeS = 0, wrapModeT = 0;
 
 			switch (state.wrap)
