@@ -150,7 +150,7 @@ class Assets
 					default: null;
 				}
 
-				final bitmapData:BitmapData = BitmapData.fromTexture(texture);
+				final bitmapData:BitmapData = BitmapData.fromTexture(texture, false);
 
 				if (useCache && cache.enabled)
 				{

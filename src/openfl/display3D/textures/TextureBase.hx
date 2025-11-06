@@ -322,6 +322,7 @@ class TextureBase extends EventDispatcher
 					state.mipmapGenerated = true;
 				}
 			}
+
 			var wrapModeS = 0, wrapModeT = 0;
 
 			switch (state.wrap)
@@ -368,12 +369,8 @@ class TextureBase extends EventDispatcher
 			gl.texParameteri(__textureTarget, gl.TEXTURE_MAG_FILTER, magFilter);
 			gl.texParameteri(__textureTarget, gl.TEXTURE_WRAP_S, wrapModeS);
 			gl.texParameteri(__textureTarget, gl.TEXTURE_WRAP_T, wrapModeT);
+			gl.texParameterf(__textureTarget, 34049, state.lodBias); // GL_TEXTURE_LOD_BIAS
 
-			if (state.lodBias != 0.0)
-			{
-				// TODO
-				// throw new IllegalOperationError("Lod bias setting not supported yet");
-			}
 
 			if (__samplerState == null) __samplerState = state.clone();
 			__samplerState.copyFrom(state);
