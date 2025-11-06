@@ -441,7 +441,7 @@ class ShaderMacro
 	{
 		// Specify the default glVersion.
 		// We can use compile defines to guess the value that prevents crashes in the majority of cases.
-		return #if mobile "300 es" #else "150" #end;
+		return #if (android) "100" #elseif (web) "100" #elseif (mac) "120" #else "100" #end;
 	}
 
 	/**
