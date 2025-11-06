@@ -10,8 +10,6 @@ import openfl.display._internal.GraphicsFillType;
 
 	Drawing a GraphicsEndFill object is the equivalent of calling the
 	`Graphics.endFill()` method.
-
-	@see [Using graphics data classes](https://books.openfl.org/openfl-developers-guide/using-the-drawing-api/advanced-use-of-the-drawing-api/using-graphics-data-classes.html)
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')

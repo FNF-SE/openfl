@@ -1,6 +1,7 @@
 package openfl.media;
 
-#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
+#if (!flash && sys)
+
 #if !openfljs
 /**
 	The AudioPlaybackMode class defines constants for the `audioPlaybackMode`
@@ -13,6 +14,7 @@ package openfl.media;
 	tailored to a particular use.
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract AudioPlaybackMode(Null<Int>)
+
 {
 	/**
 		A mode for playing ambient sound. Use this mode for playing sounds that
@@ -85,7 +87,9 @@ package openfl.media;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract AudioPlaybackMode(String) from String to String
+@SuppressWarnings("checkstyle:FieldDocComment")
+#if (haxe_ver >= 4.0) enum #else @:enum #end abstract AudioPlaybackMode(String) from String to String
+
 {
 	public var AMBIENT = "ambient";
 	public var MEDIA = "media";

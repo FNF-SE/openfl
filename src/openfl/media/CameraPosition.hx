@@ -1,6 +1,7 @@
 package openfl.media;
 
-#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
+#if (!flash && sys)
+
 #if !openfljs
 /**
 	The CameraPosition class defines constants for the `position` property of
@@ -9,6 +10,7 @@ package openfl.media;
 	@see `openfl.media.Camera`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract CameraPosition(Null<Int>)
+
 {
 	/**
 		The `Camera.position` property returns this value for a back camera.
@@ -49,7 +51,9 @@ package openfl.media;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract CameraPosition(String) from String to String
+@SuppressWarnings("checkstyle:FieldDocComment")
+#if (haxe_ver >= 4.0) enum #else @:enum #end abstract CameraPosition(String) from String to String
+
 {
 	public var BACK = "back";
 	public var FRONT = "front";

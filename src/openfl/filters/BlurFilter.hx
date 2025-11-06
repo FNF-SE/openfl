@@ -11,6 +11,7 @@ import openfl.geom.Rectangle;
 import lime._internal.graphics.ImageDataUtil; // TODO
 
 #end
+
 /**
 	The BlurFilter class lets you apply a blur visual effect to display
 	objects. A blur effect softens the details of an image. You can produce
@@ -19,7 +20,7 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 	`quality` property of this filter is set to low, the result is a
 	softly unfocused look. When the `quality` property is set to
 	high, it approximates a Gaussian blur filter. You can apply the filter to
-	any display object (that is, objects that inherit from the DisplayObject
+	any display object(that is, objects that inherit from the DisplayObject
 	class), such as MovieClip, SimpleButton, TextField, and Video objects, as
 	well as to BitmapData objects.
 
@@ -73,14 +74,14 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 
 	/**
 		The amount of horizontal blur. Valid values are from 0 to 255(floating
-		point). The default value is 4. Values that are a power of 2 (such as 2,
+		point). The default value is 4. Values that are a power of 2(such as 2,
 		4, 8, 16 and 32) are optimized to render more quickly than other values.
 	**/
 	public var blurX(get, set):Float;
 
 	/**
 		The amount of vertical blur. Valid values are from 0 to 255(floating
-		point). The default value is 4. Values that are a power of 2 (such as 2,
+		point). The default value is 4. Values that are a power of 2(such as 2,
 		4, 8, 16 and 32) are optimized to render more quickly than other values.
 	**/
 	public var blurY(get, set):Float;
@@ -179,7 +180,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 		return new BlurFilter(__blurX, __blurY, __quality);
 	}
 
-	@:noCompletion private override function __applyFilter(bitmapData:BitmapData, sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point):BitmapData
+	@:noCompletion private override function __applyFilter(bitmapData:BitmapData, sourceBitmapData:BitmapData, sourceRect:Rectangle,
+			destPoint:Point):BitmapData
 	{
 		#if lime
 		var time = Timer.stamp();
@@ -212,18 +214,6 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 		return __blurShader;
 	}
 
-	@:noCompletion inline function __padFor(value:Float):Int
-	{
-		if (value <= 0) return 0;
-		var passes = (__quality > 0 ? __quality : 1);
-		#if lime
-		var reach = value * passes * 3.0;
-		#else
-		var reach = value;
-		#end
-		return Std.int(Math.ceil(reach)) + 2; 
-	}
-
 	// Get & Set Methods
 	@:noCompletion private function get_blurX():Float
 	{
@@ -236,10 +226,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 		{
 			__blurX = value;
 			__renderDirty = true;
-
-			var p = __padFor(value);
-			__leftExtension = p;
-			__rightExtension = p;
+			__leftExtension = (value > 0 ? Math.ceil(value) : 0);
+			__rightExtension = __leftExtension;
 		}
 		return value;
 	}
@@ -255,10 +243,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 		{
 			__blurY = value;
 			__renderDirty = true;
-
-			var p = __padFor(value);
-			__topExtension = p;
-			__bottomExtension = p;
+			__topExtension = (value > 0 ? Math.ceil(value) : 0);
+			__bottomExtension = __topExtension;
 		}
 		return value;
 	}
@@ -278,10 +264,7 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 		__numShaderPasses = __horizontalPasses + __verticalPasses;
 
 		if (value != __quality) __renderDirty = true;
-		__quality = value;
-		set_blurX(__blurX);
-		set_blurY(__blurY);
-		return __quality;
+		return __quality = value;
 	}
 }
 

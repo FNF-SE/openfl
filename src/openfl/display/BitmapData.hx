@@ -100,22 +100,7 @@ import openfl.display._internal.stats.DrawCallContext;
 	exceed 16,777,215 pixels. (So, if a BitmapData object is 8,191 pixels wide,
 	it can only be 2,048 pixels high.) In Flash Player 9 and earlier, the limitation
 	is 2,880 pixels in height and 2,880 in width.
-
-	@see [Working with bitmaps](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/)
-	@see [The Bitmap and BitmapData classes](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/the-bitmap-and-bitmapdata-classes.html)
-	@see [Manipulating pixels](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/manipulating-pixels.html)
-	@see [Copying bitmap data](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/copying-bitmap-data.html)
-	@see [Compressing bitmap data](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/compressing-bitmap-data.html)
-	@see [Making textures with noise functions](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/making-textures-with-noise-functions.html)
-	@see [Scrolling bitmaps](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/scrolling-bitmaps.html)
-	@see `openfl.display.Bitmap.bitmapData`
-	@see `openfl.display.Graphics.beginBitmapFill()`
-	@see `openfl.display.Graphics.lineBitmapStyle()`
 **/
-#if !openfl_debug
-@:fileXml('tags="haxe,release"')
-@:noDebug
-#end
 @:access(lime.graphics.opengl.GL)
 @:access(lime.graphics.Image)
 @:access(lime.graphics.ImageBuffer)
@@ -131,6 +116,10 @@ import openfl.display._internal.stats.DrawCallContext;
 @:access(openfl.geom.Matrix)
 @:access(openfl.geom.Point)
 @:access(openfl.geom.Rectangle)
+#if !openfl_debug
+@:fileXml('tags="haxe,release"')
+@:noDebug
+#end
 @:autoBuild(openfl.utils._internal.AssetsMacro.embedBitmap())
 class BitmapData implements IBitmapDrawable
 {
@@ -234,7 +223,6 @@ class BitmapData implements IBitmapDrawable
 	@:noCompletion private var __worldAlpha:Float;
 	@:noCompletion private var __worldColorTransform:ColorTransform;
 	@:noCompletion private var __worldTransform:Matrix;
-	@:noCompletion private var __asset:Bool;
 
 	/**
 		Creates a BitmapData object with a specified width and height. If you specify a value for
@@ -248,8 +236,8 @@ class BitmapData implements IBitmapDrawable
 
 		@param	width		The width of the bitmap image in pixels.
 		@param	height		The height of the bitmap image in pixels.
-		@param	transparent		Specifies whether the bitmap image supports per-pixel transparency. The default value is `true`(transparent). To create a fully transparent bitmap, set the value of the `transparent` parameter to `true` and the value of the `fillColor` parameter to 0x00000000 (or to 0). Setting the `transparent` property to `false` can result in minor improvements in rendering performance.
-		@param	fillColor		A 32-bit ARGB color value that you use to fill the bitmap image area. The default value is 0xFFFFFFFF (solid white).
+		@param	transparent		Specifies whether the bitmap image supports per-pixel transparency. The default value is `true`(transparent). To create a fully transparent bitmap, set the value of the `transparent` parameter to `true` and the value of the `fillColor` parameter to 0x00000000(or to 0). Setting the `transparent` property to `false` can result in minor improvements in rendering performance.
+		@param	fillColor		A 32-bit ARGB color value that you use to fill the bitmap image area. The default value is 0xFFFFFFFF(solid white).
 	**/
 	public function new(width:Int, height:Int, transparent:Bool = true, fillColor:UInt = 0xFFFFFFFF)
 	{
@@ -330,7 +318,6 @@ class BitmapData implements IBitmapDrawable
 		__worldTransform = new Matrix();
 		__worldColorTransform = new ColorTransform();
 		__renderable = true;
-		__asset = false;
 	}
 
 	/**
@@ -340,13 +327,13 @@ class BitmapData implements IBitmapDrawable
 		destination rectangle that is affected by an input source rectangle.
 
 		After a filter is applied, the resulting image can be larger than the input image.
-		For example, if you use a BlurFilter class to blur a source rectangle of (50,50,100,100)
-		and a destination point of (10,10), the area that changes in the destination image is
-		larger than (10,10,60,60) because of the blurring. This happens internally during the
+		For example, if you use a BlurFilter class to blur a source rectangle of(50,50,100,100)
+		and a destination point of(10,10), the area that changes in the destination image is
+		larger than(10,10,60,60) because of the blurring. This happens internally during the
 		applyFilter() call.
 
 		If the `sourceRect` parameter of the sourceBitmapData parameter is an
-		interior region, such as (50,50,100,100) in a 200 x 200 image, the filter uses the source
+		interior region, such as(50,50,100,100) in a 200 x 200 image, the filter uses the source
 		pixels outside the `sourceRect` parameter to generate the destination rectangle.
 
 		If the BitmapData object and the object specified as the `sourceBitmapData`
@@ -355,7 +342,7 @@ class BitmapData implements IBitmapDrawable
 
 		@param	sourceBitmapData		The input bitmap image to use. The source image can be a different BitmapData object or it can refer to the current BitmapData instance.
 		@param	sourceRect		A rectangle that defines the area of the source image to use as input.
-		@param	destPoint		The point within the destination image (the current BitmapData instance) that corresponds to the upper-left corner of the source rectangle.
+		@param	destPoint		The point within the destination image(the current BitmapData instance) that corresponds to the upper-left corner of the source rectangle.
 		@param	filter		The filter object that you use to perform the filtering operation.
 	**/
 	public function applyFilter(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, filter:BitmapFilter):Void
@@ -367,8 +354,8 @@ class BitmapData implements IBitmapDrawable
 		var needSecondBitmapData = filter.__needSecondBitmapData;
 		var needCopyOfOriginal = filter.__preserveObject;
 
-		var bitmapData2:BitmapData = null;
-		var bitmapData3:BitmapData = null;
+		var bitmapData2 = null;
+		var bitmapData3 = null;
 
 		if (needSecondBitmapData)
 		{
@@ -413,7 +400,7 @@ class BitmapData implements IBitmapDrawable
 	public function clone():BitmapData
 	{
 		#if lime
-		var bitmapData:BitmapData;
+		var bitmapData;
 
 		if (!__isValid)
 		{
@@ -522,11 +509,15 @@ class BitmapData implements IBitmapDrawable
 			}
 		}
 
-		var bitmapData:BitmapData = null;
-		var foundDifference:Bool = false;
-		var pixel:ARGB;
-		var otherPixel:ARGB;
-		var comparePixel:ARGB;
+		var bitmapData = null;
+		var foundDifference,
+			pixel:ARGB,
+			otherPixel:ARGB,
+			comparePixel:ARGB,
+			r,
+			g,
+			b,
+			a;
 
 		for (y in 0...height)
 		{
@@ -540,9 +531,9 @@ class BitmapData implements IBitmapDrawable
 
 				if (pixel != otherPixel)
 				{
-					var r = pixel.r - otherPixel.r;
-					var g = pixel.g - otherPixel.g;
-					var b = pixel.b - otherPixel.b;
+					r = pixel.r - otherPixel.r;
+					g = pixel.g - otherPixel.g;
+					b = pixel.b - otherPixel.b;
 
 					if (r < 0) r *= -1;
 					if (g < 0) g *= -1;
@@ -550,7 +541,7 @@ class BitmapData implements IBitmapDrawable
 
 					if (r == 0 && g == 0 && b == 0)
 					{
-						var a = pixel.a - otherPixel.a;
+						a = pixel.a - otherPixel.a;
 
 						if (a != 0)
 						{
@@ -623,22 +614,20 @@ class BitmapData implements IBitmapDrawable
 								the new channel data is placed. To copy only
 								channel data from one area to a different area in
 								the destination image, specify a point other than
-								(0,0).
+							   (0,0).
 		@param sourceChannel    The source channel. Use a value from the
 								BitmapDataChannel class
-								(`BitmapDataChannel.RED`,
+							   (`BitmapDataChannel.RED`,
 								`BitmapDataChannel.BLUE`,
 								`BitmapDataChannel.GREEN`,
 								`BitmapDataChannel.ALPHA`).
 		@param destChannel      The destination channel. Use a value from the
 								BitmapDataChannel class
-								(`BitmapDataChannel.RED`,
+							   (`BitmapDataChannel.RED`,
 								`BitmapDataChannel.BLUE`,
 								`BitmapDataChannel.GREEN`,
 								`BitmapDataChannel.ALPHA`).
 		@throws TypeError The sourceBitmapData, sourceRect or destPoint are null.
-
-		@see [Copying bitmap data](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/copying-bitmap-data.html)
 	**/
 	public function copyChannel(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, sourceChannel:BitmapDataChannel,
 			destChannel:BitmapDataChannel):Void
@@ -706,8 +695,6 @@ class BitmapData implements IBitmapDrawable
 								`true`. To copy pixels with no alpha
 								channel, set the value to `false`.
 		@throws TypeError The sourceBitmapData, sourceRect, destPoint are null.
-
-		@see [Copying bitmap data](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/copying-bitmap-data.html)
 	**/
 	public function copyPixels(sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point, alphaBitmapData:BitmapData = null, alphaPoint:Point = null,
 			mergeAlpha:Bool = false):Void
@@ -737,44 +724,18 @@ class BitmapData implements IBitmapDrawable
 
 
 		`BitmapData.dispose()` releases the memory occupied by the
-		actual bitmap data, immediately (a bitmap can consume up to 64 MB of
+		actual bitmap data, immediately(a bitmap can consume up to 64 MB of
 		memory). After using `BitmapData.dispose()`, the BitmapData
 		object is no longer usable and an exception may be thrown if
 		you call functions on the BitmapData object. However,
 		`BitmapData.dispose()` does not garbage collect the BitmapData
-		object (approximately 128 bytes); the memory occupied by the actual
+		object(approximately 128 bytes); the memory occupied by the actual
 		BitmapData object is released at the time the BitmapData object is
 		collected by the garbage collector.
 
 	**/
 	public function dispose():Void
 	{
-		#if (js && html5)
-		// if this BitmapData was created with Assets.getBitmapData(), then
-		// don't destroy the underlying image buffer.
-		// on html5, images are loaded asynchronously, and cloning is too
-		// expensive, so Lime's asset manager reuses the same Image instance
-		// every time that you call Assets.getImage() with the same asset ID.
-		if (image != null && image.type == CANVAS && !__asset)
-		{
-			var canvas = image.buffer.__srcCanvas;
-			var context = image.buffer.__srcContext;
-
-			if (canvas != null)
-			{
-				canvas.width = 0;
-				canvas.height = 0;
-				canvas = null;
-			}
-
-			if (context != null)
-			{
-				context.clearRect(0, 0, 0, 0);
-				context = null;
-			}
-		}
-		#end
-
 		image = null;
 
 		width = 0;
@@ -837,18 +798,17 @@ class BitmapData implements IBitmapDrawable
 	}
 
 	/**
-		Draws the `source` display object onto the bitmap image. If the bitmap
-		image is readable, the OpenFL software renderer is used; otherwise,
-		the hardware renderer is used. You can specify `matrix`,
+		Draws the `source` display object onto the bitmap image, using
+		the OpenFL software renderer. You can specify `matrix`,
 		`colorTransform`, `blendMode`, and a destination
 		`clipRect` parameter to control how the rendering performs.
 		Optionally, you can specify whether the bitmap should be smoothed when
-		scaled (this works only if the source object is a BitmapData object).
+		scaled(this works only if the source object is a BitmapData object).
 
 		The source display object does not use any of its applied
 		transformations for this call. It is treated as it exists in the library
 		or file, with no matrix transform, no color transform, and no blend mode.
-		To draw a display object (such as a movie clip) by using its own transform
+		To draw a display object(such as a movie clip) by using its own transform
 		properties, you can copy its `transform` property object to the
 		`transform` property of the Bitmap object that uses the
 		BitmapData object.
@@ -902,7 +862,7 @@ class BitmapData implements IBitmapDrawable
 							  BitmapData or DisplayObject object.
 		@throws ArgumentError The source is null or not a valid IBitmapDrawable
 							  object.
-		@throws SecurityError The `source` object and (in the case of a
+		@throws SecurityError The `source` object and(in the case of a
 							  Sprite or MovieClip object) all of its child objects
 							  do not come from the same domain as the caller, or
 							  are not in a content that is accessible to the
@@ -910,8 +870,6 @@ class BitmapData implements IBitmapDrawable
 							  `Security.allowDomain()` method. This
 							  restriction does not apply to AIR content in the
 							  application security sandbox.
-
-		@see [Copying bitmap data](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/copying-bitmap-data.html)
 	**/
 	public function draw(source:IBitmapDrawable, matrix:Matrix = null, colorTransform:ColorTransform = null, blendMode:BlendMode = null,
 			clipRect:Rectangle = null, smoothing:Bool = false):Void
@@ -942,7 +900,7 @@ class BitmapData implements IBitmapDrawable
 			transform.concat(matrix);
 		}
 
-		var clipMatrix:Matrix = null;
+		var clipMatrix = null;
 
 		if (clipRect != null)
 		{
@@ -1153,8 +1111,6 @@ class BitmapData implements IBitmapDrawable
 		`Security.allowDomain()` method. This restriction does not apply to AIR content
 		in the application security sandbox.
 		@throws	ArgumentError	The source is `null` or not a valid IBitmapDrawable object.
-
-		@see [Copying bitmap data](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/copying-bitmap-data.html)
 	**/
 	public function drawWithQuality(source:IBitmapDrawable, matrix:Matrix = null, colorTransform:ColorTransform = null, blendMode:BlendMode = null,
 			clipRect:Rectangle = null, smoothing:Bool = false, quality:StageQuality = null):Void
@@ -1183,8 +1139,6 @@ class BitmapData implements IBitmapDrawable
 		flash.display.JPEGXREncoderOptions.
 		@param	byteArray	The output ByteArray to hold the encoded image.
 		@return	A ByteArray containing the encoded image.
-
-		@see [Compressing bitmap data](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/compressing-bitmap-data.html)
 	**/
 	public function encode(rect:Rectangle, compressor:Object, byteArray:ByteArray = null):ByteArray
 	{
@@ -2085,9 +2039,9 @@ class BitmapData implements IBitmapDrawable
 
 	/**
 		Determines a rectangular region that either fully encloses all pixels of a
-		specified color within the bitmap image (if the `findColor`
+		specified color within the bitmap image(if the `findColor`
 		parameter is set to `true`) or fully encloses all pixels that
-		do not include the specified color (if the `findColor`
+		do not include the specified color(if the `findColor`
 		parameter is set to `false`).
 
 		For example, if you have a source image and you want to determine the
@@ -2105,11 +2059,11 @@ class BitmapData implements IBitmapDrawable
 
 		@param mask      A hexadecimal value, specifying the bits of the ARGB
 						 color to consider. The color value is combined with this
-						 hexadecimal value, by using the `&` (bitwise
+						 hexadecimal value, by using the `&`(bitwise
 						 AND) operator.
 		@param color     A hexadecimal value, specifying the ARGB color to match
-						 (if `findColor` is set to `true`)
-						 or _not_ to match (if `findColor` is set
+						(if `findColor` is set to `true`)
+						 or _not_ to match(if `findColor` is set
 						 to `false`).
 		@param findColor If the value is set to `true`, returns the
 						 bounds of a color value in an image. If the value is set
@@ -2157,8 +2111,6 @@ class BitmapData implements IBitmapDrawable
 		@return A number that represents an RGB pixel value. If the(_x_,
 				_y_) coordinates are outside the bounds of the image, the
 				method returns 0.
-
-		@see [Manipulating pixels](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/manipulating-pixels.html)
 	**/
 	public function getPixel(x:Int, y:Int):Int
 	{
@@ -2191,8 +2143,6 @@ class BitmapData implements IBitmapDrawable
 		@return A number representing an ARGB pixel value. If the(_x_,
 				_y_) coordinates are outside the bounds of the image, 0 is
 				returned.
-
-		@see [Manipulating pixels](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/manipulating-pixels.html)
 	**/
 	public function getPixel32(x:Int, y:Int):Int
 	{
@@ -2206,7 +2156,7 @@ class BitmapData implements IBitmapDrawable
 
 	/**
 		Generates a byte array from a rectangular region of pixel data. Writes an
-		unsigned integer (a 32-bit unmultiplied pixel value) for each pixel into
+		unsigned integer(a 32-bit unmultiplied pixel value) for each pixel into
 		the byte array.
 
 		@param rect A rectangular area in the current BitmapData object.
@@ -2332,7 +2282,7 @@ class BitmapData implements IBitmapDrawable
 
 	/**
 		Generates a vector array from a rectangular region of pixel data. Returns
-		a Vector object of unsigned integers (a 32-bit unmultiplied pixel value)
+		a Vector object of unsigned integers(a 32-bit unmultiplied pixel value)
 		for the specified rectangle.
 		@param rect A rectangular area in the current BitmapData object.
 		@return A Vector representing the given Rectangle.
@@ -2438,8 +2388,7 @@ class BitmapData implements IBitmapDrawable
 		else if ((secondObject is BitmapData))
 		{
 			var secondBitmapData:BitmapData = cast secondObject;
-			var x:Int;
-			var y:Int;
+			var x, y;
 
 			if (secondBitmapDataPoint == null)
 			{
@@ -2485,8 +2434,7 @@ class BitmapData implements IBitmapDrawable
 				var testPixels = secondBitmapData.getPixels(hitRect);
 
 				var length = Std.int(hitRect.width * hitRect.height);
-				var pixel:UInt;
-				var testPixel:UInt;
+				var pixel, testPixel;
 
 				for (i in 0...length)
 				{
@@ -2514,7 +2462,7 @@ class BitmapData implements IBitmapDrawable
 			{
 				var pixels = getPixels(secondRectangle);
 				var length = Std.int(pixels.length / 4);
-				var pixel:UInt;
+				var pixel;
 
 				for (i in 0...length)
 				{
@@ -2610,14 +2558,12 @@ class BitmapData implements IBitmapDrawable
 	}
 
 	/**
-		When targeting AIR, this method locks an image so that any objects
-		that reference the BitmapData object, such as Bitmap objects, are not
-		updated when this BitmapData object changes. To improve performance,
-		use this method along with the `unlock()` method before and after numerous
-		calls to the `setPixel()` or `setPixel32()` method.
+		Locks an image so that any objects that reference the BitmapData object,
+		such as Bitmap objects, are not updated when this BitmapData object
+		changes. To improve performance, use this method along with the
+		`unlock()` method before and after numerous calls to the
+		`setPixel()` or `setPixel32()` method.
 
-		Note: This method only provides an optimization on the AIR(Flash) target.
-		For all other targets, this method contains an empty function body.
 	**/
 	public function lock():Void {}
 
@@ -2678,9 +2624,9 @@ class BitmapData implements IBitmapDrawable
 							  a true random-number generation function, so it
 							  creates the same results each time from the same
 							  random seed.
-		@param low            The lowest value to generate for each channel (0 to
+		@param low            The lowest value to generate for each channel(0 to
 							  255).
-		@param high           The highest value to generate for each channel (0 to
+		@param high           The highest value to generate for each channel(0 to
 							  255).
 		@param channelOptions A number that can be a combination of any of the
 							  four color channel values
@@ -2695,8 +2641,6 @@ class BitmapData implements IBitmapDrawable
 							  color channels to the same value. The alpha channel
 							  selection is not affected by setting this parameter
 							  to `true`.
-
-		@see [Making textures with noise functions](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/making-textures-with-noise-functions.html)
 	**/
 	public function noise(randomSeed:Int, low:Int = 0, high:Int = 255, channelOptions:Int = 7, grayScale:Bool = false):Void
 	{
@@ -2830,7 +2774,7 @@ class BitmapData implements IBitmapDrawable
 		Generates a Perlin noise image.
 
 		The Perlin noise generation algorithm interpolates and combines
-		individual random noise functions (called octaves) into a single function
+		individual random noise functions(called octaves) into a single function
 		that generates more natural-seeming random noise. Like musical octaves,
 		each octave function is twice the frequency of the one before it. Perlin
 		noise has been described as a "fractal sum of noise" because it combines
@@ -2891,8 +2835,6 @@ class BitmapData implements IBitmapDrawable
 							  red, green, and blue color channels to identical
 							  values. The alpha channel value is not affected if
 							  this value is set to `true`.
-
-		@see [Making textures with noise functions](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/making-textures-with-noise-functions.html)
 	**/
 	public function perlinNoise(baseX:Float, baseY:Float, numOctaves:UInt, randomSeed:Int, stitch:Bool, fractalNoise:Bool, channelOptions:UInt = 7,
 			grayScale:Bool = false, offsets:Array<Point> = null):Void
@@ -2910,8 +2852,6 @@ class BitmapData implements IBitmapDrawable
 
 		@param x The amount by which to scroll horizontally.
 		@param y The amount by which to scroll vertically.
-
-		@see [Scrolling bitmaps](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/scrolling-bitmaps.html)
 	**/
 	public function scroll(x:Int, y:Int):Void
 	{
@@ -2935,8 +2875,6 @@ class BitmapData implements IBitmapDrawable
 		@param x     The _x_ position of the pixel whose value changes.
 		@param y     The _y_ position of the pixel whose value changes.
 		@param color The resulting RGB color for the pixel.
-
-		@see [Manipulating pixels](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/manipulating-pixels.html)
 	**/
 	public function setPixel(x:Int, y:Int, color:Int):Void
 	{
@@ -2974,10 +2912,8 @@ class BitmapData implements IBitmapDrawable
 		@param x     The _x_ position of the pixel whose value changes.
 		@param y     The _y_ position of the pixel whose value changes.
 		@param color The resulting ARGB color for the pixel. If the bitmap is
-					 opaque (not transparent), the alpha transparency portion of
+					 opaque(not transparent), the alpha transparency portion of
 					 this color value is ignored.
-
-		@see [Manipulating pixels](https://books.openfl.org/openfl-developers-guide/working-with-bitmaps/manipulating-pixels.html)
 	**/
 	public function setPixel32(x:Int, y:Int, color:Int):Void
 	{
@@ -3068,7 +3004,7 @@ class BitmapData implements IBitmapDrawable
 								refer to the current BitmapData instance.
 		@param sourceRect       A rectangle that defines the area of the source
 								image to use as input.
-		@param destPoint        The point within the destination image (the
+		@param destPoint        The point within the destination image(the
 								current BitmapData instance) that corresponds to
 								the upper-left corner of the source rectangle.
 		@param operation        One of the following comparison operators, passed
@@ -3112,16 +3048,11 @@ class BitmapData implements IBitmapDrawable
 	}
 
 	/**
-		When targeting AIR, this method Unlocks an image so that any objects that reference
-		the BitmapData object, such as Bitmap objects, are updated when this BitmapData object
-		changes.
-
+		Unlocks an image so that any objects that reference the BitmapData object,
+		such as Bitmap objects, are updated when this BitmapData object changes.
 		To improve performance, use this method along with the `lock()`
 		method before and after numerous calls to the `setPixel()` or
 		`setPixel32()` method.
-
-		Note: This method only provides an optimization on the AIR(Flash) target.
-		For all other targets, this method contains an empty function body.
 
 		@param changeRect The area of the BitmapData object that has changed. If
 						  you do not specify a value for this parameter, the

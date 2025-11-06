@@ -64,7 +64,7 @@ import hl.Gc;
 	// @:noCompletion @:dox(hide) @:require(flash11) public static var processCPUUsage (default, null):Float;
 
 	/**
-		The amount of memory (in bytes) currently in use that has been directly
+		The amount of memory(in bytes) currently in use that has been directly
 		allocated by Flash Player or AIR.
 
 		This property does not return _all_ memory used by an OpenFL
@@ -80,20 +80,7 @@ import hl.Gc;
 	**/
 	public static var totalMemory(get, never):Int;
 
-	/**
-		The amount of memory (in bytes) currently in use that has been directly
-		allocated by Flash Player or AIR.
-
-		This property is expressed as a Float, which allows higher values than the
-		`System.totalMemory` property, which is of type Int.
-
-		This property does not return _all_ memory used by an OpenFL
-		application or by the application (such as a browser) containing Flash
-		Player content. The browser or operating system may consume other memory.
-		The `System.privateMemory` property reflects _all_ memory
-		used by an application.
-	**/
-	public static var totalMemoryNumber(get, never):Float;
+	// @:noCompletion @:dox(hide) @:require(flash10_1) public static var totalMemoryNumber (default, null):Float;
 
 	/**
 		A Boolean value that determines which code page to use to interpret
@@ -112,7 +99,7 @@ import hl.Gc;
 
 		If you load external text files that are not Unicode-encoded, set
 		`useCodePage` to `true`. Add the following as the
-		first line of code of the file that is loading the data (for Flash
+		first line of code of the file that is loading the data(for Flash
 		Professional, add it to the first frame):
 		`System.useCodePage = true;`
 
@@ -137,7 +124,7 @@ import hl.Gc;
 		To ensure that users on all platforms can view external text files used
 		in your application, you should encode all external text files as Unicode
 		and leave `useCodePage` set to `false`. This way,
-		the application (Flash Player 6 and later, or AIR) interprets the text as
+		the application(Flash Player 6 and later, or AIR) interprets the text as
 		Unicode.
 	**/
 	public static var useCodePage:Bool = false;
@@ -221,7 +208,7 @@ import hl.Gc;
 
 	#if !openfl_strict
 	/**
-		Pauses Flash Player or the AIR Debug Launcher (ADL). After calling this
+		Pauses Flash Player or the AIR Debug Launcher(ADL). After calling this
 		method, nothing in the application continues except the delivery of Socket
 		events.
 
@@ -254,7 +241,7 @@ import hl.Gc;
 	/**
 		Replaces the contents of the Clipboard with a specified text string. This
 		method works from any security context when called as a result of a user
-		event (such as a keyboard or input device event handler).
+		event(such as a keyboard or input device event handler).
 
 		This method is provided for SWF content running in Flash Player 9. It
 		allows only adding String content to the Clipboard.
@@ -264,7 +251,7 @@ import hl.Gc;
 		`Clipboard.setData()` method.
 
 		@param string A plain-text string of characters to put on the system
-					  Clipboard, replacing its current contents (if any).
+					  Clipboard, replacing its current contents(if any).
 	**/
 	public static function setClipboard(string:String):Void
 	{
@@ -287,17 +274,6 @@ import hl.Gc;
 		return Std.int(Gc.stats().currentMemory);
 		#else
 		return 0;
-		#end
-	}
-
-	@:noCompletion private static function get_totalMemoryNumber():Float
-	{
-		#if cpp
-		return Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE);
-		#elseif hl
-		return Gc.stats().currentMemory;
-		#else
-		return System.totalMemory;
 		#end
 	}
 

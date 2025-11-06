@@ -176,7 +176,7 @@ class Tileset
 	**/
 	public function getRectID(rect:Rectangle):Null<Int>
 	{
-		var tileData:TileData;
+		var tileData;
 
 		for (i in 0...__data.length)
 		{
@@ -220,10 +220,7 @@ class Tileset
 @:noDebug
 #end
 @SuppressWarnings("checkstyle:FieldDocComment")
-@:allow(openfl.display.Tileset)
-@:dox(hide)
-@:noCompletion
-class TileData
+@:allow(openfl.display.Tileset) @:dox(hide) private class TileData
 {
 	public var height:Int;
 	public var width:Int;

@@ -47,9 +47,6 @@ import sys.FileSystem;
 				  operation (for example, by clicking Save), the
 				  `FileReferenceList` object is populated with FileReference
 				  objects that represent the files that the user selects.
-
-	@see [Using the FileReferenceList class](https://books.openfl.org/openfl-developers-guide/working-with-the-file-system/using-the-filereference-class.html#filereferencelist-class)
-	@see `openfl.net.FileReference`
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -136,11 +133,11 @@ class FileReferenceList extends EventDispatcher
 	public function browse(typeFilter:Array<FileFilter> = null):Bool
 	{
 		#if desktop
-		var filter:String = null;
+		var filter = null;
 
 		if (typeFilter != null)
 		{
-			var filters:Array<String> = [];
+			var filters = [];
 
 			for (type in typeFilter)
 			{
@@ -172,9 +169,11 @@ class FileReferenceList extends EventDispatcher
 
 	@:noCompletion private function fileDialog_onSelectMultiple(paths:Array<String>):Void
 	{
+		var fileReference, fileInfo;
+
 		for (path in paths)
 		{
-			var fileReference = new FileReference();
+			fileReference = new FileReference();
 
 			#if sys
 			var fileInfo = FileSystem.stat(path);

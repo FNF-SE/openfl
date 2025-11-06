@@ -13,9 +13,6 @@ package openfl.events;
 
 	OpenFL uses the EventType abstract for standard event types
 	to turn these logical errors into a compile-time errors.
-
-	@see `openfl.events.EventDispatcher`
-	@see `openfl.events.Event`
 **/
 abstract EventType<T>(String) from String to String
 {

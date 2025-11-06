@@ -1,6 +1,6 @@
 package openfl.display;
 
-#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
+#if (!flash && sys)
 /**
 	The NativeWindowType class defines constants for the `type` property of the
 	NativeWindowInitOptions object used to create a native window.
@@ -12,6 +12,7 @@ package openfl.display;
 	@see `openfl.display.NativeWindowInitOptions`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract NativeWindowType(Null<Int>)
+
 {
 	/**
 		A minimal window. Lightweight windows cannot have system chrome and do

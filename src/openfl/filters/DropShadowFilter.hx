@@ -11,20 +11,22 @@ import openfl.geom.Rectangle;
 import lime._internal.graphics.ImageDataUtil; // TODO
 
 #end
+
 /**
 	The DropShadowFilter class lets you add a drop shadow to display objects.
 	The shadow algorithm is based on the same box filter that the blur filter
 	uses. You have several options for the style of the drop shadow, including
 	inner or outer shadow and knockout mode. You can apply the filter to any
-	display object (that is, objects that inherit from the DisplayObject
+	display object(that is, objects that inherit from the DisplayObject
 	class), such as MovieClip, SimpleButton, TextField, and Video objects, as
 	well as to BitmapData objects.
 
 	The use of filters depends on the object to which you apply the
 	filter:
 
+
 	* To apply filters to display objects use the `filters`
-	property (inherited from DisplayObject). Setting the `filters`
+	property(inherited from DisplayObject). Setting the `filters`
 	property of an object does not modify the object, and you can remove the
 	filter by clearing the `filters` property.
 	* To apply filters to BitmapData objects, use the
@@ -33,13 +35,14 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 	BitmapData object and the filter object and generates a filtered image as a
 	result.
 
+
 	If you apply a filter to a display object, the value of the
 	`cacheAsBitmap` property of the display object is set to
 	`true`. If you clear all filters, the original value of
 	`cacheAsBitmap` is restored.
 
 	This filter supports Stage scaling. However, it does not support general
-	scaling, rotation, and skewing. If the object itself is scaled (if
+	scaling, rotation, and skewing. If the object itself is scaled(if
 	`scaleX` and `scaleY` are set to a value other than
 	1.0), the filter is not scaled. It is scaled only when the user zooms in on
 	the Stage.
@@ -53,9 +56,6 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 	example, you zoom in on a large movie clip with a filter applied, the
 	filter is turned off if the resulting image exceeds the maximum
 	dimensions.
-
-	@see `openfl.display.DisplayObject.filters`
-	@see `openfl.display.BitmapData.applyFilter`
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -77,19 +77,19 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 	public var alpha(get, set):Float;
 
 	/**
-		The angle of the shadow. Valid values are 0 to 360 degrees (floating
+		The angle of the shadow. Valid values are 0 to 360 degrees(floating
 		point). The default value is 45.
 	**/
 	public var angle(get, set):Float;
 
 	/**
-		The amount of horizontal blur. Valid values are 0 to 255.0 (floating
+		The amount of horizontal blur. Valid values are 0 to 255.0(floating
 		point). The default value is 4.0.
 	**/
 	public var blurX(get, set):Float;
 
 	/**
-		The amount of vertical blur. Valid values are 0 to 255.0 (floating point).
+		The amount of vertical blur. Valid values are 0 to 255.0(floating point).
 		The default value is 4.0.
 	**/
 	public var blurY(get, set):Float;
@@ -116,13 +116,13 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 	/**
 		Indicates whether or not the shadow is an inner shadow. The value
 		`true` indicates an inner shadow. The default is
-		`false`, an outer shadow (a shadow around the outer edges of
+		`false`, an outer shadow(a shadow around the outer edges of
 		the object).
 	**/
 	public var inner(get, set):Bool;
 
 	/**
-		Applies a knockout effect (`true`), which effectively makes the
+		Applies a knockout effect(`true`), which effectively makes the
 		object's fill transparent and reveals the background color of the
 		document. The default is `false`(no knockout).
 	**/
@@ -223,7 +223,7 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 		Creates a new DropShadowFilter instance with the specified parameters.
 
 		@param distance   Offset distance for the shadow, in pixels.
-		@param angle      Angle of the shadow, 0 to 360 degrees (floating point).
+		@param angle      Angle of the shadow, 0 to 360 degrees(floating point).
 		@param color      Color of the shadow, in hexadecimal format
 						  _0xRRGGBB_. The default value is 0x000000.
 		@param alpha      Alpha transparency value for the shadow color. Valid
@@ -251,7 +251,7 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 						  A value of `true` specifies an inner shadow.
 						  A value of `false` specifies an outer shadow
 						 (a shadow around the outer edges of the object).
-		@param knockout   Applies a knockout effect (`true`), which
+		@param knockout   Applies a knockout effect(`true`), which
 						  effectively makes the object's fill transparent and
 						  reveals the background color of the document.
 		@param hideObject Indicates whether or not the object is hidden. A value
@@ -290,7 +290,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 		return new DropShadowFilter(__distance, __angle, __color, __alpha, __blurX, __blurY, __strength, __quality, __inner, __knockout, __hideObject);
 	}
 
-	@:noCompletion private override function __applyFilter(bitmapData:BitmapData, sourceBitmapData:BitmapData, sourceRect:Rectangle, destPoint:Point):BitmapData
+	@:noCompletion private override function __applyFilter(bitmapData:BitmapData, sourceBitmapData:BitmapData, sourceRect:Rectangle,
+			destPoint:Point):BitmapData
 	{
 		// TODO: Support knockout, inner
 

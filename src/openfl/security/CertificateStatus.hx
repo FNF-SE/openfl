@@ -9,6 +9,7 @@ package openfl.security;
 	@see `openfl.net.SecureSocket.serverCertificateStatus`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract CertificateStatus(String) from String to String
+
 {
 	/**
 		The certificate is outside its valid period.

@@ -7,7 +7,7 @@ import openfl.display.DisplayObject;
 	The Transform class provides access to color adjustment properties and two-
 	or three-dimensional transformation objects that can be applied to a
 	display object. During the transformation, the color or the orientation and
-	position of a display object is adjusted (offset) from the current values
+	position of a display object is adjusted(offset) from the current values
 	or coordinates to new values or coordinates. The Transform class also
 	collects data about color and two-dimensional matrix transformations that
 	are applied to a display object and all of its parent objects. You can
@@ -70,8 +70,6 @@ class Transform
 		colors in the display object.
 
 		@throws TypeError The colorTransform is null when being set
-
-		@see [Adjusting display object colors](https://books.openfl.org/openfl-developers-guide/display-programming/manipulating-display-objects/adjusting-displayobject-colors.html)
 	**/
 	public var colorTransform(get, set):ColorTransform;
 
@@ -104,12 +102,10 @@ class Transform
 		If the `matrix` property is set to a value (not
 		`null`), the `matrix3D` property is
 		`null`. And if the `matrix3D` property is set to a
-		value (not `null`), the `matrix` property is
+		value(not `null`), the `matrix` property is
 		`null`.
 
 		@throws TypeError The matrix is null when being set
-
-		@see [Using Matrix objects](https://books.openfl.org/openfl-developers-guide/working-with-geometry/using-matrix-objects.html)
 	**/
 	public var matrix(get, set):Matrix;
 
@@ -119,10 +115,10 @@ class Transform
 		determines the display object's position and orientation. A Matrix3D
 		object can also perform perspective projection.
 
-		If the `matrix` property is set to a value (not
+		If the `matrix` property is set to a value(not
 		`null`), the `matrix3D` property is
 		`null`. And if the `matrix3D` property is set to a
-		value (not `null`), the `matrix` property is
+		value(not `null`), the `matrix` property is
 		`null`.
 	**/
 	public var matrix3D(get, set):Matrix3D;
@@ -194,7 +190,6 @@ class Transform
 				space.
 	**/
 	// @:noCompletion @:dox(hide) @:require(flash10) public function getRelativeMatrix3D (relativeTo:DisplayObject):Matrix3D;
-	// @:noCompletion @:dox(hide) @:require(flash10) public function getRelativeMatrix3DToOutput (relativeTo:DisplayObject, output:Matrix3D):Matrix3D;
 	#end
 	// Get & Set Methods
 	@:noCompletion private function get_colorTransform():ColorTransform
@@ -265,22 +260,7 @@ class Transform
 		{
 			var matrix = __displayObject.__transform;
 			return new Matrix3D(new Vector<Float>([
-				matrix.a,
-				matrix.b,
-				0.0,
-				0.0,
-				matrix.c,
-				matrix.d,
-				0.0,
-				0.0,
-				0.0,
-				0.0,
-				1.0,
-				0.0,
-				matrix.tx,
-				matrix.ty,
-				0.0,
-				1.0
+				matrix.a, matrix.b, 0.0, 0.0, matrix.c, matrix.d, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, matrix.tx, matrix.ty, 0.0, 1.0
 			]));
 		}
 

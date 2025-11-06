@@ -13,7 +13,6 @@ import openfl.display.Graphics;
 import openfl.display.InteractiveObject;
 import openfl.display.Stage;
 import openfl.errors.RangeError;
-import openfl.errors.TypeError;
 import openfl.events.Event;
 import openfl.events.FocusEvent;
 import openfl.events.KeyboardEvent;
@@ -41,7 +40,7 @@ import js.html.DivElement;
 	Label, Text, TextArea, and TextInput controls to process text. <ph
 	outputclass="flashonly">You can give a text field an instance name in the
 	Property inspector and use the methods and properties of the TextField
-	class to manipulate it with Haxe code. TextField instance names are
+	class to manipulate it with ActionScript. TextField instance names are
 	displayed in the Movie Explorer and in the Insert Target Path dialog box in
 	the Actions panel.
 
@@ -52,21 +51,21 @@ import js.html.DivElement;
 	text in a dynamic or input text field that you create during authoring or
 	at runtime.
 
-	OpenFL provides several ways to format your text at runtime. The
+	ActionScript provides several ways to format your text at runtime. The
 	TextFormat class lets you set character and paragraph formatting for
-	TextField objects. You can apply Cascading Style Sheets (CSS) styles to
+	TextField objects. You can apply Cascading Style Sheets(CSS) styles to
 	text fields by using the `TextField.styleSheet` property and the
 	StyleSheet class. You can use CSS to style built-in HTML tags, define new
 	formatting tags, or apply styles. You can assign HTML formatted text, which
 	optionally uses CSS styles, directly to a text field. HTML text that you
-	assign to a text field can contain embedded media (movie clips, SWF files,
+	assign to a text field can contain embedded media(movie clips, SWF files,
 	GIF files, PNG files, and JPEG files). The text wraps around the embedded
 	media in the same way that a web browser wraps text around media embedded
 	in an HTML document.
 
-	OpenFL supports a subset of HTML tags that you can use to format
+	Flash Player supports a subset of HTML tags that you can use to format
 	text. See the list of supported HTML tags in the description of the
-	`TextField.htmlText` property.
+	`htmlText` property.
 
 	@event change                    Dispatched after a control value is
 									 modified, unlike the
@@ -75,7 +74,7 @@ import js.html.DivElement;
 									 Unlike the W3C DOM Event Model version of
 									 the `change` event, which
 									 dispatches the event only after the
-									 control loses focus, the OpenFL
+									 control loses focus, the ActionScript 3.0
 									 version of the `change` event
 									 is dispatched any time the control
 									 changes. For example, if a user types text
@@ -89,14 +88,14 @@ import js.html.DivElement;
 
 									 **Note:** The default behavior,
 									 adding the text to the text field, occurs
-									 only when OpenFL generates the
+									 only when Flash Player generates the
 									 event, which in this case happens when a
 									 user attempts to input text. You cannot
 									 put text into a text field by sending it
 									 `textInput` events.
 	@event scroll                    Dispatched by a TextField object
 									 _after_ the user scrolls.
-	@event textInput                 OpenFL dispatches the
+	@event textInput                 Flash Player dispatches the
 									 `textInput` event when a user
 									 enters one or more characters of text.
 									 Various text input methods can generate
@@ -105,28 +104,19 @@ import js.html.DivElement;
 									 speech recognition systems, and even the
 									 act of pasting plain text with no
 									 formatting or style information.
-	@event textInteractionModeChange OpenFL dispatches the
+	@event textInteractionModeChange Flash Player dispatches the
 									 `textInteractionModeChange`
 									 event when a user changes the interaction
 									 mode of a text field. for example on
 									 Android, one can toggle from NORMAL mode
 									 to SELECTION mode using context menu
 									 options
-
-	@see [Using the TextField class](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/)
-	@see [Displaying text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/displaying-text.html)
-	@see [Selecting and manipulating text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/selecting-and-manipulating-text.html)
-	@see [Capturing text input](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/capturing-text-input.html)
-	@see [Restricting text input](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/restricting-text-input.html)
-	@see [Formatting text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/formatting-text.html)
-	@see [Advanced text rendering](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/advanced-text-rendering.html)
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
 @:noDebug
 #end
 @:access(openfl.display.Graphics)
-@:access(openfl.errors.Error)
 @:access(openfl.geom.ColorTransform)
 @:access(openfl.geom.Matrix)
 @:access(openfl.geom.Rectangle)
@@ -139,9 +129,9 @@ class TextField extends InteractiveObject
 
 	#if false
 	/**
-		When set to `true` and the text field is not in focus, OpenFL
+		When set to `true` and the text field is not in focus, Flash Player
 		highlights the selection in the text field in gray. When set to
-		`false` and the text field is not in focus, OpenFL does not
+		`false` and the text field is not in focus, Flash Player does not
 		highlight the selection in the text field.
 
 		@default false
@@ -152,7 +142,7 @@ class TextField extends InteractiveObject
 	/**
 		The type of anti-aliasing used for this text field. Use
 		`openfl.text.AntiAliasType` constants for this property. You can
-		control this setting only if the font is embedded (with the
+		control this setting only if the font is embedded(with the
 		`embedFonts` property set to `true`). The default
 		setting is `openfl.text.AntiAliasType.NORMAL`.
 
@@ -173,8 +163,8 @@ class TextField extends InteractiveObject
 		If `autoSize` is set to `TextFieldAutoSize.LEFT`,
 		the text is treated as left-justified text, meaning that the left margin
 		of the text field remains fixed and any resizing of a single line of the
-		text field is on the right margin. If the text includes a line break
-		(for example, `"\n"` or `"\r"`), the bottom is also
+		text field is on the right margin. If the text includes a line break(for
+		example, `"\n"` or `"\r"`), the bottom is also
 		resized to fit the next line of text. If `wordWrap` is also set
 		to `true`, only the bottom of the text field is resized and the
 		right side remains fixed.
@@ -183,7 +173,7 @@ class TextField extends InteractiveObject
 		`TextFieldAutoSize.RIGHT`, the text is treated as
 		right-justified text, meaning that the right margin of the text field
 		remains fixed and any resizing of a single line of the text field is on
-		the left margin. If the text includes a line break (for example,
+		the left margin. If the text includes a line break(for example,
 		`"\n" or "\r")`, the bottom is also resized to fit the next
 		line of text. If `wordWrap` is also set to `true`,
 		only the bottom of the text field is resized and the left side remains
@@ -193,7 +183,7 @@ class TextField extends InteractiveObject
 		`TextFieldAutoSize.CENTER`, the text is treated as
 		center-justified text, meaning that any resizing of a single line of the
 		text field is equally distributed to both the right and left margins. If
-		the text includes a line break (for example, `"\n"` or
+		the text includes a line break(for example, `"\n"` or
 		`"\r"`), the bottom is also resized to fit the next line of
 		text. If `wordWrap` is also set to `true`, only the
 		bottom of the text field is resized and the left and right sides remain
@@ -253,12 +243,12 @@ class TextField extends InteractiveObject
 	public var bottomScrollV(get, never):Int;
 
 	/**
-		The index of the insertion point (caret) position. If no insertion point
+		The index of the insertion point(caret) position. If no insertion point
 		is displayed, the value is the position the insertion point would be if
-		you restored focus to the field (typically where the insertion point last
+		you restored focus to the field(typically where the insertion point last
 		was, or 0 if the field has not had focus).
 
-		Selection span indexes are zero-based (for example, the first position
+		Selection span indexes are zero-based(for example, the first position
 		is 0, the second position is 1, and so on).
 	**/
 	public var caretIndex(get, never):Int;
@@ -305,8 +295,6 @@ class TextField extends InteractiveObject
 
 		@throws Error This method cannot be used on a text field with a style
 					  sheet.
-
-		@see [Formatting text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/formatting-text.html)
 	**/
 	public var defaultTextFormat(get, set):TextFormat;
 
@@ -326,7 +314,8 @@ class TextField extends InteractiveObject
 
 	/**
 		Specifies whether to render by using embedded font outlines. If
-		`false`, OpenFL renders the text field by using device fonts.
+		`false`, Flash Player renders the text field by using device
+		fonts.
 
 		If you set the `embedFonts` property to `true`
 		for a text field, you must specify a font for that text by using the
@@ -335,8 +324,6 @@ class TextField extends InteractiveObject
 		not displayed.
 
 		@default false
-
-		@see [Advanced text rendering](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/advanced-text-rendering.html)
 	**/
 	public var embedFonts(get, set):Bool;
 
@@ -344,7 +331,7 @@ class TextField extends InteractiveObject
 		The type of grid fitting used for this text field. This property
 		applies only if the `openfl.text.AntiAliasType` property of the text
 		field is set to `openfl.text.AntiAliasType.ADVANCED`.
-		The type of grid fitting used determines whether OpenFL forces
+		The type of grid fitting used determines whether Flash Player forces
 		strong horizontal and vertical lines to fit to a pixel or subpixel
 		grid, or not at all.
 
@@ -363,34 +350,34 @@ class TextField extends InteractiveObject
 
 	/**
 		Contains the HTML representation of the text field contents.
-		OpenFL supports the following HTML tags:
+		Flash Player supports the following HTML tags:
 
 		| Tag |  Description  |
 		| --- | --- |
-		| Anchor tag | The `<a>` tag creates a hypertext link and supports the following attributes:<ul><li>`target`: Specifies the name of the target window where you load the page. Options include `_self`, `_blank`, `_parent`, and `_top`. The `_self` option specifies the current frame in the current window, `_blank` specifies a new window, `_parent` specifies the parent of the current frame, and `_top` specifies the top-level frame in the current window.</li><li>`href`: Specifies a URL or a `link` event. The URL can be either absolute or relative to the location of the SWF file that is loading the page. An example of an absolute reference to a URL is `http://www.adobe.com`; an example of a relative reference is `/index.html`. Absolute URLs must be prefixed with http://; otherwise, OpenFL treats them as relative URLs. You can use the `link` event to cause the link to execute a Haxe function instead of opening a URL. To specify a `link` event, use the event scheme instead of the http scheme in your `href` attribute. An example is `href="event:myText"` instead of `href="http://myURL"`; when the user clicks a hypertext link that contains the event scheme, the text field dispatches a `link` TextEvent with its `text` property set to "`myText`". You can then create a Haxe function that executes whenever the link TextEvent is dispatched. You can also define `a:link`, `a:hover`, and `a:active` styles for anchor tags by using style sheets.</li></ul> |
+		| Anchor tag | The `<a>` tag creates a hypertext link and supports the following attributes:<ul><li>`target`: Specifies the name of the target window where you load the page. Options include `_self`, `_blank`, `_parent`, and `_top`. The `_self` option specifies the current frame in the current window, `_blank` specifies a new window, `_parent` specifies the parent of the current frame, and `_top` specifies the top-level frame in the current window.</li><li>`href`: Specifies a URL or an ActionScript `link` event.The URL can be either absolute or relative to the location of the SWF file that is loading the page. An example of an absolute reference to a URL is `http://www.adobe.com`; an example of a relative reference is `/index.html`. Absolute URLs must be prefixed with http://; otherwise, Flash Player or AIR treats them as relative URLs. You can use the `link` event to cause the link to execute an ActionScript function in a SWF file instead of opening a URL. To specify a `link` event, use the event scheme instead of the http scheme in your `href` attribute. An example is `href="event:myText"` instead of `href="http://myURL"`; when the user clicks a hypertext link that contains the event scheme, the text field dispatches a `link` TextEvent with its `text` property set to "`myText`". You can then create an ActionScript function that executes whenever the link TextEvent is dispatched. You can also define `a:link`, `a:hover`, and `a:active` styles for anchor tags by using style sheets.</li></ul> |
 		| Bold tag | The `<b>` tag renders text as bold. A bold typeface must be available for the font used. |
 		| Break tag | The `<br>` tag creates a line break in the text field. Set the text field to be a multiline text field to use this tag.  |
-		| Font tag | The `<font>` tag specifies a font or list of fonts to display the text.The font tag supports the following attributes:<ul><li>`color`: Only hexadecimal color (`#FFFFFF`) values are supported.</li><li>`face`: Specifies the name of the font to use. As shown in the following example, you can specify a list of comma-delimited font names, in which case OpenFL selects the first available font. If the specified font is not installed on the local computer system or isn't embedded in the SWF file, OpenFL selects a substitute font.</li><li>`size`: Specifies the size of the font. You can use absolute pixel sizes, such as 16 or 18, or relative point sizes, such as +2 or -4.</li></ul> |
-		| Image tag | The `<img>` tag lets you embed external image files (JPEG, GIF, PNG), SWF files, and movie clips inside text fields. Text automatically flows around images you embed in text fields. You must set the text field to be multiline to wrap text around an image.<br>The `<img>` tag supports the following attributes:<ul><li>`src`: Specifies the URL to an image or SWF file, or the linkage identifier for a movie clip symbol in the library. This attribute is required; all other attributes are optional. External files (JPEG, GIF, PNG, and SWF files) do not show until they are downloaded completely.</li><li>`width`: The width of the image, SWF file, or movie clip being inserted, in pixels.</li><li>`height`: The height of the image, SWF file, or movie clip being inserted, in pixels.</li><li>`align`: Specifies the horizontal alignment of the embedded image within the text field. Valid values are `left` and `right`. The default value is `left`.</li><li>`hspace`: Specifies the amount of horizontal space that surrounds the image where no text appears. The default value is 8.</li><li>`vspace`: Specifies the amount of vertical space that surrounds the image where no text appears. The default value is 8.</li><li>`id`: Specifies the name for the movie clip instance (created by OpenFL) that contains the embedded image file, SWF file, or movie clip. This approach is used to control the embedded content with Haxe.</li><li>`checkPolicyFile`: Specifies that Flash Player checks for a URL policy file on the server associated with the image domain. If a policy file exists, SWF files in the domains listed in the file can access the data of the loaded image, for example, by calling the `BitmapData.draw()` method with this image as the `source` parameter. For more information related to security, see the Flash Player Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).</li></ul>Flash displays media embedded in a text field at full size. To specify the dimensions of the media you are embedding, use the `<img>` tag `height` and `width` attributes. <br>In general, an image embedded in a text field appears on the line following the `<img>` tag. However, when the `<img>` tag is the first character in the text field, the image appears on the first line of the text field.<br>For AIR content in the application security sandbox, AIR ignores `img` tags in HTML content in OpenFL TextField objects. This is to prevent possible phishing attacks. |
+		| Font tag | The `<font>` tag specifies a font or list of fonts to display the text.The font tag supports the following attributes:<ul><li>`color`: Only hexadecimal color (`#FFFFFF`) values are supported.</li><li>`face`: Specifies the name of the font to use. As shown in the following example, you can specify a list of comma-delimited font names, in which case Flash Player selects the first available font. If the specified font is not installed on the local computer system or isn't embedded in the SWF file, Flash Player selects a substitute font.</li><li>`size`: Specifies the size of the font. You can use absolute pixel sizes, such as 16 or 18, or relative point sizes, such as +2 or -4.</li></ul> |
+		| Image tag | The `<img>` tag lets you embed external image files (JPEG, GIF, PNG), SWF files, and movie clips inside text fields. Text automatically flows around images you embed in text fields. You must set the text field to be multiline to wrap text around an image.<br>The `<img>` tag supports the following attributes:<ul><li>`src`: Specifies the URL to an image or SWF file, or the linkage identifier for a movie clip symbol in the library. This attribute is required; all other attributes are optional. External files (JPEG, GIF, PNG, and SWF files) do not show until they are downloaded completely.</li><li>`width`: The width of the image, SWF file, or movie clip being inserted, in pixels.</li><li>`height`: The height of the image, SWF file, or movie clip being inserted, in pixels.</li><li>`align`: Specifies the horizontal alignment of the embedded image within the text field. Valid values are `left` and `right`. The default value is `left`.</li><li>`hspace`: Specifies the amount of horizontal space that surrounds the image where no text appears. The default value is 8.</li><li>`vspace`: Specifies the amount of vertical space that surrounds the image where no text appears. The default value is 8.</li><li>`id`: Specifies the name for the movie clip instance (created by Flash Player) that contains the embedded image file, SWF file, or movie clip. This approach is used to control the embedded content with ActionScript.</li><li>`checkPolicyFile`: Specifies that Flash Player checks for a URL policy file on the server associated with the image domain. If a policy file exists, SWF files in the domains listed in the file can access the data of the loaded image, for example, by calling the `BitmapData.draw()` method with this image as the `source` parameter. For more information related to security, see the Flash Player Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).</li></ul>Flash displays media embedded in a text field at full size. To specify the dimensions of the media you are embedding, use the `<img>` tag `height` and `width` attributes. <br>In general, an image embedded in a text field appears on the line following the `<img>` tag. However, when the `<img>` tag is the first character in the text field, the image appears on the first line of the text field.<br>For AIR content in the application security sandbox, AIR ignores `img` tags in HTML content in ActionScript TextField objects. This is to prevent possible phishing attacks. |
 		| Italic tag | The `<i>` tag displays the tagged text in italics. An italic typeface must be available for the font used. |
-		| List item tag | The `<li>` tag places a bullet in front of the text that it encloses.<br>**Note:** Because OpenFL does not recognize ordered and unordered list tags (`<ol>` and `<ul>`, they do not modify how your list is rendered. All lists are unordered and all list items use bullets. |
+		| List item tag | The `<li>` tag places a bullet in front of the text that it encloses.<br>**Note:** Because Flash Player and AIR do not recognize ordered and unordered list tags (`<ol>` and `<ul>`, they do not modify how your list is rendered. All lists are unordered and all list items use bullets. |
 		| Paragraph tag | The `<p>` tag creates a new paragraph. The text field must be set to be a multiline text field to use this tag. The `<p>` tag supports the following attributes:<ul><li>align: Specifies alignment of text within the paragraph; valid values are `left`, `right`, `justify`, and `center`.</li><li>class: Specifies a CSS style class defined by a openfl.text.StyleSheet object.</li></ul> |
 		| Span tag | The `<span>` tag is available only for use with CSS text styles. It supports the following attribute:<ul><li>class: Specifies a CSS style class defined by a openfl.text.StyleSheet object.</li></ul> |
 		| Text format tag | The `<textformat>` tag lets you use a subset of paragraph formatting properties of the TextFormat class within text fields, including line leading, indentation, margins, and tab stops. You can combine `<textformat>` tags with the built-in HTML tags.<br>The `<textformat>` tag has the following attributes:<li>`blockindent`: Specifies the block indentation in points; corresponds to `TextFormat.blockIndent`.</li><li>`indent`: Specifies the indentation from the left margin to the first character in the paragraph; corresponds to `TextFormat.indent`. Both positive and negative numbers are acceptable.</li><li>`leading`: Specifies the amount of leading (vertical space) between lines; corresponds to `TextFormat.leading`. Both positive and negative numbers are acceptable.</li><li>`leftmargin`: Specifies the left margin of the paragraph, in points; corresponds to `TextFormat.leftMargin`.</li><li>`rightmargin`: Specifies the right margin of the paragraph, in points; corresponds to `TextFormat.rightMargin`.</li><li>`tabstops`: Specifies custom tab stops as an array of non-negative integers; corresponds to `TextFormat.tabStops`.</li></ul> |
 		| Underline tag | The `<u>` tag underlines the tagged text. |
 
-		OpenFL supports the following HTML entities:
+		Flash Player and AIR support the following HTML entities:
 
 		| Entity | Description |
 		| --- | --- |
-		| `&lt;` | < (less than) |
-		| `&gt;` | > (greater than) |
-		| `&amp;` | & (ampersand) |
-		| `&quot;` | " (double quotes) |
-		| `&apos;` | ' (apostrophe, single quote) |
+		| &amp;lt; | < (less than) |
+		| &amp;gt; | > (greater than) |
+		| &amp;amp; | & (ampersand) |
+		| &amp;quot; | " (double quotes) |
+		| &amp;apos; | ' (apostrophe, single quote) |
 
-		OpenFL also supports explicit character codes, such as
-		`&#38;` (ASCII ampersand) and `&#x20AC;` (Unicode € symbol).
+		Flash Player and AIR also support explicit character codes, such as
+		&#38; (ASCII ampersand) and &#x20AC; (Unicode € symbol).
 	**/
 	public var htmlText(get, set):UTF8String;
 
@@ -422,7 +409,7 @@ class TextField extends InteractiveObject
 	public var maxScrollV(get, never):Int;
 
 	/**
-		A Boolean value that indicates whether OpenFL automatically scrolls
+		A Boolean value that indicates whether Flash Player automatically scrolls
 		multiline text fields when the user clicks a text field and rolls the mouse wheel.
 		By default, this value is `true`. This property is useful if you want to prevent
 		mouse wheel scrolling of text fields, or implement your own text field scrolling.
@@ -434,7 +421,7 @@ class TextField extends InteractiveObject
 		`true`, the text field is multiline; if the value is
 		`false`, the text field is a single-line text field. In a field
 		of type `TextFieldType.INPUT`, the `multiline` value
-		determines whether the `Enter` key creates a new line (a value
+		determines whether the `Enter` key creates a new line(a value
 		of `false`, and the `Enter` key is ignored). If you
 		paste text into a `TextField` with a `multiline`
 		value of `false`, newlines are stripped out of the text.
@@ -479,7 +466,7 @@ class TextField extends InteractiveObject
 
 		You can use a backslash to enter a ^ or - verbatim. The accepted
 		backslash sequences are \-, \^ or \\. The backslash must be an actual
-		character in the string, so when specified in Haxe code, a double
+		character in the string, so when specified in ActionScript, a double
 		backslash must be used. For example, the following code includes only the
 		dash(-) and caret(^):
 		`my_txt.restrict = "\\-\\^";`
@@ -491,12 +478,10 @@ class TextField extends InteractiveObject
 
 		You can use the `\u` escape sequence to construct
 		`restrict` strings. The following code includes only the
-		characters from ASCII 32 (space) to ASCII 126 (tilde).
+		characters from ASCII 32(space) to ASCII 126(tilde).
 		`my_txt.restrict = "\u0020-\u007E";`
 
 		@default null
-
-		@see [Restricting text input](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/restricting-text-input.html)
 	**/
 	public var restrict(get, set):UTF8String;
 
@@ -508,12 +493,12 @@ class TextField extends InteractiveObject
 		The units of horizontal scrolling are pixels, whereas the units of
 		vertical scrolling are lines. Horizontal scrolling is measured in pixels
 		because most fonts you typically use are proportionally spaced; that is,
-		the characters can have different widths. OpenFL performs vertical
+		the characters can have different widths. Flash Player performs vertical
 		scrolling by line because users usually want to see a complete line of
 		text rather than a partial line. Even if a line uses multiple fonts, the
 		height of the line adjusts to fit the largest font in use.
 
-		**Note:** The `scrollH` property is zero-based, not
+		**Note: **The `scrollH` property is zero-based, not
 		1-based like the `scrollV` vertical scrolling property.
 	**/
 	public var scrollH(get, set):Int;
@@ -525,7 +510,7 @@ class TextField extends InteractiveObject
 
 		The units of vertical scrolling are lines, whereas the units of
 		horizontal scrolling are pixels. If the first line displayed is the first
-		line in the text field, scrollV is set to 1 (not 0). Horizontal scrolling
+		line in the text field, scrollV is set to 1(not 0). Horizontal scrolling
 		is measured in pixels because most fonts are proportionally spaced; that
 		is, the characters can have different widths. Flash performs vertical
 		scrolling by line because users usually want to see a complete line of
@@ -551,8 +536,6 @@ class TextField extends InteractiveObject
 		text field is a dynamic text field instead of an input text field.
 
 		@default true
-
-		@see [Selecting and manipulating text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/selecting-and-manipulating-text.html)
 	**/
 	public var selectable(get, set):Bool;
 
@@ -563,8 +546,6 @@ class TextField extends InteractiveObject
 		selection. For example, the first character is 0, the second character is
 		1, and so on. If no text is selected, this property is the value of
 		`caretIndex`.
-
-		@see [Selecting and manipulating text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/selecting-and-manipulating-text.html)
 	**/
 	public var selectionBeginIndex(get, never):Int;
 
@@ -573,8 +554,6 @@ class TextField extends InteractiveObject
 		selection. For example, the first character is 0, the second character is
 		1, and so on. If no text is selected, this property is the value of
 		`caretIndex`.
-
-		@see [Selecting and manipulating text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/selecting-and-manipulating-text.html)
 	**/
 	public var selectionEndIndex(get, never):Int;
 
@@ -584,7 +563,7 @@ class TextField extends InteractiveObject
 		field is set to `openfl.text.AntiAliasType.ADVANCED`. The range
 		for `sharpness` is a number from -400 to 400. If you attempt to
 		set `sharpness` to a value outside that range, Flash sets the
-		property to the nearest value in the range (either -400 or 400).
+		property to the nearest value in the range(either -400 or 400).
 
 		@default 0
 	**/
@@ -592,7 +571,7 @@ class TextField extends InteractiveObject
 
 	/**
 		Attaches a style sheet to the text field. For information on creating
-		style sheets, see the StyleSheet class and the _OpenFL
+		style sheets, see the StyleSheet class and the _ActionScript 3.0
 		Developer's Guide_.
 		You can change the style sheet associated with a text field at any
 		time. If you change the style sheet in use, the text field is redrawn
@@ -605,8 +584,6 @@ class TextField extends InteractiveObject
 		formatting previously applied by the style sheet. To preserve the
 		original `TextField.htmlText` contents without the formatting, save
 		the value in a variable before removing the style sheet.
-
-		@see [Formatting text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/formatting-text.html)
 	**/
 	public var styleSheet(get, set):StyleSheet;
 
@@ -617,8 +594,6 @@ class TextField extends InteractiveObject
 
 		To get the text in HTML form, use the `htmlText`
 		property.
-
-		@see [Displaying text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/displaying-text.html)
 	**/
 	public var text(get, set):UTF8String;
 
@@ -673,15 +648,13 @@ class TextField extends InteractiveObject
 		@default dynamic
 		@throws ArgumentError The `type` specified is not a member of
 							  openfl.text.TextFieldType.
-
-		@see [Capturing text input](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/capturing-text-input.html)
 	**/
 	public var type(get, set):TextFieldType;
 
 	#if false
 	/**
 		Specifies whether to copy and paste the text formatting along with the
-		text. When set to `true`, OpenFL copies and pastes formatting
+		text. When set to `true`, Flash Player copies and pastes formatting
 		(such as alignment, bold, and italics) when you copy and paste between
 		text fields. Both the origin and destination text fields for the copy
 		and paste procedure must have `useRichTextClipboard` set to `true`.
@@ -698,9 +671,6 @@ class TextField extends InteractiveObject
 	**/
 	public var wordWrap(get, set):Bool;
 
-	@:noCompletion private var __wordSelection:Bool;
-	@:noCompletion private var __lineSelection:Bool;
-	@:noCompletion private var __specialSelectionInitialIndex:Int;
 	@:noCompletion private var __bounds:Rectangle;
 	@:noCompletion private var __caretIndex:Int;
 	@:noCompletion private var __cursorTimer:Timer;
@@ -848,7 +818,6 @@ class TextField extends InteractiveObject
 	{
 		super();
 
-		__wordSelection = false;
 		__drawableType = TEXT_FIELD;
 		__caretIndex = -1;
 		__selectionIndex = -1;
@@ -860,6 +829,8 @@ class TextField extends InteractiveObject
 		__offsetY = 0;
 		__mouseWheelEnabled = true;
 		__text = "";
+
+		doubleClickEnabled = true;
 
 		if (__defaultTextFormat == null)
 		{
@@ -878,6 +849,8 @@ class TextField extends InteractiveObject
 		addEventListener(FocusEvent.FOCUS_OUT, this_onFocusOut);
 		addEventListener(KeyboardEvent.KEY_DOWN, this_onKeyDown);
 		addEventListener(MouseEvent.MOUSE_WHEEL, this_onMouseWheel);
+
+		addEventListener(MouseEvent.DOUBLE_CLICK, this_onDoubleClick);
 	}
 
 	/**
@@ -937,7 +910,7 @@ class TextField extends InteractiveObject
 
 		@param x The _x_ coordinate of the character.
 		@param y The _y_ coordinate of the character.
-		@return The zero-based index value of the character (for example, the
+		@return The zero-based index value of the character(for example, the
 				first position is 0, the second position is 1, and so on). Returns
 				-1 if the point is not over any character.
 	**/
@@ -1036,7 +1009,7 @@ class TextField extends InteractiveObject
 
 		@param x The _x_ coordinate of the line.
 		@param y The _y_ coordinate of the line.
-		@return The zero-based index value of the line (for example, the first
+		@return The zero-based index value of the line(for example, the first
 				line is 0, the second line is 1, and so on). Returns -1 if the
 				point is not over any line.
 	**/
@@ -1155,7 +1128,7 @@ class TextField extends InteractiveObject
 		Returns the character index of the first character in the line that the
 		`lineIndex` parameter specifies.
 
-		@param lineIndex The zero-based index value of the line (for example, the
+		@param lineIndex The zero-based index value of the line(for example, the
 						 first line is 0, the second line is 1, and so on).
 		@return The zero-based index value of the first character in the line.
 		@throws RangeError The line number specified is out of range.
@@ -1181,7 +1154,7 @@ class TextField extends InteractiveObject
 		Returns the text of the line specified by the `lineIndex`
 		parameter.
 
-		@param lineIndex The zero-based index value of the line (for example, the
+		@param lineIndex The zero-based index value of the line(for example, the
 						 first line is 0, the second line is 1, and so on).
 		@return The text string contained in the specified line.
 		@throws RangeError The line number specified is out of range.
@@ -1266,7 +1239,7 @@ class TextField extends InteractiveObject
 	**/
 	public function getTextFormat(beginIndex:Int = -1, endIndex:Int = -1):TextFormat
 	{
-		var format:TextFormat = null;
+		var format = null;
 
 		if (beginIndex >= text.length || beginIndex < -1 || endIndex > text.length || endIndex < -1)
 			throw new RangeError("The supplied index is out of bounds");
@@ -1393,12 +1366,10 @@ class TextField extends InteractiveObject
 		`caretIndex` property.
 
 		@param beginIndex The zero-based index value of the first character in the
-						  selection (for example, the first character is 0, the
+						  selection(for example, the first character is 0, the
 						  second character is 1, and so on).
 		@param endIndex   The zero-based index value of the last character in the
 						  selection.
-
-		@see [Selecting and manipulating text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/selecting-and-manipulating-text.html)
 	**/
 	public function setSelection(beginIndex:Int, endIndex:Int):Void
 	{
@@ -1463,13 +1434,11 @@ class TextField extends InteractiveObject
 						   sheet.
 		@throws RangeError The `beginIndex` or `endIndex`
 						   specified is out of range.
-
-		@see [Formatting text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/formatting-text.html)
 	**/
 	public function setTextFormat(format:TextFormat, beginIndex:Int = -1, endIndex:Int = -1):Void
 	{
 		var max = text.length;
-		var range:TextFormatRange;
+		var range;
 
 		if (beginIndex == -1)
 		{
@@ -1513,7 +1482,7 @@ class TextField extends InteractiveObject
 		else
 		{
 			var index = 0;
-			var newRange:TextFormatRange;
+			var newRange;
 
 			while (index < __textEngine.textFormatRanges.length)
 			{
@@ -1636,14 +1605,6 @@ class TextField extends InteractiveObject
 		__dirty = true;
 		__layoutDirty = true;
 		__setRenderDirty();
-	}
-
-	@:noCompletion private override function __setStageReference(stage:Stage):Void
-	{
-		// call __stopTextInput() before this.stage is set to null to ensure
-		// that all window listeners are removed to avoid a memory leak
-		__stopTextInput();
-		super.__setStageReference(stage);
 	}
 
 	@:noCompletion private override function __allowMouseFocus():Bool
@@ -1789,8 +1750,6 @@ class TextField extends InteractiveObject
 		#if lime
 		if (stage != null)
 		{
-			stage.window.textInputEnabled = true;
-
 			#if (lime >= "8.0.0")
 			// ensure that the text field is not hidden by the soft keyboard
 			var bounds = getBounds(stage);
@@ -1805,13 +1764,10 @@ class TextField extends InteractiveObject
 				limeRect.height /= scale;
 			}
 			#end
-			// we need to call setTextInputRect() after setting textInputEnabled
-			// to true, or SDL might ignore the rectangle and think that the
-			// input is happening at 0,0
-			// strangely, the SDL docs seem to say the opposite, "this function
-			// is intended to be called before SDL_StartTextInput"
 			stage.window.setTextInputRect(limeRect);
 			#end
+
+			stage.window.textInputEnabled = true;
 
 			if (!__inputEnabled)
 			{
@@ -1956,8 +1912,7 @@ class TextField extends InteractiveObject
 		if (!precise && y > __textEngine.textHeight) y = __textEngine.textHeight;
 
 		var firstGroup = true;
-		var group:TextLayoutGroup;
-		var nextGroup:TextLayoutGroup;
+		var group, nextGroup;
 
 		for (i in 0...__textEngine.layoutGroups.length)
 		{
@@ -2021,64 +1976,6 @@ class TextField extends InteractiveObject
 		}
 
 		return group.endIndex;
-	}
-
-	@:noCompletion private function __getPositionByIdentifier(x:Float, y:Float, line:Bool):Int
-	{
-		var position = __getPosition(x, y);
-		var delimiters = if (line) "\n" else " .,;:!?()[]{}<>/\\|-=+*&^%$#@~`'\"\n";
-		var char = __text.charAt(position);
-		if (__specialSelectionInitialIndex <= position)
-		{
-			while (delimiters.indexOf(char) == -1 && position < __text.length)
-			{
-				position++;
-				char = __text.charAt(position);
-			}
-		}
-		else
-		{
-			while (delimiters.indexOf(char) == -1 && position > 0)
-			{
-				position--;
-				char = __text.charAt(position);
-			}
-			// we dont want to include the delimiter
-			if (position == 0) return position;
-			position++;
-		}
-
-		return position;
-	}
-
-	@:noCompletion private function __getOppositeIdentifierBound(charIndex:Int, line:Bool):Int
-	{
-		var position = charIndex;
-		var delimiters = if (line) "\n" else " .,;:!?()[]{}<>/\\|-=+*&^%$#@~`'\"\n";
-		var char = __text.charAt(position);
-
-		if (position <= __caretIndex)
-		{
-			if (position == 0) return position;
-			do
-			{
-				position--;
-				char = __text.charAt(position);
-			}
-			while (delimiters.indexOf(char) == -1 && position > 0);
-			if (position == 0) return position;
-			position++;
-		}
-		else
-		{
-			while (delimiters.indexOf(char) == -1 && position < __text.length)
-			{
-				position++;
-				char = __text.charAt(position);
-			}
-		}
-
-		return position;
 	}
 
 	@:noCompletion private override function __hitTest(x:Float, y:Float, shapeFlag:Bool, stack:Array<DisplayObject>, interactiveOnly:Bool,
@@ -2174,7 +2071,7 @@ class TextField extends InteractiveObject
 		var offset = newText.length - (endIndex - beginIndex);
 
 		var i = 0;
-		var range:TextFormatRange;
+		var range;
 
 		while (i < __textEngine.textFormatRanges.length)
 		{
@@ -2813,13 +2710,6 @@ class TextField extends InteractiveObject
 
 	@:noCompletion private function set_htmlText(value:String):String
 	{
-		if (value == null)
-		{
-			var error = new TypeError("Error #2007: Parameter text must be non-null.");
-			error.errorID = 2007;
-			throw error;
-		}
-
 		if (!__isHTML || __text != value)
 		{
 			__dirty = true;
@@ -3098,13 +2988,6 @@ class TextField extends InteractiveObject
 
 	@:noCompletion private function set_text(value:String):String
 	{
-		if (value == null)
-		{
-			var error = new TypeError("Error #2007: Parameter text must be non-null.");
-			error.errorID = 2007;
-			throw error;
-		}
-
 		if (__styleSheet != null)
 		{
 			return set_htmlText(value);
@@ -3285,17 +3168,11 @@ class TextField extends InteractiveObject
 		{
 			__updateLayout();
 
-			var position = if (__lineSelection) __getPositionByIdentifier(mouseX + scrollH, mouseY,
-				true) else if (__wordSelection) __getPositionByIdentifier(mouseX + scrollH, mouseY, false) else __getPosition(mouseX + scrollH, mouseY);
+			var position = __getPosition(mouseX + scrollH, mouseY);
 
 			if (position != __caretIndex)
 			{
 				__caretIndex = position;
-				if (__wordSelection || __lineSelection)
-				{
-					// on __wordSelection, __lineSelection is false, and vice versa, so the following behaves correctly:
-					__selectionIndex = __getOppositeIdentifierBound(__specialSelectionInitialIndex, __lineSelection);
-				}
 
 				var setDirty = true;
 
@@ -3334,8 +3211,7 @@ class TextField extends InteractiveObject
 			__getWorldTransform();
 			__updateLayout();
 
-			var upPos:Int = if (__lineSelection) __getPositionByIdentifier(mouseX + scrollH, mouseY,
-				true) else if (__wordSelection) __getPositionByIdentifier(mouseX + scrollH, mouseY, false) else __getPosition(mouseX + scrollH, mouseY);
+			var upPos:Int = __getPosition(mouseX + scrollH, mouseY);
 			var leftPos:Int;
 			var rightPos:Int;
 
@@ -3344,8 +3220,6 @@ class TextField extends InteractiveObject
 
 			__selectionIndex = leftPos;
 			__caretIndex = rightPos;
-
-			__wordSelection = __lineSelection = false;
 
 			if (__inputEnabled)
 			{
@@ -3420,35 +3294,10 @@ class TextField extends InteractiveObject
 	{
 		if (!selectable && type != INPUT) return;
 
-		// decide wether this click is for selecting text by character, word or line - single/double/triple click
-		__lineSelection = event.clickCount == 3;
-		__wordSelection = event.clickCount == 2;
-
-		if (__lineSelection)
-		{
-			var prevCaretIndex = __caretIndex;
-			__caretIndex = __getPositionByIdentifier(mouseX + scrollH, mouseY, true);
-			__selectionIndex = __getOppositeIdentifierBound(prevCaretIndex, true);
-			setSelection(__caretIndex, __selectionIndex);
-		}
-		else if (__wordSelection)
-		{
-			var prevCaretIndex = __caretIndex;
-			__caretIndex = __getPositionByIdentifier(mouseX + scrollH, mouseY, false);
-			__selectionIndex = __getOppositeIdentifierBound(prevCaretIndex, false);
-			__specialSelectionInitialIndex = prevCaretIndex;
-			setSelection(__caretIndex, __selectionIndex);
-		}
-		else
-		{
-			__caretIndex = __getPosition(mouseX + scrollH, mouseY);
-			__selectionIndex = __caretIndex;
-			setSelection(__caretIndex, __selectionIndex);
-		}
-
 		__updateLayout();
-		// If we start word selection only when the mouse moves, we can't fully select the first word on a double click
-		// and there would be a delay before the first word is selected
+
+		__caretIndex = __getPosition(mouseX + scrollH, mouseY);
+		__selectionIndex = __caretIndex;
 
 		if (!DisplayObject.__supportDOM)
 		{
@@ -3472,6 +3321,55 @@ class TextField extends InteractiveObject
 		if (mouseWheelEnabled)
 		{
 			scrollV = Std.int(Math.min(scrollV - event.delta, maxScrollV));
+		}
+	}
+
+	@:noCompletion private function this_onDoubleClick(event:MouseEvent):Void
+	{
+		if (selectable)
+		{
+			__updateLayout();
+
+			var delimiters:Array<String> = ['\n', '.', '!', '?', ',', ' ', ';', ':', '(', ')', '-', '_', '/'];
+
+			var txtStr:String = __text;
+			var leftPos:Int = -1;
+			var rightPos:Int = txtStr.length;
+			var pos:Int = 0;
+			var startPos:Int = Std.int(Math.max(__caretIndex, 1));
+			if (txtStr.length > 0 && __caretIndex >= 0 && rightPos >= __caretIndex)
+			{
+				for (c in delimiters)
+				{
+					pos = txtStr.lastIndexOf(c, startPos - 1);
+					if (pos > leftPos) leftPos = pos + 1;
+
+					pos = txtStr.indexOf(c, startPos);
+					if (pos < rightPos && pos != -1) rightPos = pos;
+				}
+
+				if (leftPos != rightPos)
+				{
+					setSelection(leftPos, rightPos);
+
+					var setDirty:Bool = true;
+					#if openfl_html5
+					if (DisplayObject.__supportDOM)
+					{
+						if (__renderedOnCanvasWhileOnDOM)
+						{
+							__forceCachedBitmapUpdate = true;
+						}
+						setDirty = false;
+					}
+					#end
+					if (setDirty)
+					{
+						__dirty = true;
+						__setRenderDirty();
+					}
+				}
+			}
 		}
 	}
 

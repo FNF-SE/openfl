@@ -70,7 +70,7 @@ class CanvasTextField
 						cursorOffsetX += textField.defaultTextFormat.indent / 2;
 						cursorOffsetX += textField.defaultTextFormat.blockIndent / 2;
 					case START:
-						// not supported?
+					// not supported?
 					case JUSTIFY:
 						cursorOffsetX += textField.defaultTextFormat.leftMargin;
 						cursorOffsetX += textField.defaultTextFormat.indent;
@@ -200,7 +200,7 @@ class CanvasTextField
 						scrollY -= textEngine.lineHeights[i];
 					}
 
-					var advance:Float;
+					var advance;
 
 					for (group in textEngine.layoutGroups)
 					{
@@ -279,8 +279,7 @@ class CanvasTextField
 									selectionEnd = group.endIndex;
 								}
 
-								var start:Rectangle;
-								var end:Rectangle;
+								var start, end;
 
 								start = textField.getCharBoundaries(selectionStart);
 

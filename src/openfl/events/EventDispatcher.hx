@@ -23,7 +23,7 @@ package openfl.events;
 
 	In general, the easiest way for a user-defined class to gain event
 	dispatching capabilities is to extend EventDispatcher. If this is
-	impossible (that is, if the class is already extending another class), you
+	impossible(that is, if the class is already extending another class), you
 	can instead implement the IEventDispatcher interface, create an
 	EventDispatcher member, and write simple hooks to route calls into the
 	aggregated EventDispatcher.
@@ -41,20 +41,12 @@ package openfl.events;
 					  a listener registered for this event. For more
 					  information about broadcast events, see the DisplayObject
 					  class.
-
-	@see [Basics of handling events](https://books.openfl.org/openfl-developers-guide/handling-events/basics-of-handling-events.html)
-	@see [The event flow](https://books.openfl.org/openfl-developers-guide/handling-events/the-event-flow.html)
-	@see [Event objects](https://books.openfl.org/openfl-developers-guide/handling-events/event-objects.html)
-	@see [Event listeners](https://books.openfl.org/openfl-developers-guide/handling-events/event-listeners.html)
-	@see [Handling events for display objects](https://books.openfl.org/openfl-developers-guide/display-programming/working-with-display-objects/handling-events-for-display-objects.html)
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
 @:noDebug
 #end
-@:access(openfl.display.Stage)
 @:access(openfl.events.Event)
-@:access(openfl.events.UncaughtErrorEvents)
 class EventDispatcher implements IEventDispatcher
 {
 	@:noCompletion private var __eventMap:Map<String, Array<Listener>>;
@@ -119,7 +111,7 @@ class EventDispatcher implements IEventDispatcher
 		`removeEventListener()`, or memory problems could result. Event
 		listeners are not automatically removed from memory because the garbage
 		collector does not remove the listener as long as the dispatching object
-		exists (unless the `useWeakReference` parameter is set to
+		exists(unless the `useWeakReference` parameter is set to
 		`true`).
 
 		Copying an EventDispatcher instance does not copy the event listeners
@@ -135,7 +127,7 @@ class EventDispatcher implements IEventDispatcher
 
 		If an event listener is removed from a node while an event is being
 		processed on the node, it is still triggered by the current actions. After
-		it is removed, the event listener is never invoked again (unless
+		it is removed, the event listener is never invoked again(unless
 		registered again for future processing).
 
 		@param type             The type of event.
@@ -162,7 +154,7 @@ class EventDispatcher implements IEventDispatcher
 								processed in the order in which they were added.
 								The default priority is 0.
 		@param useWeakReference Determines whether the reference to the listener
-								is strong or weak. A strong reference (the
+								is strong or weak. A strong reference(the
 								default) prevents your listener from being
 								garbage-collected. A weak reference does not.
 
@@ -175,11 +167,12 @@ class EventDispatcher implements IEventDispatcher
 								for a listener that is a nested inner function,
 								the function will be garbage-collected and no
 								longer persistent. If you create references to the
-								inner function (save it in another variable) then
+								inner function(save it in another variable) then
 								it is not garbage-collected and stays
 								persistent.
 
-								Weak reference support is limited to html5 and
+								Weak references are supported on some OpenFL
+								targets only, including html5, cpp, and
 								flash/air. On other targets, this parameter is
 								ignored, and the reference will be strong instead.
 		@throws ArgumentError The `listener` specified is not a
@@ -420,37 +413,9 @@ class EventDispatcher implements IEventDispatcher
 						list.splice(indexToRemove, 1);
 						iterator.remove(listener, indexToRemove);
 					}
-					else if (Lib.current != null && Lib.current.stage != null && Lib.current.stage.__uncaughtErrorEvents.__enabled)
-					{
-						try
-						{
-							weakCallback(event);
-						}
-						catch (e:Dynamic)
-						{
-							if (!(event is UncaughtErrorEvent))
-							{
-								Lib.current.stage.__handleError(e);
-							}
-						}
-					}
 					else
 					{
 						weakCallback(event);
-					}
-				}
-				else if (Lib.current != null && Lib.current.stage != null && Lib.current.stage.__uncaughtErrorEvents.__enabled)
-				{
-					try
-					{
-						listener.callback(event);
-					}
-					catch (e:Dynamic)
-					{
-						if (!(event is UncaughtErrorEvent))
-						{
-							Lib.current.stage.__handleError(e);
-						}
 					}
 				}
 				else
@@ -458,24 +423,7 @@ class EventDispatcher implements IEventDispatcher
 					listener.callback(event);
 				}
 				#else
-				if (Lib.current != null && Lib.current.stage != null && Lib.current.stage.__uncaughtErrorEvents.__enabled)
-				{
-					try
-					{
-						listener.callback(event);
-					}
-					catch (e:Dynamic)
-					{
-						if (!(event is UncaughtErrorEvent))
-						{
-							Lib.current.stage.__handleError(e);
-						}
-					}
-				}
-				else
-				{
-					listener.callback(event);
-				}
+				listener.callback(event);
 				#end
 
 				if (event.__isCanceledNow)

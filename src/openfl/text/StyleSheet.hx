@@ -43,9 +43,6 @@ import openfl.utils.Object;
 	| `text-align` | `textAlign` | Recognized values are `left`, `center`, `right`, and `justify`. |
 	| `text-decoration` | `textDecoration` | Recognized values are `none` and `underline`. |
 	| `text-indent` | `textIndent` | Only the numeric part of the value is used. Units (px, pt) are not parsed; pixels and points are equivalent. |
-
-	@see [Formatting text](https://books.openfl.org/openfl-developers-guide/using-the-textfield-class/formatting-text.html)
-	@see `openfl.text.TextField`
 **/
 class StyleSheet extends EventDispatcher /*implements Dynamic*/
 {
@@ -55,20 +52,8 @@ class StyleSheet extends EventDispatcher /*implements Dynamic*/
 	public var styleNames(get, never):Array<String>;
 
 	@:noCompletion private static var __supportedStyles:Array<String> = [
-		"color",
-		"display",
-		"font-family",
-		"font-size",
-		"font-style",
-		"font-weight",
-		"kerning",
-		"leading",
-		"letter-spacing",
-		"margin-left",
-		"margin-right",
-		"text-align",
-		"text-decoration",
-		"text-indent"
+		"color", "display", "font-family", "font-size", "font-style", "font-weight", "kerning", "leading", "letter-spacing", "margin-left", "margin-right",
+		"text-align", "text-decoration", "text-indent"
 	];
 
 	@:noCompletion private var __styleNames:Array<String>;

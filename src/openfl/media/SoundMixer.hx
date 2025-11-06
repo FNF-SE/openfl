@@ -32,7 +32,7 @@ package openfl.media;
 		The `SoundMixer.bufferTime` property only affects the buffer time for
 		embedded streaming sounds in a SWF and is independent of dynamically
 		created Sound objects (that is, Sound objects created in
-		Haxe code). The value of `SoundMixer.bufferTime` cannot override or
+		ActionScript). The value of `SoundMixer.bufferTime` cannot override or
 		set the default of the buffer time specified in the SoundLoaderContext
 		object that is passed to the `Sound.load()` method.
 	**/
@@ -163,16 +163,16 @@ package openfl.media;
 		these security limitations.
 
 		For more information related to security, see the Flash Player
-		Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).
+		Developer Center Topic: <a
+		href="http://www.adobe.com/go/devnet_security_en"
+		scope="external">Security</a>.
 
 	**/
 	public static function stopAll():Void
 	{
-		var i = __soundChannels.length;
-		while (i > 0)
+		for (channel in __soundChannels)
 		{
-			i--;
-			__soundChannels[i].stop();
+			channel.stop();
 		}
 	}
 
@@ -191,22 +191,6 @@ package openfl.media;
 	{
 		return __soundTransform;
 	}
-
-	#if lime
-	@:noCompletion private static function __unregisterSoundChannelByBuffer(buffer:lime.media.AudioBuffer):Void
-	{
-		var i = __soundChannels.length;
-		while (i > 0)
-		{
-			i--;
-			var channel = __soundChannels[i];
-			if (channel.__audioSource.buffer == buffer)
-			{
-				channel.stop();
-			}
-		}
-	}
-	#end
 
 	@:noCompletion private static function set_soundTransform(value:SoundTransform):SoundTransform
 	{

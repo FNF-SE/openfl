@@ -66,7 +66,7 @@ import lime.ui.Gamepad;
 		this.id = id;
 		this.name = name;
 
-		var control:GameInputControl;
+		var control;
 
 		for (i in 0...6)
 		{

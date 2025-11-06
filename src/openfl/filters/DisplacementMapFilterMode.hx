@@ -6,6 +6,7 @@ package openfl.filters;
 	values for the mode property of the DisplacementMapFilter class.
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract DisplacementMapFilterMode(String) from String to String
+
 {
 	/**
 		Clamps the displacement value to the edge of the source image.

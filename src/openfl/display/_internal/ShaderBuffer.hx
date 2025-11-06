@@ -124,7 +124,7 @@ class ShaderBuffer
 		shader.__init();
 
 		inputCount = shader.__inputBitmapData.length;
-		var input:ShaderInput<BitmapData>;
+		var input;
 
 		for (i in 0...inputCount)
 		{
@@ -145,7 +145,7 @@ class ShaderBuffer
 		paramIntCount = intCount;
 
 		var length = 0, p = 0;
-		var param:ShaderParameter<Bool>;
+		var param;
 
 		for (i in 0...boolCount)
 		{
@@ -161,7 +161,7 @@ class ShaderBuffer
 			p++;
 		}
 
-		var param:ShaderParameter<Float>;
+		var param;
 
 		for (i in 0...floatCount)
 		{
@@ -177,7 +177,7 @@ class ShaderBuffer
 			p++;
 		}
 
-		var param:ShaderParameter<Int>;
+		var param;
 
 		for (i in 0...intCount)
 		{
@@ -212,10 +212,7 @@ class ShaderBuffer
 		var intIndex = 0;
 
 		var paramPosition:Int = 0;
-		var boolParam:ShaderParameter<Bool>;
-		var floatParam:ShaderParameter<Float>;
-		var intParam:ShaderParameter<Int>;
-		var length:Int;
+		var boolParam, floatParam, intParam, length;
 
 		for (i in 0...paramCount)
 		{

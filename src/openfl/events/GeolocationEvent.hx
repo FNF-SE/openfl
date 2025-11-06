@@ -1,11 +1,9 @@
 package openfl.events;
 
-#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
+#if (!flash && sys)
 /**
 	A Geolocation object dispatches GeolocationEvent objects when it receives
 	updates from the location sensor installed on the device.
-
-	_OpenFL target support:_ Not currently supported, except when targeting AIR.
 
 	@see `openfl.sensors.Geolocation`
 **/

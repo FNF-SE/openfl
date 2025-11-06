@@ -2,6 +2,7 @@ package openfl.events;
 
 #if !flash
 // import openfl.utils.ObjectPool;
+
 /**
 	A ProgressEvent object is dispatched when a load operation has begun or a
 	socket has received data. These events are usually generated when SWF

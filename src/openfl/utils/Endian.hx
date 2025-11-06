@@ -20,6 +20,7 @@ import lime.system.Endian as LimeEndian;
 	is sending or receiving data.
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract Endian(Null<Int>)
+
 {
 	/**
 		Indicates the most significant byte of the multibyte number
@@ -104,7 +105,9 @@ import lime.system.Endian as LimeEndian;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract Endian(String) from String to String
+@SuppressWarnings("checkstyle:FieldDocComment")
+#if (haxe_ver >= 4.0) enum #else @:enum #end abstract Endian(String) from String to String
+
 {
 	public var BIG_ENDIAN = "bigEndian";
 	public var LITTLE_ENDIAN = "littleEndian";

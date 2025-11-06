@@ -4,6 +4,7 @@ package flash.utils;
 import lime.system.Endian in LimeEndian;
 
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract Endian(String) from String to String
+
 {
 	public var BIG_ENDIAN = "bigEndian";
 	public var LITTLE_ENDIAN = "littleEndian";

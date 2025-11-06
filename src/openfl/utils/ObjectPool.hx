@@ -43,7 +43,7 @@ class ObjectPool<T>
 
 	public function add(object:T):Void
 	{
-		if (object != null && !__pool.exists(object))
+		if (!__pool.exists(object))
 		{
 			__pool.set(object, false);
 			clean(object);
@@ -72,7 +72,7 @@ class ObjectPool<T>
 
 	public function get():T
 	{
-		var object:T = null;
+		var object = null;
 
 		if (inactiveObjects > 0)
 		{
@@ -95,7 +95,7 @@ class ObjectPool<T>
 	public function release(object:T):Void
 	{
 		#if debug
-		if (object == null || !__pool.exists(object))
+		if (!__pool.exists(object))
 		{
 			Log.error("Object is not a member of the pool");
 		}
@@ -120,7 +120,7 @@ class ObjectPool<T>
 
 	public function remove(object:T):Void
 	{
-		if (object != null && __pool.exists(object))
+		if (__pool.exists(object))
 		{
 			__pool.remove(object);
 
@@ -169,7 +169,7 @@ class ObjectPool<T>
 
 	@:noCompletion private inline function __getInactive():T
 	{
-		var object:T = null;
+		var object = null;
 
 		if (__inactiveObject0 != null)
 		{
@@ -264,7 +264,7 @@ class ObjectPool<T>
 			}
 			else if (value > current)
 			{
-				var object:T;
+				var object;
 
 				for (i in 0...(value - current))
 				{

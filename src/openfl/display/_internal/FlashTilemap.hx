@@ -52,19 +52,21 @@ class FlashTilemap
 		var tiles = group.__tiles;
 		var length = group.__length;
 
-		var alpha:Float;
-		var visible:Bool;
-		var blendMode:BlendMode = null;
-		var colorTransform:ColorTransform = null;
-		var id:Int;
-		var tileData:TileData;
-		var tileRect:Rectangle;
-		var sourceBitmapData:BitmapData;
-		var cacheAlpha:Float;
+		var tile,
+			tileset,
+			alpha,
+			visible,
+			blendMode = null,
+			colorTransform = null,
+			id,
+			tileData,
+			tileRect,
+			sourceBitmapData,
+			cacheAlpha;
 
 		for (i in 0...length)
 		{
-			var tile = tiles[i];
+			tile = tiles[i];
 
 			tileTransform.setTo(1, 0, 0, 1, -tile.originX, -tile.originY);
 			tileTransform.concat(tile.matrix);
@@ -77,7 +79,7 @@ class FlashTilemap
 
 			// }
 
-			var tileset = tile.tileset != null ? tile.tileset : defaultTileset;
+			tileset = tile.tileset != null ? tile.tileset : defaultTileset;
 
 			alpha = tile.alpha * worldAlpha;
 			visible = tile.visible;

@@ -8,6 +8,7 @@ package openfl.ui;
 	property.
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract KeyLocation(Int) from Int to Int from UInt to UInt
+
 {
 	/**
 		Indicates the key activated is in the left key location (there is more

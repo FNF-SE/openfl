@@ -60,8 +60,8 @@ import lime.net.HTTPRequestHeader;
 							  detect and return the status code for the
 							  request.(Some browser environments may not be
 							  able to provide this information.) Note that the
-							  `httpStatus` event (if any) is sent
-							  before (and in addition to) any
+							  `httpStatus` event(if any) is sent
+							  before(and in addition to) any
 							  `complete` or `error`
 							  event.
 	@event ioError            Dispatched if a call to URLLoader.load() results
@@ -84,11 +84,6 @@ import lime.net.HTTPRequestHeader;
 							  `URLLoader.load()` attempts to load a
 							  SWZ file and the certificate is invalid or the
 							  digest string does not match the component.
-
-	@see [Loading external data](https://books.openfl.org/openfl-developers-guide/http-communications/loading-external-data.html)
-	@see [Web service requests](https://books.openfl.org/openfl-developers-guide/http-communications/web-service-requests.html)
-	@see `openfl.net.URLRequest`
-	@see `openfl.net.URLStream`
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -158,7 +153,7 @@ class URLLoader extends EventDispatcher
 
 		@param request A URLRequest object specifying the URL to download. If this
 					   parameter is omitted, no load operation begins. If
-					   specified, the load operation begins immediately (see the
+					   specified, the load operation begins immediately(see the
 					   `load` entry for more information).
 	**/
 	public function new(request:URLRequest = null)
@@ -197,7 +192,7 @@ class URLLoader extends EventDispatcher
 		data to the specified URL, you can set the `data` property in
 		the URLRequest object.
 
-		**Note:** If a file being loaded contains non-ASCII characters (as
+		**Note:** If a file being loaded contains non-ASCII characters(as
 		found in many non-English languages), it is recommended that you save the
 		file with UTF-8 or UTF-16 encoding as opposed to a non-Unicode format like
 		ASCII.
@@ -212,18 +207,18 @@ class URLLoader extends EventDispatcher
 		data.
 
 		You cannot connect to commonly reserved ports. For a complete list of
-		blocked ports, see "Restricting Networking APIs" in the _OpenFL
-		Developer's Guide_.
+		blocked ports, see "Restricting Networking APIs" in the _ActionScript
+		3.0 Developer's Guide_.
 
-		 In Flash Player 10 and later, if you use a multipart Content-Type (for
-		example "multipart/form-data") that contains an upload (indicated by a
+		 In Flash Player 10 and later, if you use a multipart Content-Type(for
+		example "multipart/form-data") that contains an upload(indicated by a
 		"filename" parameter in a "content-disposition" header within the POST
 		body), the POST operation is subject to the security rules applied to
 		uploads:
 
 		* The POST operation must be performed in response to a user-initiated
 		action, such as a mouse click or key press.
-		* If the POST operation is cross-domain (the POST target is not on the
+		* If the POST operation is cross-domain(the POST target is not on the
 		same server as the SWF file that is sending the POST request), the target
 		server must provide a URL policy file that permits cross-domain
 		access.
@@ -258,8 +253,8 @@ class URLLoader extends EventDispatcher
 							  this file as local-with-networking or trusted.
 		@throws SecurityError You are trying to connect to a commonly reserved
 							  port. For a complete list of blocked ports, see
-							  "Restricting Networking APIs" in the _OpenFL
-							  Developer's Guide_.
+							  "Restricting Networking APIs" in the _ActionScript
+							  3.0 Developer's Guide_.
 		@throws TypeError     The value of the request parameter or the
 							  `URLRequest.url` property of the
 							  URLRequest object passed are `null`.
@@ -281,12 +276,10 @@ class URLLoader extends EventDispatcher
 								  a server outside the caller's security sandbox.
 								  This may be worked around using a policy file on
 								  the server.
-		@event securityError      A load operation attempted to load a SWZ file (a
+		@event securityError      A load operation attempted to load a SWZ file(a
 								  Adobe platform component), but the certificate
 								  is invalid or the digest does not match the
 								  component.
-
-		@see [Loading external data](https://books.openfl.org/openfl-developers-guide/http-communications/loading-external-data.html)
 	**/
 	public function load(request:URLRequest):Void
 	{
@@ -324,15 +317,7 @@ class URLLoader extends EventDispatcher
 				{
 					__dispatchResponseStatus();
 					__dispatchStatus();
-
-					if (dataFormat == VARIABLES)
-					{
-						this.data = new URLVariables(data);
-					}
-					else
-					{
-						this.data = data;
-					}
+					this.data = data;
 
 					var event = new Event(Event.COMPLETE);
 					dispatchEvent(event);
@@ -410,7 +395,6 @@ class URLLoader extends EventDispatcher
 		#if (lime >= "8.0.0")
 		__httpRequest.manageCookies = request.manageCookies;
 		#end
-		__httpRequest.withCredentials = request.withCredentials;
 
 		// TODO: Better user agent?
 		var userAgent = request.userAgent;

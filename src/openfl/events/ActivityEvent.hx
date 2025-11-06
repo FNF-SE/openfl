@@ -2,6 +2,7 @@ package openfl.events;
 
 #if !flash
 // import openfl.utils.ObjectPool;
+
 /**
 	A Camera or Microphone object dispatches an ActivityEvent object whenever
 	a camera or microphone reports that it has become active or inactive.

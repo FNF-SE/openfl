@@ -2,6 +2,7 @@ package openfl.events;
 
 #if !flash
 // import openfl.utils.ObjectPool;
+
 /**
 	An object dispatches a SecurityErrorEvent object to report the occurrence
 	of a security error. Security errors reported through this class are

@@ -135,7 +135,9 @@ class Security
 		content and data from any domain.
 
 		For more information related to security, see the Flash Player
-		Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).
+		Developer Center Topic: <a
+		href="http://www.adobe.com/go/devnet_security_en"
+		scope="external">Security</a>.
 	**/
 	public static var sandboxType(default, null):String;
 
@@ -309,7 +311,9 @@ class Security
 		It is usually safer to use the `_url` property.
 
 		For more information related to security, see the Flash Player
-		Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).
+		Developer Center Topic: <a
+		href="http://www.adobe.com/go/devnet_security_en"
+		scope="external">Security</a>.
 
 		@throws SecurityError Calling this method from code in the AIR
 							  application security sandbox throws a
@@ -358,7 +362,9 @@ class Security
 		with security architecture and should be used for background
 		information only. The Flash Player Developer Center contains extensive
 		information on Flash Player and security. For more information, see
-		the Flash Player Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).
+		the Flash Player Developer Center Topic <a
+		href="http://www.adobe.com/go/devnet_security_en"
+		scope="external">Security</a>.
 
 		Suppose you are building an e-commerce site that consists of two
 		components: a catalog, which does not need to be secure, because it
@@ -458,7 +464,9 @@ class Security
 		sure to consider the consequences carefully before doing so.
 
 		For more information related to security, see the Flash Player
-		Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).
+		Developer Center Topic: <a
+		href="http://www.adobe.com/go/devnet_security_en"
+		scope="external">Security</a>.
 
 		@throws SecurityError Calling this method from code in the AIR
 							  application security sandbox causes a
@@ -533,8 +541,8 @@ class Security
 		explicitly.
 
 		You cannot connect to commonly reserved ports. For a complete list of
-		blocked ports, see "Restricting Networking APIs" in the _OpenFL
-		Developer's Guide_.
+		blocked ports, see "Restricting Networking APIs" in the _ActionScript
+		3.0 Developer's Guide_.
 
 		Using the `xmlsocket` protocol along with a specific port number lets
 		you retrieve policy files directly from an XMLSocket server, as shown
@@ -559,7 +567,9 @@ class Security
 		HTML page that contains the SWF content.
 
 		For more information related to security, see the Flash Player
-		Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).
+		Developer Center Topic: <a
+		href="http://www.adobe.com/go/devnet_security_en"
+		scope="external">Security</a>.
 
 		@param url The URL location of the policy file to be loaded.
 	**/

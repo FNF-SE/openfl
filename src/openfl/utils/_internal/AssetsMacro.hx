@@ -250,6 +250,8 @@ class AssetsMacro
 
 	macro public static function embedFont():Array<Field>
 	{
+		var fields = null;
+
 		var classType = Context.getLocalClass().get();
 		var metaData = classType.meta.get();
 		var position = Context.currentPos();
@@ -377,7 +379,7 @@ class AssetsMacro
 				{
 					if (field.name == "new")
 					{
-						var className:String = null;
+						var className = null;
 
 						for (meta in metaData)
 						{

@@ -1,6 +1,6 @@
 package openfl.display;
 
-#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
+#if (!flash && sys)
 /**
 	The NativeWindowDisplayState class defines constants for the names of the
 	window display states.
@@ -14,6 +14,7 @@ package openfl.display;
 	@see `openfl.display.StageDisplayState`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract NativeWindowDisplayState(Null<Int>)
+
 {
 	/**
 		The normal display state.

@@ -1,6 +1,7 @@
 package openfl.text;
 
-#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
+#if (!flash && sys)
+
 #if !openfljs
 /**
 	The StageTextClearButtonMode class defines the values to use for the
@@ -9,6 +10,7 @@ package openfl.text;
 	@see `openfl.text.StageText.clearButtonMode`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract StageTextClearButtonMode(Null<Int>)
+
 {
 	/**
 		The StageText clear button is always shown.
@@ -55,7 +57,9 @@ package openfl.text;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract StageTextClearButtonMode(String) from String to String
+@SuppressWarnings("checkstyle:FieldDocComment")
+#if (haxe_ver >= 4.0) enum #else @:enum #end abstract StageTextClearButtonMode(String) from String to String
+
 {
 	public var ALWAYS = "default";
 	public var NEVER = "done";

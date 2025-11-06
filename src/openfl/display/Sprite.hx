@@ -14,19 +14,12 @@ import openfl.utils.AssetLibrary;
 	A Sprite object is similar to a movie clip, but does not have a
 	timeline. Sprite is an appropriate base class for objects that do not
 	require timelines. For example, Sprite would be a logical base class for
-	user interface (UI) components that typically do not use the timeline.
+	user interface(UI) components that typically do not use the timeline.
 
-	The Sprite class is new in OpenFL (compared to ActionScript 2.0). It
-	provides an alternative
+	The Sprite class is new in ActionScript 3.0. It provides an alternative
 	to the functionality of the MovieClip class, which retains all the
 	functionality of previous ActionScript releases to provide backward
 	compatibility.
-
-	@see [Display programming](https://books.openfl.org/openfl-developers-guide/display-programming/)
-	@see [Basics of display programming](https://books.openfl.org/openfl-developers-guide/display-programming/basics-of-display-programming.html)
-	@see [Core display classes](https://books.openfl.org/openfl-developers-guide/display-programming/core-display-classes.html)
-	@see [Working with display objects](https://books.openfl.org/openfl-developers-guide/display-programming/working-with-display-objects/)
-	@see [Choosing a display object subclass](https://books.openfl.org/openfl-developers-guide/display-programming/working-with-display-objects/choosing-a-displayobject-subclass.html)
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -55,19 +48,19 @@ class Sprite extends DisplayObjectContainer
 		Although it is better to use the SimpleButton class to create buttons,
 		you can use the `buttonMode` property to give a sprite some
 		button-like functionality. To include a sprite in the tab order, set the
-		`tabEnabled` property (inherited from the InteractiveObject
+		`tabEnabled` property(inherited from the InteractiveObject
 		class and `false` by default) to `true`.
 		Additionally, consider whether you want the children of your sprite to be
 		user input enabled. Most buttons do not enable user input interactivity
 		for their child objects because it confuses the event flow. To disable
 		user input interactivity for all child objects, you must set the
-		`mouseChildren` property (inherited from the
+		`mouseChildren` property(inherited from the
 		DisplayObjectContainer class) to `false`.
 
 		If you use the `buttonMode` property with the MovieClip
-		class (which is a subclass of the Sprite class), your button might have
+		class(which is a subclass of the Sprite class), your button might have
 		some added functionality. If you include frames labeled _up, _over, and
-		_down, Flash Player provides automatic state changes (functionality
+		_down, Flash Player provides automatic state changes(functionality
 		similar to that provided in previous versions of ActionScript for movie
 		clips used as buttons). These automatic state changes are not available
 		for sprites, which have no timeline, and thus no frames to label.
@@ -113,7 +106,7 @@ class Sprite extends DisplayObjectContainer
 	#end
 
 	/**
-		A Boolean value that indicates whether the pointing hand (hand cursor)
+		A Boolean value that indicates whether the pointing hand(hand cursor)
 		appears when the pointer rolls over a sprite in which the
 		`buttonMode` property is set to `true`. The default
 		value of the `useHandCursor` property is `true`. If
@@ -208,9 +201,9 @@ class Sprite extends DisplayObjectContainer
 		plane defined by the three-dimensional parent object.
 
 		@param lockCenter Specifies whether the draggable sprite is locked to the
-						  center of the pointer position (`true`), or
+						  center of the pointer position(`true`), or
 						  locked to the point where the user first clicked the
-						  sprite (`false`).
+						  sprite(`false`).
 		@param bounds     Value relative to the coordinates of the Sprite's parent
 						  that specify a constraint rectangle for the Sprite.
 	**/
@@ -261,15 +254,6 @@ class Sprite extends DisplayObjectContainer
 		{
 			stage.__stopDrag(this);
 		}
-	}
-
-	@:noCompletion private override function __setStageReference(stage:Stage):Void
-	{
-		if (this.stage != stage && this.stage != null && this.stage.__dragObject == this)
-		{
-			stopDrag();
-		}
-		super.__setStageReference(stage);
 	}
 
 	#if false

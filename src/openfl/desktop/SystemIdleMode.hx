@@ -1,6 +1,7 @@
 package openfl.desktop;
 
-#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
+#if (!flash && sys)
+
 #if !openfljs
 /**
 	The SystemIdleMode class provides constant values for system idle behaviors.
@@ -10,6 +11,7 @@ package openfl.desktop;
 	@see `openfl.desktop.NativeApplication.systemIdleMode`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract SystemIdleMode(Null<Int>)
+
 {
 	/**
 		Prevents the system from dropping into an idle mode.
@@ -46,7 +48,9 @@ package openfl.desktop;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract SystemIdleMode(String) from String to String
+@SuppressWarnings("checkstyle:FieldDocComment")
+#if (haxe_ver >= 4.0) enum #else @:enum #end abstract SystemIdleMode(String) from String to String
+
 {
 	public var KEEP_AWAKE = "keepAwake";
 	public var NORMAL = "normal";

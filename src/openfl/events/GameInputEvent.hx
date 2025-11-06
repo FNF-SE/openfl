@@ -60,7 +60,6 @@ import openfl.ui.GameInputDevice;
 	@:noCompletion private override function __init():Void
 	{
 		super.__init();
-		bubbles = true;
 		device = null;
 	}
 }

@@ -29,10 +29,10 @@ import lime.system.Clipboard as LimeClipboard;
 	ClipboardFormats class.
 
 	When a transfer to or from the operating system occurs, the standard
-	formats are automatically translated between Haxe data types and
+	formats are automatically translated between ActionScript data types and
 	the native operating system clipboard types.
 
-	You can use application-defined formats to add Haxe objects to a
+	You can use application-defined formats to add ActionScript objects to a
 	Clipboard object. If an object is serializable, both a reference and a
 	clone of the object can be made available. Object references are valid
 	only within the originating application.
@@ -50,9 +50,6 @@ import lime.system.Clipboard as LimeClipboard;
 	application - typically resulting in an undesireable pause as the file
 	data is downloaded or created.
 
-	_OpenFL target support:_ Only `ClipboardFormats.TEXT_FORMAT` is currently
-	supported, except when targeting AIR.
-
 	**Note for AIR applications:** The clipboard object referenced by the
 	event objects dispatched for HTML drag-and-drop and copy-and-paste events
 	are not the same type as the AIR Clipboard object. The JavaScript
@@ -68,8 +65,6 @@ import lime.system.Clipboard as LimeClipboard;
 	for content outside the application sandbox.
 
 	On Linux, clipboard data does not persist when an AIR application closes.
-
-	@see [Copy and paste](https://books.openfl.org/openfl-developers-guide/copy-and-paste/)
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')

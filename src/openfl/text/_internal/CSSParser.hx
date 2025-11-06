@@ -121,7 +121,7 @@ class CSSParser
 	 */
 	public function findCorrespondingRule(rules:Array<StringMap<Dynamic>>, directive:String, value:Dynamic = null):StringMap<Dynamic>
 	{
-		var ret:StringMap<Dynamic> = null;
+		var ret = null;
 		for (i in 0...rules.length)
 		{
 			if (rules[i].get("directive") == directive)
@@ -230,7 +230,7 @@ class CSSParser
 		  rules => [[directive =>"", value =>""], [directive =>"", value =>""], ...]
 		  selector => "SOMESELECTOR"
 		]
-			  returns the changed (new,removed,updated) values on css1 parameter, on same structure
+			  returns the changed(new,removed,updated) values on css1 parameter, on same structure
 			  if two css objects are the same, then returns false
 		if a css directive exists in css1 and     css2, and its value is different, it is included in diff
 		if a css directive exists in css1 and not css2, it is then included in diff
@@ -433,7 +433,7 @@ class CSSParser
 	 */
 	public function getImports(objectArray:Array<StringMap<Dynamic>>):Array<Dynamic>
 	{
-		var imps:Array<Dynamic> = [];
+		var imps = [];
 		for (i in 0...objectArray.length)
 		{
 			if (objectArray[i].get("type") == 'imports')
