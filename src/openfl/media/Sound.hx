@@ -2,21 +2,12 @@ package openfl.media;
 
 #if !flash
 import haxe.Int64;
-import openfl.errors.IOError;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
 import openfl.events.IOErrorEvent;
 import openfl.net.URLRequest;
 import openfl.utils.ByteArray;
 import openfl.utils.Future;
-#if (js && html5)
-import lime.media.AudioManager;
-import lime.media.WebAudioContext;
-#end
-#if lime_openal
-import lime.media.AudioManager;
-import lime.media.OpenALAudioContext;
-#end
 #if lime
 import openfl.utils._internal.UInt8Array;
 import lime.media.AudioBuffer;
@@ -74,11 +65,11 @@ import lime.media.AudioSource;
 	Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).
 
 	@event complete   Dispatched when data has loaded successfully.
-	@event id3        Dispatched by a Sound object when ID3 data is available
+	@event id3		Dispatched by a Sound object when ID3 data is available
 					  for an MP3 sound.
-	@event ioError    Dispatched when an input/output error occurs that causes
+	@event ioError	Dispatched when an input/output error occurs that causes
 					  a load operation to fail.
-	@event open       Dispatched when a load operation starts.
+	@event open	   Dispatched when a load operation starts.
 	@event progress   Dispatched when data is received as a load operation
 					  progresses.
 	@event sampleData Dispatched when the runtime requests new audio data.
@@ -90,7 +81,7 @@ import lime.media.AudioSource;
 @:access(lime.media.AudioBuffer)
 @:access(lime.utils.AssetLibrary)
 @:access(openfl.media.SoundMixer)
-@:access(openfl.media.SoundChannel)
+@:access(openfl.media.SoundChannel.new)
 @:autoBuild(openfl.utils._internal.AssetsMacro.embedSound())
 class Sound extends EventDispatcher
 {
@@ -237,24 +228,8 @@ class Sound extends EventDispatcher
 	**/
 	public var url(default, null):String;
 
-	@:noCompletion private var __urlLoading:Bool = false;
-
 	#if lime
-	@:noCompletion private var __pendingSoundChannel:SoundChannel;
-	@:noCompletion private var __pendingAudioSource:AudioSource;
 	@:noCompletion private var __buffer:AudioBuffer;
-	#end
-
-	#if (js && html5)
-	public var sampleRate(get, never):Int;
-
-	private var __webAudioContext:WebAudioContext = null;
-	#end
-
-	#if lime_openal
-	public var sampleRate(get, never):Int;
-
-	private var __alAudioContext:OpenALAudioContext = null;
 	#end
 
 	#if openfljs
@@ -302,28 +277,6 @@ class Sound extends EventDispatcher
 		{
 			load(stream, context);
 		}
-		#if (js && html5)
-		if (stream == null && AudioManager.context != null)
-		{
-			switch (AudioManager.context.type)
-			{
-				case WEB:
-					__webAudioContext = AudioManager.context.web;
-				default:
-			}
-		}
-		#end
-		#if lime_openal
-		if (stream == null && AudioManager.context != null)
-		{
-			switch (AudioManager.context.type)
-			{
-				case OPENAL:
-					__alAudioContext = AudioManager.context.openal;
-				default:
-			}
-		}
-		#end
 	}
 
 	/**
@@ -401,12 +354,7 @@ class Sound extends EventDispatcher
 	public static function fromFile(path:String):Sound
 	{
 		#if lime
-		var buffer = AudioBuffer.fromFile(path);
-		if (buffer == null)
-		{
-			throw new IOError("Error loading sound from file: " + path);
-		}
-		return fromAudioBuffer(buffer);
+		return fromAudioBuffer(AudioBuffer.fromFile(path));
 		#else
 		return null;
 		#end
@@ -470,8 +418,8 @@ class Sound extends EventDispatcher
 					   data to hold in the Sound object's buffer) and can specify
 					   whether the application should check for a cross-domain
 					   policy file prior to loading the sound.
-		@throws IOError       A network error caused the load to fail.
-		@throws IOError       The `digest` property of the
+		@throws IOError	   A network error caused the load to fail.
+		@throws IOError	   The `digest` property of the
 							  `stream` object is not `null`.
 							  You should only set the `digest` property
 							  of a URLRequest object when calling the
@@ -488,11 +436,10 @@ class Sound extends EventDispatcher
 	public function load(stream:URLRequest, context:SoundLoaderContext = null):Void
 	{
 		url = stream.url;
-		__urlLoading = true;
 
 		#if lime
 		#if (js && html5)
-		var defaultLibrary = lime.utils.Assets.getLibrary("default"); // TODO: Improve this
+		var defaultLibrary = lime.utils.Assets.getLibrary("default");
 
 		if (defaultLibrary != null && defaultLibrary.cachedAudioBuffers.exists(url))
 		{
@@ -658,9 +605,9 @@ class Sound extends EventDispatcher
 		monitor volume.(To control the volume, panning, and balance, access the
 		SoundTransform object assigned to the sound channel.)
 
-		@param startTime    The initial position in milliseconds at which playback
+		@param startTime	The initial position in milliseconds at which playback
 							should start.
-		@param loops        Defines the number of times a sound loops back to the
+		@param loops		Defines the number of times a sound loops back to the
 							`startTime` value before the sound channel
 							stops playback.
 		@param sndTransform The initial SoundTransform object assigned to the
@@ -673,7 +620,7 @@ class Sound extends EventDispatcher
 	public function play(startTime:Float = 0.0, loops:Int = 0, sndTransform:SoundTransform = null):SoundChannel
 	{
 		#if lime
-		if (SoundMixer.__soundChannels.length >= SoundMixer.MAX_ACTIVE_CHANNELS)
+		if (__buffer == null || SoundMixer.__soundChannels.length >= SoundMixer.MAX_ACTIVE_CHANNELS)
 		{
 			return null;
 		}
@@ -690,61 +637,26 @@ class Sound extends EventDispatcher
 		var pan = SoundMixer.__soundTransform.pan + sndTransform.pan;
 
 		if (pan > 1) pan = 1;
-		if (pan < -1) pan = -1;
+		else if (pan < -1) pan = -1;
 
 		var volume = SoundMixer.__soundTransform.volume * sndTransform.volume;
 
-		var audioSource = new AudioSource(__buffer);
-		audioSource.offset = Std.int(startTime);
-		if (loops > 1) audioSource.loops = loops - 1;
+		var source = new AudioSource(__buffer);
+		source.offset = Std.int(startTime);
+		if (loops > 1) source.loops = loops - 1;
 
-		audioSource.gain = volume;
+		source.gain = volume;
 
-		var position = audioSource.position;
+		var position = source.position;
 		position.x = pan;
 		position.z = -1 * Math.sqrt(1 - Math.pow(pan, 2));
-		audioSource.position = position;
+		source.position = position;
 
-		var soundChannel = new SoundChannel(this, __urlLoading ? null : audioSource, sndTransform);
-		if (__urlLoading)
-		{
-			__pendingAudioSource = audioSource;
-			__pendingSoundChannel = soundChannel;
-		}
-		else if (__buffer == null)
-		{
-			#if (js && html5)
-			if (__webAudioContext != null)
-			{
-				soundChannel.__startSampleData();
-			}
-			#end
-			#if lime_openal
-			if (__alAudioContext != null)
-			{
-				soundChannel.__startSampleData();
-			}
-			#end
-		}
-		return soundChannel;
+		return new SoundChannel(source, sndTransform);
 		#else
 		return null;
 		#end
 	}
-
-	#if (js && html5)
-	private function get_sampleRate():Int
-	{
-		return Std.int(__webAudioContext.sampleRate);
-	}
-	#end
-
-	#if lime_openal
-	private function get_sampleRate():Int
-	{
-		return 44100;
-	}
-	#end
 
 	// Get & Set Methods
 	@:noCompletion private function get_id3():ID3Info
@@ -752,27 +664,18 @@ class Sound extends EventDispatcher
 		return new ID3Info();
 	}
 
-	@:noCompletion private function get_length():Int
+	@:noCompletion private function get_length():Float
 	{
 		#if lime
 		if (__buffer != null)
 		{
 			#if (js && html5 && howlerjs)
-			return Std.int(__buffer.src.duration() * 1000);
+			return __buffer.src.duration() * 1000;
 			#else
-			if (__buffer.data != null)
-			{
-				var samples = (__buffer.data.length * 8.0) / (__buffer.channels * __buffer.bitsPerSample);
-				return Std.int(samples / __buffer.sampleRate * 1000);
-			}
-			else if (__buffer.__srcVorbisFile != null)
-			{
-				var samples = Int64.toInt(__buffer.__srcVorbisFile.pcmTotal());
-				return Std.int(samples / __buffer.sampleRate * 1000);
-			}
-			else
-			{
-				return 0;
+			if (__buffer.data != null) return (__buffer.data.length >> 0) / __buffer.channels / (__buffer.bitsPerSample >> 3) / __buffer.sampleRate * 1000;
+			else if (__buffer.__srcVorbisFile != null) {
+				var x = __buffer.__srcVorbisFile.pcmTotal();
+				return (x.high * 4294967296. + (x.low >> 0)) / __buffer.sampleRate * 1000;
 			}
 			#end
 		}
@@ -785,7 +688,6 @@ class Sound extends EventDispatcher
 	#if lime
 	@:noCompletion private function AudioBuffer_onURLLoad(buffer:AudioBuffer):Void
 	{
-		__urlLoading = false;
 		if (buffer == null)
 		{
 			dispatchEvent(new IOErrorEvent(IOErrorEvent.IO_ERROR));
@@ -794,17 +696,7 @@ class Sound extends EventDispatcher
 		{
 			__buffer = buffer;
 			dispatchEvent(new Event(Event.COMPLETE));
-			if (__pendingSoundChannel != null)
-			{
-				__pendingAudioSource.buffer = __buffer;
-				// ideally, Lime would call init() when setting buffer,
-				// similar to how it does in the AudioSource constructor
-				@:privateAccess __pendingAudioSource.init();
-				__pendingSoundChannel.__initAudioSource(__pendingAudioSource);
-			}
 		}
-		__pendingSoundChannel = null;
-		__pendingAudioSource = null;
 	}
 	#end
 }
