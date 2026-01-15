@@ -1,5 +1,8 @@
 package openfl.display;
 
+import openfl.display3D.Context3DWrapMode;
+import openfl.display3D.Context3DMipFilter;
+import openfl.display3D.Context3DTextureFilter;
 #if !flash
 import openfl.display._internal.ShaderBuffer;
 import openfl.display3D.Context3D;
@@ -485,7 +488,7 @@ class Shader
 		if (failingLine != null) message = '\nFailed to simplify log:"$failingLine"\n$infoLog\n$source';
 
 		var typeName = (type == __context.gl.VERTEX_SHADER) ? "vertex" : "fragment";
-		if (isError) #if !macro openfl.Lib.application.window.alert('Error compiling $typeName shader $message', 'Shader Compile Error!') #else Log.error('Error compiling $typeName shader $message') #end;
+		if (isError) Log.error('Error compiling $typeName shader $message');
 		else
 			Log.debug('Info compiling $typeName shader $message');
 	}
@@ -541,8 +544,7 @@ class Shader
 		{
 			input.__disableGL(__context, textureCount);
 			textureCount++;
-			if (textureCount == gl.MAX_TEXTURE_IMAGE_UNITS)
-				break;
+			if (textureCount == gl.MAX_TEXTURE_IMAGE_UNITS) break;
 		}
 
 		for (parameter in __paramBool)
@@ -591,13 +593,6 @@ class Shader
 			gl.uniform1i(input.index, textureCount);
 			textureCount++;
 		}
-
-		#if lime
-		if (__context.__context.type == OPENGL && textureCount > 0)
-		{
-			gl.enable(gl.TEXTURE_2D);
-		}
-		#end
 	}
 
 	@:noCompletion private function __init():Void
@@ -623,10 +618,23 @@ class Shader
 			extensions += "#extension " + ext.name + " : " + ext.behavior + "\n";
 		}
 
+		var complexBlendsSupported = OpenGLRenderer.__complexBlendsSupported
+			&& isFragment
+			&& (!StringTools.startsWith(__glVersion, "1") || __glVersion == "150");
+
+		if (complexBlendsSupported)
+		{
+			extensions += "#extension GL_KHR_blend_equation_advanced : enable\n";
+
+			// compiling without this gives the error
+			// 'gl_SampleID' : required extension not requested: GL_ARB_sample_shading
+			extensions += "#extension GL_ARB_sample_shading : enable\n";
+		}
+
 		// #version must be the first directive and cannot be repeated,
 		// while #extension directives must be before any non-preprocessor tokens.
 
-		return "#version "
+		var prefix = "#version "
 			+ __glVersion
 			+ "
       "
@@ -642,6 +650,13 @@ class Shader
 			+ "
 				#endif
 				";
+
+		if (complexBlendsSupported)
+		{
+			prefix += "#ifdef GL_KHR_blend_equation_advanced\nlayout (blend_support_all_equations) out;\n#endif\n";
+		}
+
+		return prefix;
 	}
 
 	@:noCompletion private function __initGL():Void
@@ -918,8 +933,7 @@ class Shader
 						parameter.type = parameterType;
 						parameter.__arrayLength = arrayLength;
 						#if lime
-						if (arrayLength > 0)
-							parameter.__uniformMatrix = new Float32Array(arrayLength * arrayLength);
+						if (arrayLength > 0) parameter.__uniformMatrix = new Float32Array(arrayLength * arrayLength);
 						#end
 						parameter.__isFloat = true;
 						parameter.__isUniform = isUniform;
@@ -1005,7 +1019,11 @@ class Shader
 	@:noCompletion private function __updateGLFromBuffer(shaderBuffer:ShaderBuffer, bufferOffset:Int):Void
 	{
 		var textureCount = 0;
-		var input, inputData, inputFilter, inputMipFilter, inputWrap;
+		var input:ShaderInput<BitmapData>;
+		var inputData:BitmapData;
+		var inputFilter:Context3DTextureFilter;
+		var inputMipFilter:Context3DMipFilter;
+		var inputWrap:Context3DWrapMode;
 
 		for (i in 0...shaderBuffer.inputCount)
 		{
@@ -1051,10 +1069,13 @@ class Shader
 		var floatCount = shaderBuffer.paramFloatCount;
 		var paramData = shaderBuffer.paramData;
 
-		var boolRef, floatRef, intRef, hasOverride;
-		var overrideBoolValue:Array<Bool> = null,
-			overrideFloatValue:Array<Float> = null,
-			overrideIntValue:Array<Int> = null;
+		var boolRef:ShaderParameter<Bool>;
+		var floatRef:ShaderParameter<Float>;
+		var intRef:ShaderParameter<Int>;
+		var hasOverride:Bool;
+		var overrideBoolValue:Array<Bool> = null;
+		var overrideFloatValue:Array<Float> = null;
+		var overrideIntValue:Array<Int> = null;
 
 		for (i in 0...shaderBuffer.paramCount)
 		{
