@@ -369,8 +369,6 @@ class TextureBase extends EventDispatcher
 			gl.texParameteri(__textureTarget, gl.TEXTURE_MAG_FILTER, magFilter);
 			gl.texParameteri(__textureTarget, gl.TEXTURE_WRAP_S, wrapModeS);
 			gl.texParameteri(__textureTarget, gl.TEXTURE_WRAP_T, wrapModeT);
-			gl.texParameterf(__textureTarget, 34049, state.lodBias); // GL_TEXTURE_LOD_BIAS
-
 
 			if (__samplerState == null) __samplerState = state.clone();
 			__samplerState.copyFrom(state);
