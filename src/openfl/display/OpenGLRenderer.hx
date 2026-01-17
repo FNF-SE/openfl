@@ -70,6 +70,11 @@ class OpenGLRenderer extends DisplayObjectRenderer
 	@SuppressWarnings("checkstyle:Dynamic")
 	public var gl:#if lime WebGLRenderContext #else Dynamic #end;
 
+	@:noCompletion private static var __staticDefaultDisplayShader:DisplayObjectShader;
+	@:noCompletion private static var __staticDefaultGraphicsShader:GraphicsShader;
+	@:noCompletion private static var __staticMaskShader:Context3DMaskShader;
+	@:noCompletion private static var __complexBlendsSupported:Null<Bool>;
+
 	@:noCompletion private var __context3D:Context3D;
 	@:noCompletion private var __clipRects:Array<Rectangle>;
 	@:noCompletion private var __currentDisplayShader:Shader;
@@ -102,8 +107,6 @@ class OpenGLRenderer extends DisplayObjectRenderer
 	@:noCompletion private var __upscaled:Bool;
 	@:noCompletion private var __values:Array<Float>;
 	@:noCompletion private var __width:Int;
-
-	@:noCompletion private var _complexBlendsSupported:Bool;
 
 	@:noCompletion private function new(context:Context3D, defaultRenderTarget:BitmapData = null)
 	{
@@ -138,7 +141,8 @@ class OpenGLRenderer extends DisplayObjectRenderer
 		}
 		#end
 
-		_complexBlendsSupported = gl.getSupportedExtensions().contains("KHR_blend_equation_advanced");
+		if (__complexBlendsSupported == null)
+			__complexBlendsSupported = gl.getSupportedExtensions().contains("KHR_blend_equation_advanced");
 
 		#if (js && html5)
 		__softwareRenderer = new CanvasRenderer(null);
@@ -163,14 +167,18 @@ class OpenGLRenderer extends DisplayObjectRenderer
 		__stencilReference = 0;
 		__tempRect = new Rectangle();
 
-		__defaultDisplayShader = new DisplayObjectShader();
-		__defaultGraphicsShader = new GraphicsShader();
+		if (__staticDefaultDisplayShader == null) __staticDefaultDisplayShader = new DisplayObjectShader();
+		if (__staticDefaultGraphicsShader == null) __staticDefaultGraphicsShader = new GraphicsShader();
+		if (__staticMaskShader == null) __staticMaskShader = new Context3DMaskShader();
+
+		__defaultDisplayShader = __staticDefaultDisplayShader;
+		__defaultGraphicsShader = __staticDefaultGraphicsShader;
 		__defaultShader = __defaultDisplayShader;
 
 		__initShader(__defaultShader);
 
 		__scrollRectMasks = new ObjectPool<Shape>(function() return new Shape());
-		__maskShader = new Context3DMaskShader();
+		__maskShader = __staticMaskShader;
 	}
 
 	/**
@@ -1015,7 +1023,7 @@ class OpenGLRenderer extends DisplayObjectRenderer
 
 		__blendMode = value;
 
-		if (_complexBlendsSupported)
+		if (__complexBlendsSupported)
 		{
 			var equation:Null<Int> = switch (value)
 			{
@@ -1040,6 +1048,7 @@ class OpenGLRenderer extends DisplayObjectRenderer
 			if (equation != null)
 			{
 				__context3D.__setGLBlendEquation(equation);
+				__context3D.__glBlendBarrier();
 				return;
 			}
 		}
