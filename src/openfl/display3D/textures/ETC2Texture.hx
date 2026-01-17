@@ -47,7 +47,6 @@ import openfl.Lib;
 		var format = detectETC2Format(data);
 		__format = format;
 		__internalFormat = format;
-		__premultiplyAlpha = true;
 
 		var gl = __context.gl;
 

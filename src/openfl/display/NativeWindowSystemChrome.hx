@@ -1,6 +1,6 @@
 package openfl.display;
 
-#if (!flash && sys)
+#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
 /**
 	The NativeWindowSystemChrome class defines constants for the `systemChrome`
 	property of the NativeWindowInitOptions object used to create a native window.
@@ -15,7 +15,6 @@ package openfl.display;
 	@see `openfl.display.NativeWindowInitOptions`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract NativeWindowSystemChrome(Null<Int>)
-
 {
 	/**
 		Reserved for future use.

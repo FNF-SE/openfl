@@ -317,7 +317,7 @@ class Timeline
 
 		if (frameRate != null)
 		{
-			__frameTime = 1000 / frameRate;
+			__frameTime = (1000 / frameRate);
 			__timeElapsed = 0;
 		}
 	}

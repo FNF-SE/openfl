@@ -74,6 +74,7 @@ class OpenGLRenderer extends DisplayObjectRenderer
 	@:noCompletion private static var __staticDefaultGraphicsShader:GraphicsShader;
 	@:noCompletion private static var __staticMaskShader:Context3DMaskShader;
 	@:noCompletion private static var __complexBlendsSupported:Null<Bool>;
+	@:noCompletion private static var __coherentBlendsSupported:Null<Bool>;
 
 	@:noCompletion private var __context3D:Context3D;
 	@:noCompletion private var __clipRects:Array<Rectangle>;
@@ -142,7 +143,11 @@ class OpenGLRenderer extends DisplayObjectRenderer
 		#end
 
 		if (__complexBlendsSupported == null)
-			__complexBlendsSupported = gl.getSupportedExtensions().contains("KHR_blend_equation_advanced");
+		{
+			var extensions = gl.getSupportedExtensions();
+			__complexBlendsSupported = extensions.contains("KHR_blend_equation_advanced");
+			__coherentBlendsSupported = extensions.contains("KHR_blend_equation_advanced_coherent");
+		}
 
 		#if (js && html5)
 		__softwareRenderer = new CanvasRenderer(null);
@@ -768,7 +773,18 @@ class OpenGLRenderer extends DisplayObjectRenderer
 
 		if (__defaultRenderTarget == null)
 		{
+			#if openfl_dpi_aware
 			__scissorRectangle.setTo(__offsetX, __offsetY, __displayWidth, __displayHeight);
+			#else
+			if (__context3D.__backBufferWantsBestResolution)
+			{
+				__scissorRectangle.setTo(__offsetX / __pixelRatio, __offsetY / __pixelRatio, __displayWidth / __pixelRatio, __displayHeight / __pixelRatio);
+			}
+			else
+			{
+				__scissorRectangle.setTo(__offsetX, __offsetY, __displayWidth, __displayHeight);
+			}
+			#end
 			__context3D.setScissorRectangle(__scissorRectangle);
 
 			__upscaled = (__worldTransform.a != 1 || __worldTransform.d != 1);
@@ -828,7 +844,18 @@ class OpenGLRenderer extends DisplayObjectRenderer
 		}
 		else
 		{
+			#if openfl_dpi_aware
 			__scissorRectangle.setTo(__offsetX, __offsetY, __displayWidth, __displayHeight);
+			#else
+			if (__context3D.__backBufferWantsBestResolution)
+			{
+				__scissorRectangle.setTo(__offsetX / __pixelRatio, __offsetY / __pixelRatio, __displayWidth / __pixelRatio, __displayHeight / __pixelRatio);
+			}
+			else
+			{
+				__scissorRectangle.setTo(__offsetX, __offsetY, __displayWidth, __displayHeight);
+			}
+			#end
 			__context3D.setScissorRectangle(__scissorRectangle);
 			// __gl.viewport (__offsetX, __offsetY, __displayWidth, __displayHeight);
 
@@ -989,17 +1016,18 @@ class OpenGLRenderer extends DisplayObjectRenderer
 	{
 		if (clipRect != null)
 		{
-			var x = Math.floor(clipRect.x);
-			var y = Math.floor(clipRect.y);
-			var width = (clipRect.width > 0 ? Math.ceil(clipRect.right) - x : 0);
-			var height = (clipRect.height > 0 ? Math.ceil(clipRect.bottom) - y : 0);
+			var x = Math.ffloor(clipRect.x);
+			var y = Math.ffloor(clipRect.y);
+			var width = (clipRect.width > 0 ? Math.fceil(clipRect.right) - x : 0);
+			var height = (clipRect.height > 0 ? Math.fceil(clipRect.bottom) - y : 0);
 			#if !openfl_dpi_aware
 			if (__context3D.__backBufferWantsBestResolution)
 			{
-				x = Math.floor(clipRect.x / __pixelRatio);
-				y = Math.floor(clipRect.y / __pixelRatio);
-				width = (clipRect.width > 0 ? Math.ceil(clipRect.right / __pixelRatio) - x : 0);
-				height = (clipRect.height > 0 ? Math.ceil(clipRect.bottom / __pixelRatio) - y : 0);
+				var uv = 1.5 / __pixelRatio;
+				x = clipRect.x / __pixelRatio;
+				y = clipRect.y / __pixelRatio;
+				width = (clipRect.width > 0 ? (clipRect.right / __pixelRatio) - x + uv : 0);
+				height = (clipRect.height > 0 ? (clipRect.bottom / __pixelRatio) - y + uv : 0);
 			}
 			#end
 
@@ -1019,12 +1047,21 @@ class OpenGLRenderer extends DisplayObjectRenderer
 	@:noCompletion private override function __setBlendMode(value:BlendMode):Void
 	{
 		if (__overrideBlendMode != null) value = __overrideBlendMode;
-		if (__blendMode == value) return;
-
+		if (__blendMode == value && !__complexBlendsSupported) return;
 		__blendMode = value;
 
 		if (__complexBlendsSupported)
 		{
+			if (!__coherentBlendsSupported)
+			{
+				// On AMD cards going back to the standard blend equations after using advanced blends resulted in
+				// invisible/black sprites so we need to reset the blend state as a workaround
+				@:privateAccess
+				var cacheBlendState = __context3D.__contextState.__enableGLBlend;
+				__context3D.__setGLBlend(false);
+				__context3D.__setGLBlend(cacheBlendState);
+			}
+
 			var equation:Null<Int> = switch (value)
 			{
 				case MULTIPLY: 0x9294; // MULTIPLY_KHR
@@ -1048,10 +1085,13 @@ class OpenGLRenderer extends DisplayObjectRenderer
 			if (equation != null)
 			{
 				__context3D.__setGLBlendEquation(equation);
-				__context3D.__glBlendBarrier();
+				// __context3D.__glBlendBarrier();
+				__context3D.__usingComplexBlend = true;
 				return;
 			}
 		}
+
+		__context3D.__usingComplexBlend = false;
 
 		switch (value)
 		{
@@ -1125,3 +1165,4 @@ class OpenGLRenderer extends DisplayObjectRenderer
 #else
 typedef OpenGLRenderer = Dynamic;
 #end
+

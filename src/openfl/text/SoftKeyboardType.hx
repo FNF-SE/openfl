@@ -1,7 +1,6 @@
 package openfl.text;
 
-#if (!flash && sys)
-
+#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
 #if !openfljs
 /**
 	The SoftKeyboardType class defines the types of soft keyboards for mobile
@@ -11,7 +10,6 @@ package openfl.text;
 	@see `openfl.text.StageText.softKeyboardType`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract SoftKeyboardType(Null<Int>)
-
 {
 	/**
 		A keypad designed for entering a person's name or phone number. This
@@ -92,9 +90,7 @@ package openfl.text;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract SoftKeyboardType(String) from String to String
-
+@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract SoftKeyboardType(String) from String to String
 {
 	public var CONTACT = "contact";
 	public var DECIMAL = "decimalpad";

@@ -24,7 +24,7 @@ package openfl.media;
 
 
 	However, in Adobe AIR, content in the `application` security
-	sandbox(content installed with the AIR application) are not restricted by
+	sandbox (content installed with the AIR application) are not restricted by
 	these security limitations.
 
 	For more information related to security, see the Flash Player Developer
@@ -45,8 +45,8 @@ class SoundLoaderContext
 		`SoundMixer.bufferTime` property. The
 		`SoundMixer.bufferTime` property affects the buffer time for
 		embedded streaming sounds in a SWF file and is independent of dynamically
-		created Sound objects(that is, Sound objects created in
-		ActionScript).
+		created Sound objects (that is, Sound objects created in
+		Haxe code).
 	**/
 	public var bufferTime:Float;
 
@@ -129,9 +129,7 @@ class SoundLoaderContext
 		content, regardless of its origin.
 
 		For more information related to security, see the Flash Player
-		Developer Center Topic: <a
-		href="http://www.adobe.com/go/devnet_security_en"
-		scope="external">Security</a>.
+		Developer Center Topic: [Security](http://www.adobe.com/go/devnet_security_en).
 	**/
 	public var checkPolicyFile:Bool;
 

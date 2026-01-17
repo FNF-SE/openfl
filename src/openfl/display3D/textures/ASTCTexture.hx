@@ -64,7 +64,6 @@ import openfl.Lib;
 			var format = Reflect.getProperty(astcExtension, formatName);
 			__format = format;
 			__internalFormat = format;
-			__premultiplyAlpha = true;
 			__optimizeForRenderToTexture = false;
 			__streamingLevels = 0;
 

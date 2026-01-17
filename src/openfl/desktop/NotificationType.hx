@@ -1,7 +1,6 @@
 package openfl.desktop;
 
-#if (!flash && sys)
-
+#if (!flash && sys && (!flash_doc_gen || air_doc_gen))
 #if !openfljs
 /**
 	The NotificationType class defines constants for use in the priority
@@ -12,7 +11,6 @@ package openfl.desktop;
 	@see `openfl.display.NativeWindow.notifyUser()`
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract NotificationType(Null<Int>)
-
 {
 	/**
 		Specifies that a notification alert is critical in nature and the user
@@ -47,9 +45,7 @@ package openfl.desktop;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract NotificationType(String) from String to String
-
+@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract NotificationType(String) from String to String
 {
 	public var CRITICAL = "critical";
 	public var INFORMATIONAL = "informational";

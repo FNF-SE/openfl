@@ -60,7 +60,6 @@ import openfl.Lib;
 
 			__format = Reflect.getProperty(dxtExtension, formatName);
 			__internalFormat = __format;
-			__premultiplyAlpha = true;
 			__optimizeForRenderToTexture = false;
 			__streamingLevels = 0;
 

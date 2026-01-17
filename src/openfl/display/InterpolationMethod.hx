@@ -1,7 +1,6 @@
 package openfl.display;
 
 #if !flash
-
 #if !openfljs
 /**
 	The InterpolationMethod class provides values for the
@@ -11,16 +10,15 @@ package openfl.display;
 	determines the RGB space to use when rendering the gradient.
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract InterpolationMethod(Null<Int>)
-
 {
 	/**
 		Specifies that the RGB interpolation method should be used. This means
-		that the gradient is rendered with exponential sRGB(standard RGB) space.
+		that the gradient is rendered with exponential sRGB (standard RGB) space.
 		The sRGB space is a W3C-endorsed standard that defines a non-linear
 		conversion between red, green, and blue component values and the actual
 		intensity of the visible component color.
 
-		For example, consider a simple linear gradient between two colors(with
+		For example, consider a simple linear gradient between two colors (with
 		the `spreadMethod` parameter set to
 		`SpreadMethod.REFLECT`). The different interpolation methods
 		affect the appearance as follows:
@@ -29,12 +27,12 @@ package openfl.display;
 
 	/**
 		Specifies that the RGB interpolation method should be used. This means
-		that the gradient is rendered with exponential sRGB(standard RGB) space.
+		that the gradient is rendered with exponential sRGB (standard RGB) space.
 		The sRGB space is a W3C-endorsed standard that defines a non-linear
 		conversion between red, green, and blue component values and the actual
 		intensity of the visible component color.
 
-		For example, consider a simple linear gradient between two colors(with
+		For example, consider a simple linear gradient between two colors (with
 		the `spreadMethod` parameter set to
 		`SpreadMethod.REFLECT`). The different interpolation methods
 		affect the appearance as follows:
@@ -72,9 +70,7 @@ package openfl.display;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract InterpolationMethod(String) from String to String
-
+@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract InterpolationMethod(String) from String to String
 {
 	public var LINEAR_RGB = "linearRGB";
 	public var RGB = "rgb";

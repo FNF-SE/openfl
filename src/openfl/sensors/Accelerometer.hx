@@ -58,8 +58,11 @@ import lime.system.SensorType;
 				   * Whenever accelerometer updates are obtained from the
 				  platform at device determined intervals.
 				   * Whenever the application misses a change in the
-				  accelerometer(for example, the runtime is resuming after
+				  accelerometer (for example, the runtime is resuming after
 				  being idle).
+
+
+	@see [Accelerometer input](https://books.openfl.org/openfl-developers-guide/accelerometer-input/)
 **/
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -75,7 +78,7 @@ class Accelerometer extends EventDispatcher
 	public static var isSupported(get, never):Bool;
 
 	@:noCompletion private static var currentX:Float = 0.0;
-	@:noCompletion private static var currentY:Float = 1.0;
+	@:noCompletion private static var currentY:Float = 0.0;
 	@:noCompletion private static var currentZ:Float = 0.0;
 	@:noCompletion private static var defaultInterval:Int = 34;
 	@:noCompletion private static var initialized:Bool = false;
@@ -83,7 +86,7 @@ class Accelerometer extends EventDispatcher
 
 	/**
 		Specifies whether the user has denied access to the accelerometer
-		(`true`) or allowed access(`false`). When this
+		(`true`) or allowed access (`false`). When this
 		value changes, a `status` event is dispatched.
 	**/
 	public var muted(get, set):Bool;

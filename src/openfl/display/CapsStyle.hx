@@ -1,7 +1,6 @@
 package openfl.display;
 
 #if !flash
-
 #if !openfljs
 /**
 	The CapsStyle class is an enumeration of constant values that specify the
@@ -13,7 +12,6 @@ package openfl.display;
 	![The three types of caps: NONE, ROUND, and SQUARE.](/images/linecap.jpg)
 **/
 #if (haxe_ver >= 4.0) enum #else @:enum #end abstract CapsStyle(Null<Int>)
-
 {
 	/**
 		Used to specify no caps in the `caps` parameter of the
@@ -66,9 +64,7 @@ package openfl.display;
 	}
 }
 #else
-@SuppressWarnings("checkstyle:FieldDocComment")
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract CapsStyle(String) from String to String
-
+@SuppressWarnings("checkstyle:FieldDocComment") #if (haxe_ver >= 4.0) enum #else @:enum #end abstract CapsStyle(String) from String to String
 {
 	public var NONE = "none";
 	public var ROUND = "round";

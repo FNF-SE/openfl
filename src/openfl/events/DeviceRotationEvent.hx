@@ -1,6 +1,6 @@
 package openfl.events;
 
-#if (!flash && sys)
+#if !flash
 /**
 	The DeviceRotation class dispatches DeviceRotationEvent and returns roll,
 	yaw, pitch and quaternion data when DeviceRotation updates are obtained from

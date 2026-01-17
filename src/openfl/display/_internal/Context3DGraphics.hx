@@ -52,7 +52,7 @@ class Context3DGraphics
 		var tileRect = Rectangle.__pool.get();
 		var tileTransform = Matrix.__pool.get();
 
-		var bitmap = null;
+		var bitmap:BitmapData = null;
 
 		for (type in graphics.__commands.types)
 		{
@@ -135,14 +135,25 @@ class Context3DGraphics
 							graphics.__quadBuffer.resize(quadBufferPosition + length, dataPerVertex);
 						}
 
-						var vertexOffset, alpha = 1.0, tileData, id;
-						var bitmapWidth,
-							bitmapHeight,
-							tileWidth:Float,
-							tileHeight:Float;
-						var uvX, uvY, uvWidth, uvHeight;
-						var x, y, x2, y2, x3, y3, x4, y4;
-						var ri, ti;
+						var vertexOffset:Int;
+						var bitmapWidth:Int;
+						var bitmapHeight:Int;
+						var tileWidth:Float;
+						var tileHeight:Float;
+						var uvX:Float;
+						var uvY:Float;
+						var uvWidth:Float;
+						var uvHeight:Float;
+						var x:Float;
+						var y:Float;
+						var x2:Float;
+						var y2:Float;
+						var x3:Float;
+						var y3:Float;
+						var x4:Float;
+						var y4:Float;
+						var ri:Int;
+						var ti:Int;
 
 						var vertexBufferData = graphics.__quadBuffer.vertexBufferData;
 
@@ -161,8 +172,6 @@ class Context3DGraphics
 						bitmapWidth = bitmap.width;
 						bitmapHeight = bitmap.height;
 						#end
-
-						var sourceRect = bitmap.rect;
 
 						for (i in 0...length)
 						{
@@ -267,7 +276,10 @@ class Context3DGraphics
 
 					// var indexBufferData = graphics.__triangleIndexBufferData;
 					var vertexBufferData = hasUVTData ? graphics.__vertexBufferDataUVT : graphics.__vertexBufferData;
-					var offset, vertOffset, uvOffset, t;
+					var offset:Int;
+					var vertOffset:Int;
+					var uvOffset:Int;
+					var t:Float;
 
 					for (i in 0...length)
 					{
@@ -535,8 +547,8 @@ class Context3DGraphics
 
 				var matrix = Matrix.__pool.get();
 
-				var shaderBuffer = null;
-				var bitmap = null;
+				var shaderBuffer:ShaderBuffer = null;
+				var bitmap:BitmapData = null;
 				var repeat = false;
 				var smooth = false;
 				var fill:Null<Int> = null;
@@ -605,7 +617,7 @@ class Context3DGraphics
 								var length = hasIndices ? indices.length : Math.floor(rects.length / 4);
 
 								var uMatrix = renderer.__getMatrix(graphics.__owner.__renderTransform, AUTO);
-								var shader;
+								var shader:Shader;
 
 								if (shaderBuffer != null && !maskRender)
 								{
@@ -728,7 +740,7 @@ class Context3DGraphics
 							var bufferPosition = hasUVTData ? vertexBufferPositionUVT : vertexBufferPosition;
 
 							var uMatrix = renderer.__getMatrix(graphics.__owner.__renderTransform, AUTO);
-							var shader;
+							var shader:Shader;
 
 							if (shaderBuffer != null && !maskRender)
 							{
@@ -897,7 +909,7 @@ class Context3DGraphics
 	private static function resizeVertexBuffer(graphics:Graphics, hasUVTData:Bool, length:Int):Void
 	{
 		var buffer = (hasUVTData ? graphics.__vertexBufferDataUVT : graphics.__vertexBufferData);
-		var newBuffer = null;
+		var newBuffer:Float32Array = null;
 
 		#if lime
 		if (buffer == null)

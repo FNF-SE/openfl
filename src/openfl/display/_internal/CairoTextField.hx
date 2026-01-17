@@ -1,5 +1,6 @@
 package openfl.display._internal;
 
+import openfl.text.Font;
 #if !flash
 import openfl.text._internal.TextEngine;
 import openfl.display.BitmapData;
@@ -69,7 +70,7 @@ class CairoTextField
 						cursorOffsetX += textField.defaultTextFormat.indent;
 						cursorOffsetX += textField.defaultTextFormat.blockIndent;
 					case START:
-					// not supported?
+						// not supported?
 					case JUSTIFY:
 						cursorOffsetX += textField.defaultTextFormat.leftMargin;
 						cursorOffsetX += textField.defaultTextFormat.indent;
@@ -157,23 +158,6 @@ class CairoTextField
 			graphics.__bitmapScale = pixelRatio;
 
 			cairo = graphics.__cairo;
-
-			var options = new CairoFontOptions();
-
-			if (textEngine.antiAliasType == ADVANCED && textEngine.sharpness == 400)
-			{
-				options.hintStyle = CairoHintStyle.NONE;
-				options.hintMetrics = CairoHintMetrics.OFF;
-				options.antialias = CairoAntialias.NONE;
-			}
-			else
-			{
-				options.hintStyle = CairoHintStyle.SLIGHT;
-				options.hintMetrics = CairoHintMetrics.OFF;
-				options.antialias = CairoAntialias.GOOD;
-			}
-
-			cairo.fontOptions = options;
 		}
 		else
 		{
@@ -184,6 +168,23 @@ class CairoTextField
 			cairo.paint();
 			cairo.setOperator(OVER);
 		}
+
+		var options = new CairoFontOptions();
+
+		if (textEngine.antiAliasType == ADVANCED && textEngine.sharpness == 400)
+		{
+			options.hintStyle = CairoHintStyle.NONE;
+			options.hintMetrics = CairoHintMetrics.OFF;
+			options.antialias = CairoAntialias.NONE;
+		}
+		else
+		{
+			options.hintStyle = CairoHintStyle.SLIGHT;
+			options.hintMetrics = CairoHintMetrics.OFF;
+			options.antialias = CairoAntialias.GOOD;
+		}
+
+		cairo.fontOptions = options;
 
 		var matrix = Matrix.__pool.get();
 		matrix.copyFrom(graphics.__renderTransform);
@@ -240,7 +241,13 @@ class CairoTextField
 				scrollY -= textEngine.lineHeights[i];
 			}
 
-			var color, r, g, b, font, size, advance;
+			var color:Int;
+			var r:Float;
+			var g:Float;
+			var b:Float;
+			var font:Font;
+			var size:Int;
+			var advance:Float;
 
 			for (group in textEngine.layoutGroups)
 			{
@@ -286,7 +293,7 @@ class CairoTextField
 
 					cairo.translate(0, 0);
 
-					var glyphs = [];
+					var glyphs:Array<CairoGlyph> = [];
 					var x:Float = group.offsetX + scrollX - bounds.x;
 					var y:Float = group.offsetY + group.ascent + scrollY - bounds.y;
 
@@ -355,7 +362,8 @@ class CairoTextField
 								selectionEnd = group.endIndex;
 							}
 
-							var start, end;
+							var start:Rectangle;
+							var end:Rectangle;
 
 							start = textField.getCharBoundaries(selectionStart);
 
@@ -382,7 +390,7 @@ class CairoTextField
 
 								// TODO: draw only once
 
-								var selectedGylphs = [];
+								var selectedGylphs:Array<CairoGlyph> = [];
 
 								selectionStart -= group.startIndex;
 								selectionEnd -= group.startIndex;

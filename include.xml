@@ -47,7 +47,7 @@
 		<log warn="Lime version ${lime} may not be compatible with OpenFL ${openfl} (expected version ${expect-lime-version})" />
 		<log info='Use &lt;lime version="" /&gt; before &lt;haxelib name="openfl" /&gt; to include a specific version' />
 
-	</section>-->
+	</section>
 
 	<template path="assets/templates" />
 
@@ -63,7 +63,7 @@
 
 	<section unless="custom-backend">
 
-		<define name="openfl-disable-handle-error" unless="openfl-enable-handle-error" if="debug" />
+		<define name="openfl-disable-handle-error" if="debug" />
 
 		<section if="native">
 

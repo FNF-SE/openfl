@@ -61,12 +61,13 @@ import lime.ui.Gamepad;
 	}
 	#end
 
-	@:noCompletion private function new(id:String, name:String)
+	@:noCompletion private function new(gamepad:Gamepad)
 	{
-		this.id = id;
-		this.name = name;
+		this.__gamepad = gamepad;
+		this.id = gamepad.guid;
+		this.name = gamepad.name;
 
-		var control;
+		var control:GameInputControl;
 
 		for (i in 0...6)
 		{
@@ -92,6 +93,11 @@ import lime.ui.Gamepad;
 	public function getCachedSamples(data:ByteArray, append:Bool = false):Int
 	{
 		return 0;
+	}
+
+	public function getLimeGamepad():Gamepad
+	{
+		return __gamepad;
 	}
 
 	/**
