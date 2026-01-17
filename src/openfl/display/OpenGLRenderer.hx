@@ -70,6 +70,11 @@ class OpenGLRenderer extends DisplayObjectRenderer
 	@SuppressWarnings("checkstyle:Dynamic")
 	public var gl:#if lime WebGLRenderContext #else Dynamic #end;
 
+	@:noCompletion private static var __staticDefaultDisplayShader:DisplayObjectShader;
+	@:noCompletion private static var __staticDefaultGraphicsShader:GraphicsShader;
+	@:noCompletion private static var __staticMaskShader:Context3DMaskShader;
+	@:noCompletion private static var __complexBlendsSupported:Null<Bool>;
+
 	@:noCompletion private var __context3D:Context3D;
 	@:noCompletion private var __clipRects:Array<Rectangle>;
 	@:noCompletion private var __currentDisplayShader:Shader;
@@ -136,6 +141,9 @@ class OpenGLRenderer extends DisplayObjectRenderer
 		}
 		#end
 
+		if (__complexBlendsSupported == null)
+			__complexBlendsSupported = gl.getSupportedExtensions().contains("KHR_blend_equation_advanced");
+
 		#if (js && html5)
 		__softwareRenderer = new CanvasRenderer(null);
 		#else
@@ -159,14 +167,18 @@ class OpenGLRenderer extends DisplayObjectRenderer
 		__stencilReference = 0;
 		__tempRect = new Rectangle();
 
-		__defaultDisplayShader = new DisplayObjectShader();
-		__defaultGraphicsShader = new GraphicsShader();
+		if (__staticDefaultDisplayShader == null) __staticDefaultDisplayShader = new DisplayObjectShader();
+		if (__staticDefaultGraphicsShader == null) __staticDefaultGraphicsShader = new GraphicsShader();
+		if (__staticMaskShader == null) __staticMaskShader = new Context3DMaskShader();
+
+		__defaultDisplayShader = __staticDefaultDisplayShader;
+		__defaultGraphicsShader = __staticDefaultGraphicsShader;
 		__defaultShader = __defaultDisplayShader;
 
 		__initShader(__defaultShader);
 
 		__scrollRectMasks = new ObjectPool<Shape>(function() return new Shape());
-		__maskShader = new Context3DMaskShader();
+		__maskShader = __staticMaskShader;
 	}
 
 	/**
@@ -1010,6 +1022,36 @@ class OpenGLRenderer extends DisplayObjectRenderer
 		if (__blendMode == value) return;
 
 		__blendMode = value;
+
+		if (__complexBlendsSupported)
+		{
+			var equation:Null<Int> = switch (value)
+			{
+				case MULTIPLY: 0x9294; // MULTIPLY_KHR
+				case SCREEN: 0x9295; // SCREEN_KHR
+				case OVERLAY: 0x9296; // OVERLAY_KHR
+				case DARKEN: 0x9297; // DARKEN_KHR
+				case LIGHTEN: 0x9298; // LIGHTEN_KHR
+				case HARDLIGHT: 0x929B; // HARDLIGHT_KHR
+				case DIFFERENCE: 0x929E; // DIFFERENCE_KHR
+				case COLORDODGE: 0x9299; // COLORDODGE_KHR
+				case COLORBURN: 0x929A; // COLORBURN_KHR
+				case SOFTLIGHT: 0x929C; // SOFTLIGHT_KHR
+				case EXCLUSION: 0x92A0; // EXCLUSION_KHR
+				case HUE: 0x92AD; // HSL_HUE_KHR
+				case SATURATION: 0x92AE; // HSL_SATURATION_KHR
+				case COLOR: 0x92AF; // HSL_COLOR_KHR
+				case LUMINOSITY: 0x92B0; // HSL_LUMINOSITY_KHR
+				default: null;
+			}
+
+			if (equation != null)
+			{
+				__context3D.__setGLBlendEquation(equation);
+				__context3D.__glBlendBarrier();
+				return;
+			}
+		}
 
 		switch (value)
 		{
