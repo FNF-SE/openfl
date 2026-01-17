@@ -610,14 +610,13 @@ class Shader
 	{
 		var extensions = "";
 
-		var extList = (isFragment ? __glFragmentExtensions : __glVertexExtensions);
+		var extList:Array<{name:String, behavior:String}> = (isFragment ? __glFragmentExtensions : __glVertexExtensions);
 		for (ext in extList)
 		{
 			extensions += "#extension " + ext.name + " : " + ext.behavior + "\n";
 		}
 
-		var complexBlendsSupported:Bool = OpenGLRenderer.__complexBlendsSupported && isFragment &&
-			(!StringTools.startsWith(__glVersion, "1") || __glVersion == "150");
+		var complexBlendsSupported:Bool = OpenGLRenderer.__complexBlendsSupported && isFragment;
 
 		if (complexBlendsSupported)
 		{
