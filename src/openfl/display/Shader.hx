@@ -616,7 +616,7 @@ class Shader
 			extensions += "#extension " + ext.name + " : " + ext.behavior + "\n";
 		}
 
-		var complexBlendsSupported = OpenGLRenderer.__complexBlendsSupported && isFragment &&
+		var complexBlendsSupported:Bool = OpenGLRenderer.__complexBlendsSupported && isFragment &&
 			(!StringTools.startsWith(__glVersion, "1") || __glVersion == "150");
 
 		if (complexBlendsSupported)
